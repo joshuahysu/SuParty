@@ -1,0 +1,11 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@model SuParty.Pages.IndexModel
+
+@{
+
+}
+
+@inject IStringLocalizer<SuParty.Pages.IndexModel> Localizer
+
+<h1>@Localizer["WelcomeMessage"]</h1>
