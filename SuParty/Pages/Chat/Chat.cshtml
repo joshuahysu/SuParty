@@ -6,30 +6,55 @@
 
 @{
     ViewData["Title"] = "即時留言板";
-    Layout = "_Layout";    
+    Layout = "_Layout";
 }
 
-<h1>即時留言板</h1>
+<div class="container">
+    <div class="row">
+        <!-- 左邊聊天室列表 -->
+        <div class="col-md-3">
+            <h3>聊天室列表</h3>
+            <ul id="chatroomList">
+                <!-- 假設有一些聊天室名稱 -->
+                <li><a href="?chatroomId=1">聊天室 1</a></li>
+                <li><a href="?chatroomId=2">聊天室 2</a></li>
+                <li><a href="?chatroomId=3">聊天室 3</a></li>
+                <!-- 動態生成聊天室 -->
+                @foreach (var chatroom in Model.Chatrooms)
+                {
+                    <li><a href="?chatroomId=@chatroom">@chatroom</a></li>
+                }
+            </ul>
+        </div>
 
-<form id="messageForm">
-    <div>
-        <label for="Name">姓名：</label>
-        <input type="text" id="Name" required />
-    </div>
-    <div>
-        <label for="Content">留言內容：</label>
-        <textarea id="Content" required></textarea>
-    </div>
-    <button type="submit">送出留言</button>
-</form>
+        <!-- 右邊即時留言板 -->
+        <div class="col-md-9">
+            <h1>即時留言板</h1>
 
-<h2>所有留言</h2>
-<ul id="messagesList">
-    @foreach (var message in Model.Messages)
-    {
-        <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li>
-    }
-</ul>
+            <!-- 留言表單 -->
+            <form id="messageForm">
+                <div>
+                    <label for="Name">姓名：</label>
+                    <input type="text" id="Name" required />
+                </div>
+                <div>
+                    <label for="Content">留言內容：</label>
+                    <textarea id="Content" required></textarea>
+                </div>
+                <button type="submit">送出留言</button>
+            </form>
+
+            <h2>所有留言</h2>
+            <ul id="messagesList">
+                @foreach (var message in Model.Messages)
+                {
+                    <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.15/signalr.min.js"></script>
 <script>
@@ -65,8 +90,8 @@
 
         // 其他附加資料
         const additionalData = {
-            timestamp: new Date().toISOString(),
-            chatroomId: "chatroom1", // 聊天室ID
+            createdAt: new Date().toISOString(),
+            chatroomId: chatroomId, // 聊天室ID
             userId: "User123"
         };
 

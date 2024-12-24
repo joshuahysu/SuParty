@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using static SuParty.MessageHub;
 
 namespace SuParty.Pages.Chat
 {
@@ -14,7 +15,7 @@ namespace SuParty.Pages.Chat
         /// </summary>
         /// <param name="chatroomId"></param>
         /// <param name="message"></param>
-        public static void SaveMessage(string chatroomId, Message message)
+        public static void SaveMessage(string chatroomId, MessageModel message)
         {
             // 確保基礎目錄存在
             Directory.CreateDirectory(BasePath);
@@ -41,15 +42,15 @@ namespace SuParty.Pages.Chat
         /// <param name="chatroomId"></param>
         /// <param name="date"></param>
         /// <returns></returns>
-        public static List<Message> ReadMessages(string chatroomId, DateTime? date=null)
+        public static List<MessageModel> ReadMessages(string chatroomId, DateTime? date=null)
         {
             if(date==null)
                 date=DateTime.Now;
             string chatroomPath = Path.Combine("messages", chatroomId);
             string fileName = $"{date:yyyy-MM-dd}.txt";
             string filePath = Path.Combine(chatroomPath, fileName);
-
-            var messages = new List<Message>();
+            //未來優化效能直接傳檔
+            var messages = new List<MessageModel>();
 
             if (File.Exists(filePath))
             {
@@ -57,7 +58,7 @@ namespace SuParty.Pages.Chat
                 foreach (var line in lines)
                 {
                     // 將每行 JSON 反序列化為 Message 物件
-                    var message = JsonSerializer.Deserialize<Message>(line);
+                    var message = JsonSerializer.Deserialize<MessageModel>(line);
                     if (message != null)
                     {
                         messages.Add(message);

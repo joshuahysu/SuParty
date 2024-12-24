@@ -8,7 +8,7 @@ using SuParty.Data;
 
 #nullable disable
 
-namespace SuParty.Data.Migrations
+namespace SuParty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -226,11 +226,8 @@ namespace SuParty.Data.Migrations
 
             modelBuilder.Entity("SuParty.Data.UserData", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
@@ -239,10 +236,22 @@ namespace SuParty.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ChatRooms")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ExtraUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IG_Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -264,7 +273,7 @@ namespace SuParty.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserData");
+                    b.ToTable("UserDatas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

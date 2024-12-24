@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SuParty.Data;
 using System.Reflection;
-
+using System.Security.Claims;
 namespace SuParty.Pages.User
 {
+    [AllowAnonymous]
     public class UploadIMGModel : PageModel
     {
         private string _uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads","img");
@@ -18,15 +20,15 @@ namespace SuParty.Pages.User
         {
             // 初始化頁面時不需要執行額外動作
         }
-
+        [Authorize]
         public async Task<IActionResult> OnPostAsync()
         {
-            string username = "All";
+            string userId = "All";
             if (User.Identity.IsAuthenticated)
             {
+                userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 // 取得登入者的帳號（用戶名或電子郵件）
-                username = User.Identity.Name;
-
+                //username = User.Identity.Name;
             }
             try
             {
@@ -35,7 +37,7 @@ namespace SuParty.Pages.User
                 ModelState.AddModelError(string.Empty, "請選擇一張圖片上傳。");
                 return Page();
                 }
-                _uploadPath = Path.Combine(_uploadPath, username);
+                _uploadPath = Path.Combine(_uploadPath, userId);
                 // 確保上傳目錄存在
                 if (!Directory.Exists(_uploadPath))
                 {
@@ -44,14 +46,15 @@ namespace SuParty.Pages.User
 
                 // 設定檔案路徑
                 string fileName = Path.GetRandomFileName() + Path.GetExtension(UploadedFile.FileName);
-                FilePath = Path.Combine(_uploadPath, fileName);
+                var filePath = Path.Combine(_uploadPath, fileName);
 
                 // 將圖片儲存到伺服器
-                using (var stream = new FileStream(FilePath, FileMode.Create))
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await UploadedFile.CopyToAsync(stream);
                 }
-                 
+                // 回傳前端可以訪問的 URL，這是相對於 wwwroot 的路徑
+                FilePath = "/uploads/img/" + userId + "/" + fileName;
             }
             catch (Exception ex)
             {

@@ -10,11 +10,11 @@ namespace SuParty
         private readonly ApplicationDbContext _context;
         public class MessageModel
         {
-            public string Name { get; set; }
-            public string Content { get; set; }
-            public string Timestamp { get; set; }
-            public string ChatroomId { get; set; }
-            public string UserId { get; set; }
+            public string Name { get; set; } = "";
+            public string Content { get; set; } = "";
+            public DateTime CreatedAt { get; set; }
+            public string ChatroomId { get; set; } = "";
+            public string UserId { get; set; } = "";
         }
 
         public MessageHub(ApplicationDbContext context)
@@ -52,24 +52,11 @@ namespace SuParty
         // 廣播訊息給指定聊天室群組
         public async Task SendMessage(MessageModel message)
         {
-            // 獲取資料
-            string name = message.Name;
-            string content = message.Content;
-            string chatroomId = message.ChatroomId;
-            string timestamp = message.Timestamp;
-            string userId = message.UserId;
-            
-            var newMessage = new Message
-            {
-                Name = name,
-                Content = content,
-                CreatedAt = DateTime.Now
-            };
             // 儲存到檔案系統
-            ChatStorage.SaveMessage(message.ChatroomId, newMessage);
+            ChatStorage.SaveMessage(message.ChatroomId, message);
 
             // 發送訊息到指定的聊天室群組
-            await Clients.Group(chatroomId).SendAsync("ReceiveMessage", name, content);
+            await Clients.Group(message.ChatroomId).SendAsync("ReceiveMessage", message.Name, message.Content);
         }
     }
 }

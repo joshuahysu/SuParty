@@ -32,8 +32,10 @@ namespace SuParty
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            // 註冊 Identity 服務
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddRazorPages(options =>
             {
                 // 使用相對檔案路徑作為路由前綴
@@ -78,13 +80,14 @@ namespace SuParty
                 }
                 await next();
             });
-
    
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            // 配置身份驗證
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

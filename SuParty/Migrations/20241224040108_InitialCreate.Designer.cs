@@ -9,11 +9,11 @@ using SuParty.Data;
 
 #nullable disable
 
-namespace SuParty.Data.Migrations
+namespace SuParty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241223070320_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20241224040108_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -229,11 +229,8 @@ namespace SuParty.Data.Migrations
 
             modelBuilder.Entity("SuParty.Data.UserData", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
@@ -267,7 +264,7 @@ namespace SuParty.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserData");
+                    b.ToTable("UserDatas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
