@@ -1,0 +1,31 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using SuParty.Pages.User
+@model UploadIMGModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "圖片上傳";
+}
+@inject IStringLocalizer<UploadIMGModel> Localizer
+
+
+<h1>圖片上傳</h1>
+
+<form method="post" enctype="multipart/form-data" action="/Pages/User/UploadIMG">
+    <div class="form-group">
+        @Html.AntiForgeryToken()
+        <label for="fileInput">選擇圖片：</label>
+        <input type="file" id="fileInput" name="UploadedFile" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">上傳</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.FilePath))
+{
+    <div class="alert alert-success mt-3">
+        <p>圖片已成功上傳！</p>
+        <p>檔案路徑：<a href="@Model.FilePath" target="_blank">@Model.FilePath</a></p>
+        <img src="@Model.FilePath" alt="Uploaded Image" style="max-width: 100%; height: auto;" />
+    </div>
+}
+

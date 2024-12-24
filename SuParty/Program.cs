@@ -17,7 +17,8 @@ namespace SuParty
             builder.Services.AddRazorPages()
                 .AddViewLocalization()
                 .AddDataAnnotationsLocalization();
-
+            // 註冊 SignalR 服務
+            builder.Services.AddSignalR();
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[] { "en-US", "zh-TW", "ja-JP" }; // 支援的語系
@@ -58,6 +59,7 @@ namespace SuParty
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+                app.UseDeveloperExceptionPage(); // 顯示詳細的錯誤頁面
             }
             else
             {
@@ -76,6 +78,8 @@ namespace SuParty
                 }
                 await next();
             });
+
+   
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -87,7 +91,7 @@ namespace SuParty
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
+            app.MapHub<MessageHub>("/messageHub"); // 註冊 SignalR Hub 的路徑
             app.Run();
         }
     }

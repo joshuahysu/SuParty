@@ -1,0 +1,62 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using SuParty.Data
+@using SuParty.Pages.User
+@model EditUserDataModel
+@{
+    Layout = "_Layout";
+}
+@inject IStringLocalizer<EditUserDataModel> Localizer
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Razor Page Example</title>
+</head>
+<body>
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div>
+            <label for="Name">@Localizer["Name"]</label>
+            <input type="text" id="Name" name="Name" value="@Model.User.Name" />
+        </div>
+
+        <div>
+            <label for="Birthday">@Localizer["Birthday"]</label>
+            <input type="date" id="Birthday" name="Birthday" value="@Model.User.Birthday.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div>
+            <label for="NickName">@Localizer["Nick Name"]</label>
+            <input type="text" id="NickName" name="NickName" value="@Model.User.NickName" />
+        </div>
+
+        <div>
+            <label for="Gender">@Localizer["Gender"]</label>
+            <select id="Gender" name="Gender">
+                <option value="Male" @(Model.User.Gender == "Male" ? "selected" : "")>@Localizer["Male"]</option>
+                <option value="Female" @(Model.User.Gender == "Female" ? "selected" : "")>@Localizer["Female"]</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="Introduction">@Localizer["Introduction"]</label>
+            <textarea id="Introduction" name="Introduction">@Model.User.Introduction</textarea>
+        </div>
+
+        <div>
+            <label for="Income">@Localizer["Income"]</label>
+            <input type="text" id="Income" name="Income" value="@Model.User.Income" />
+        </div>
+
+        <div>
+            <label for="Budget">@Localizer["Budget"]</label>
+            <input type="text" id="Budget" name="Budget" value="@Model.User.Budget" />
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

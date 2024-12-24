@@ -15,17 +15,17 @@ namespace SuParty.Pages.User
         }
 
         // 用於傳遞到前端的資料
-        public List<Product> Products { get; set; }
         public string Message { get; set; }
 
         public IActionResult OnGet()
         {
+
             if (User.Identity.IsAuthenticated)
             {
-                Message = "歡迎，您已登入！";
-
-                // 從資料庫中取得所有產品
-                //Products = _dbContext.Products.ToList();
+                // 取得登入者的帳號（用戶名或電子郵件）
+                string username = User.Identity.Name;
+                // 使用登入者帳號做其他處理
+                Message=$"Logged in as: {username}";
             }
             else
             {

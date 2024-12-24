@@ -1,0 +1,88 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@model SuParty.Pages.ChatModel
+
+@inject IStringLocalizer<SuParty.Pages.ChatModel> Localizer
+
+@{
+    ViewData["Title"] = "即時留言板";
+    Layout = "_Layout";    
+}
+
+<h1>即時留言板</h1>
+
+<form id="messageForm">
+    <div>
+        <label for="Name">姓名：</label>
+        <input type="text" id="Name" required />
+    </div>
+    <div>
+        <label for="Content">留言內容：</label>
+        <textarea id="Content" required></textarea>
+    </div>
+    <button type="submit">送出留言</button>
+</form>
+
+<h2>所有留言</h2>
+<ul id="messagesList">
+    @foreach (var message in Model.Messages)
+    {
+        <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li>
+    }
+</ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.15/signalr.min.js"></script>
+<script>
+    // 從 URL 查詢參數中提取 chatroomId
+    const urlParams = new URLSearchParams(window.location.search);
+    const chatroomId = urlParams.get('chatroomId'); // 讀取 'chatroomId' 的值
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl(`/messageHub?chatroomId=${chatroomId}`)
+        .build();
+
+    // 處理連線重新連接的事件
+    connection.onclose(async () => {
+        console.log("Connection lost, attempting to reconnect...");
+        await connection.start().catch(err => console.error("Reconnection failed", err));
+    });
+
+    // 設定接收訊息的處理
+    connection.on("ReceiveMessage", (name, content) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${name}</strong>: ${content}`;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
+    // 啟動連線
+    connection.start().catch(err => console.error("Connection failed: ", err));
+
+    // 提交留言表單
+    document.getElementById("messageForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("Name").value;
+        const content = document.getElementById("Content").value;
+
+        // 其他附加資料
+        const additionalData = {
+            timestamp: new Date().toISOString(),
+            chatroomId: "chatroom1", // 聊天室ID
+            userId: "User123"
+        };
+
+        // 傳送訊息到 Hub，將資料封裝成物件
+        const message = {
+            name: name,
+            content: content,
+            ...additionalData
+        };
+
+        await connection.invoke("SendMessage", message).catch(err => console.error("SendMessage failed: ", err));
+
+        // 清空輸入框
+        document.getElementById("Name").value = "";
+        document.getElementById("Content").value = "";
+    });
+
+
+</script>
