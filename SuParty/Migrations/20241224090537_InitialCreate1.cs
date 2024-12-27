@@ -11,21 +11,35 @@ namespace SuParty.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "ChatRooms",
-                table: "UserDatas",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "[]");
-
-            migrationBuilder.AddColumn<string>(
-                name: "ExtraUrl",
+                name: "Bust",
                 table: "UserDatas",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
-                name: "IG_Url",
+                name: "Height",
+                table: "UserDatas",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Hips",
+                table: "UserDatas",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Waist",
+                table: "UserDatas",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Weight",
                 table: "UserDatas",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -36,15 +50,23 @@ namespace SuParty.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ChatRooms",
+                name: "Bust",
                 table: "UserDatas");
 
             migrationBuilder.DropColumn(
-                name: "ExtraUrl",
+                name: "Height",
                 table: "UserDatas");
 
             migrationBuilder.DropColumn(
-                name: "IG_Url",
+                name: "Hips",
+                table: "UserDatas");
+
+            migrationBuilder.DropColumn(
+                name: "Waist",
+                table: "UserDatas");
+
+            migrationBuilder.DropColumn(
+                name: "Weight",
                 table: "UserDatas");
         }
     }

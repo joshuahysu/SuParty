@@ -7,11 +7,11 @@ using static SuParty.MessageHub;
 
 namespace SuParty.Pages
 {
-    public class ChatModel : PageModel
+    public class ChatPrivateModel : PageModel
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public ChatModel(ApplicationDbContext dbContext)
+        public ChatPrivateModel(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -37,6 +37,7 @@ namespace SuParty.Pages
                 }
                 else
                 {
+                    //儲存這User的資料代表他有在這聊天室裡
                     if (!UserData.ChatRooms.Contains(chatroomId))
                     {
                         UserData.ChatRooms.Add(chatroomId);

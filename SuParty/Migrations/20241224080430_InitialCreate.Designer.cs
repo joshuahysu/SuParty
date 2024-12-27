@@ -12,15 +12,15 @@ using SuParty.Data;
 namespace SuParty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241224071401_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20241224080430_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SuParty.Data;
-using System.Reflection;
 using System.Security.Claims;
 namespace SuParty.Pages.User
 {
@@ -20,7 +18,7 @@ namespace SuParty.Pages.User
         {
             // 初始化頁面時不需要執行額外動作
         }
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> OnPostAsync()
         {
             string userId = "All";
@@ -34,8 +32,8 @@ namespace SuParty.Pages.User
             {
                 if (UploadedFile == null || UploadedFile.Length == 0)
                 {
-                ModelState.AddModelError(string.Empty, "請選擇一張圖片上傳。");
-                return Page();
+                    ModelState.AddModelError(string.Empty, "請選擇一張圖片上傳。");
+                    return Page();
                 }
                 _uploadPath = Path.Combine(_uploadPath, userId);
                 // 確保上傳目錄存在
@@ -59,7 +57,6 @@ namespace SuParty.Pages.User
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, $"上傳過程中發生錯誤：{ex.Message}");
-                return Page();
             }
             return Page();
         }

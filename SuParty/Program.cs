@@ -10,35 +10,43 @@ namespace SuParty
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            // �K�[�h��y�t�䴩�A��
+
+            // 設定本地化資源的路徑
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-            // �K�[���ϩM Razor Page ���a��
+            // 註冊 Razor Page 並啟用視圖本地化及資料註解本地化
             builder.Services.AddRazorPages()
                 .AddViewLocalization()
                 .AddDataAnnotationsLocalization();
-            // ���U SignalR �A��
+
+            // 註冊 SignalR 支援
             builder.Services.AddSignalR();
+            //builder.Services.AddSignalR().AddAzureSignalR();雲端
+            // 設定支援的語言及預設語言
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[] { "en-US", "zh-TW", "ja-JP" }; // �䴩���y�t
-                options.SetDefaultCulture("en-US") // �w�]�y�t
+                var supportedCultures = new[] { "en-US", "zh-TW", "ja-JP" }; // 支援的語言
+                options.SetDefaultCulture("en-US") // 設定預設語言
                        .AddSupportedCultures(supportedCultures)
                        .AddSupportedUICultures(supportedCultures);
             });
-            // Add services to the container.
+
+            // 設定資料庫連線字串
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString)); // 使用 SQL Server 作為資料庫
+
+            // 開發期間顯示資料庫相關錯誤訊息
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // ���U Identity �A��
+            // 設定 Identity 認證，並啟用帳號確認
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // 設定 Razor Pages 相關路由
             builder.Services.AddRazorPages(options =>
             {
-                // �ϥά۹��ɮ׸��|�@�����ѫe��
+                // 配置 Razor Pages 的路由，使其包含 "Pages/" 前綴
                 options.Conventions.AddFolderRouteModelConvention("/", model =>
                 {
                     foreach (var selector in model.Selectors)
@@ -49,26 +57,30 @@ namespace SuParty
                 });
             });
 
+            // 註冊 MVC 控制器並啟用視圖本地化及資料註解本地化
             builder.Services.AddControllersWithViews()
             .AddViewLocalization()
-            .AddDataAnnotationsLocalization(); // �ҥ� DataAnnotations ���a��
+            .AddDataAnnotationsLocalization(); // 启用 DataAnnotations 本地化
 
             var app = builder.Build();
-            // �ҥΥ��a�Ƥ����n��
+
+            // 配置請求管線中的本地化選項
             var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
             app.UseRequestLocalization(localizationOptions);
-            // Configure the HTTP request pipeline.
+
+            // 配置 HTTP 請求處理管線
             if (app.Environment.IsDevelopment())
             {
-                app.UseMigrationsEndPoint();
-                app.UseDeveloperExceptionPage(); // ��ܸԲӪ����~����
+                app.UseMigrationsEndPoint(); // 執行資料庫遷移
+                app.UseDeveloperExceptionPage(); // 顯示開發環境中的錯誤頁面
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseExceptionHandler("/Home/Error"); // 生產環境中的錯誤頁面
+                app.UseHsts(); // 啟用 HTTP 嚴格傳輸安全性
             }
+
+            // 處理來自 URL 的 culture 查詢參數來更改當前文化
             app.Use(async (context, next) =>
             {
                 var cultureQuery = context.Request.Query["culture"];
@@ -80,22 +92,24 @@ namespace SuParty
                 }
                 await next();
             });
-   
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseHttpsRedirection(); // 重定向 HTTP 到 HTTPS
+            app.UseStaticFiles(); // 啟用靜態檔案服務
 
-            // �t�m��������
+            app.UseRouting(); // 啟用路由功能
+
+            // 註冊身份驗證與授權中介軟體
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // 設定預設路由
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
-            app.MapHub<MessageHub>("/messageHub"); // ���U SignalR Hub �����|
-            app.Run();
+            app.MapRazorPages(); // 設定 Razor Pages 路由
+            app.MapHub<MessageHub>("/messageHub"); // 設定 SignalR Hub 路由
+
+            app.Run(); // 啟動應用程式
         }
     }
 }

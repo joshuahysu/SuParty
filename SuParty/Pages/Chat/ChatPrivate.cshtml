@@ -1,71 +1,13 @@
 ﻿@page
 @using Microsoft.Extensions.Localization
-@model SuParty.Pages.ChatModel
+@model SuParty.Pages.ChatPrivateModel
 
-@inject IStringLocalizer<SuParty.Pages.ChatModel> Localizer
+@inject IStringLocalizer<SuParty.Pages.ChatPrivateModel> Localizer
 
 @{
     ViewData["Title"] = "即時留言板";
     Layout = "_Layout";
 }
-
-<style>
-.message-board {
-    max-width: 800px;
-}
-
-.message {
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 1.1em;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 400px;
-}
-
-.message:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.message-meta {
-    font-size: 0.9em;
-    color: #888;
-    margin-bottom: 10px;
-}
-
-.message-content {
-    font-size: 1em;
-    color: #333;
-}
-
-.message-author {
-    text-align: right;
-    margin: 0 0 0px;
-    font-size: 0.9em;
-    color: #555;
-}
-
-
-
-.slide-in {
-    animation: slideIn 1s ease forwards;
-}
-
-/*     keyframes slideIn {
-        from{
-        transform: translateY(-400%);
-    }
-
-    to {
-        transform: translateY(0);
-    }
-
-} */
-
-</style>
 
 <div class="container">
     <div class="row">
@@ -92,10 +34,6 @@
             <!-- 留言表單 -->
             <form id="messageForm">
                 <div>
-                    <label for="Name">姓名：</label>
-                    <input type="text" id="Name" required />
-                </div>
-                <div>
                     <label for="Content">留言內容：</label>
                     <textarea id="Content" required></textarea>
                 </div>
@@ -103,16 +41,9 @@
             </form>
 
             <h2>所有留言</h2>
-            <ul id="messagesList" class="message-board">
+            <ul id="messagesList">
                 @foreach (var message in Model.Messages)
                 {
-                    <!-- 动态添加更多留言 -->
-                    <div class="message slide-in">
-                        <div class="message-meta">(@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"))</div>
-                        <div class="message-content">@message.Content</div>
-                        <div class="message-author">@message.Name</div>
-                    </div>
-                    <!-- 更多留言 -->
                     <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li>
                 }
             </ul>
@@ -156,8 +87,8 @@
         // 其他附加資料
         const additionalData = {
             createdAt: new Date().toISOString(),
-            chatroomId: chatroomId, // 聊天室ID
-            userId: "User123"
+            chatroomId: chatroomId//, // 聊天室ID
+            //userId: "User123"
         };
 
         // 傳送訊息到 Hub，將資料封裝成物件
@@ -166,8 +97,8 @@
             content: content,
             ...additionalData
         };
-
-        await connection.invoke("SM", message).catch(err => console.error("SendMessage failed: ", err));
+        //S=SendMessagePrivate
+        await connection.invoke("S", message).catch(err => console.error("SendMessage failed: ", err));
 
         // 清空輸入框
         document.getElementById("Name").value = "";

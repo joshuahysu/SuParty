@@ -62,7 +62,10 @@ namespace SuParty.Migrations
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Introduction = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Income = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Budget = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Budget = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IG_Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExtraUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChatRooms = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

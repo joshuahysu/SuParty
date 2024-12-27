@@ -1,0 +1,42 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using SuParty.Pages.User
+@model UserListModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "會員列表";
+    var totalPages = (int)ViewData["TotalPages"];
+    var currentPage = (int)ViewData["CurrentPage"];
+    var users = Model.UserDataList;  // 假設這是從後端傳過來的資料
+}
+@inject IStringLocalizer<UserListModel> Localizer
+
+<div class="container">
+    <div class="row">
+        @foreach (var user in users)
+        {
+            <div class="col-md-4 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <img src="@user.AvatarUrl" class="card-img-top" alt="@user.Name" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@user.Name</h5>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    <span>頁碼: @currentPage / @totalPages</span>
+    <div>
+        @if (currentPage > 1)
+        {
+            <a href="?pageNumber=@(currentPage - 1)">上一頁</a>
+        }
+        @if (currentPage < totalPages)
+        {
+            <a href="?pageNumber=@(currentPage + 1)">下一頁</a>
+        }
+    </div>
+</div>

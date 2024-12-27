@@ -1,26 +1,17 @@
 using Microsoft.AspNetCore.SignalR;
-using SuParty.Data;
-using SuParty.Pages;
 using SuParty.Pages.Chat;
+using System.Security.Claims;
 
 namespace SuParty
 {
     public class MessageHub : Hub
     {
-        private readonly ApplicationDbContext _context;
-        public class MessageModel
-        {
-            public string Name { get; set; } = "";
-            public string Content { get; set; } = "";
-            public DateTime CreatedAt { get; set; }
-            public string ChatroomId { get; set; } = "";
-            public string UserId { get; set; } = "";
-        }
+        //private readonly ApplicationDbContext _context;
 
-        public MessageHub(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        //public MessageHub(ApplicationDbContext context)
+        //{
+        //    _context = context;
+        //}
 
         // 當用戶連接時，加入聊天室群組
         public override async Task OnConnectedAsync()
@@ -48,15 +39,43 @@ namespace SuParty
 
             await base.OnDisconnectedAsync(exception);
         }
-
+        //SendMessage
         // 廣播訊息給指定聊天室群組
-        public async Task SendMessage(MessageModel message)
+        public async Task SM(MessageModel message)
         {
+            //string username = Context.User.Identity.Name;
             // 儲存到檔案系統
             ChatStorage.SaveMessage(message.ChatroomId, message);
 
-            // 發送訊息到指定的聊天室群組
-            await Clients.Group(message.ChatroomId).SendAsync("ReceiveMessage", message.Name, message.Content);
+            // 發送訊息到指定的聊天室群組ReceiveMessage=RM
+            await Clients.Group(message.ChatroomId).SendAsync("RM", message.Name, message.Content);
         }
+        /// <summary>
+        /// SendMessagePrivate
+        /// 廣播訊息給指定聊天室群組(不用填id)
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+
+        public async Task S(MessageModel message)
+        {
+            string username = Context.User.Identity.Name;
+            // 取得目前使用者的 ID
+            message.UserId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+            // 儲存到檔案系統
+            ChatStorage.SaveMessage(message.ChatroomId, message);
+
+            // 發送訊息到指定的聊天室群組ReceiveMessage=RM
+            await Clients.Group(message.ChatroomId).SendAsync("RM", username, message.Content);
+        }        
+    }
+    public class MessageModel
+    {
+        public string Name { get; set; } = "";
+        public string Content { get; set; } = "";
+        public DateTime CreatedAt { get; set; }
+        public string ChatroomId { get; set; } = "";
+        public string UserId { get; set; } = "";
     }
 }
