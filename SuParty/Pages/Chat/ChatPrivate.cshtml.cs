@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SuParty.Data;
@@ -19,7 +20,7 @@ namespace SuParty.Pages
         public List<MessageModel> Messages { get; private set; }
 
         public List<String> Chatrooms { get; private set; }=new List<String>();
-        public void OnGet(string? chatroomId = null)
+        public IActionResult OnGet(string? chatroomId = null)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -42,17 +43,21 @@ namespace SuParty.Pages
                     {
                         UserData.ChatRooms.Add(chatroomId);
                         _dbContext.SaveChanges();
-                    }             
+                    }
+                    //DateTime now= DateTime.Now;
                     // 根據 chatroomId 初始化留言列表
-                    Messages = ChatStorage.ReadMessages(chatroomId);
-                }
+                    //Messages = ChatStorage.ReadMessages(chatroomId, now);
+                    Messages = ChatStorage.ReadAndMergeFilesDefalut(chatroomId);
 
+                }
+                //擁有的聊天室
                 Chatrooms = UserData.ChatRooms.ToList();
+                return Page();
             }
             else
             {
                // Message = "您尚未登入，將重定向到登入頁面。";
-                //return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Account/Login");
             }
 
         }

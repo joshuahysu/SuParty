@@ -1,8 +1,5 @@
-﻿using SuParty.Data;
-using System;
-using System.IO;
+﻿using System.Globalization;
 using System.Text.Json;
-using static SuParty.MessageHub;
 
 namespace SuParty.Pages.Chat
 {
@@ -63,6 +60,75 @@ namespace SuParty.Pages.Chat
                     {
                         messages.Add(message);
                     }
+                }
+            }
+
+            return messages;
+        }
+        /// <summary>
+        /// 讀取指定聊天室的訊息
+        /// </summary>
+        /// <param name="chatroomId"></param>
+        /// <returns></returns>
+        public static List<MessageModel> ReadAndMergeFilesDefalut(string chatroomId)
+        {
+            string folderPath = Path.Combine("messages", chatroomId);// 資料夾路徑
+
+            // 列出資料夾內所有符合 yyyy-MM-dd.txt 格式的檔案
+            var validFiles = Directory.GetFiles(folderPath, "*.txt")
+                                      .Select(Path.GetFileNameWithoutExtension)
+                                      .Where(fileName => DateTime.TryParseExact(fileName, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                                      .OrderBy(fileName => fileName) // 按日期升序排列
+                                      .ToList();
+
+            if (!validFiles.Any())
+            {
+                return new List<MessageModel>();
+            }
+
+            // 開始處理檔案
+            var messages = ReadAndMergeFiles(folderPath, validFiles);
+            return messages;
+        }
+        public static List<MessageModel> ReadAndMergeFiles(string folderPath, List<string> validFiles=null)
+        {
+
+            List<MessageModel> messages = new List<MessageModel>();
+
+            foreach (var fileName in validFiles)
+            {
+                string filePath = Path.Combine(folderPath, $"{fileName}.txt");
+
+                if (File.Exists(filePath))
+                {
+                    // 讀取檔案並將每行 JSON 反序列化為 MessageModel
+                    foreach (var line in File.ReadLines(filePath))
+                    {
+                        try
+                        {
+                            var message = JsonSerializer.Deserialize<MessageModel>(line);
+                            if (message != null)
+                            {
+                                messages.Add(message);
+                            }
+                        }
+                        catch (JsonException ex)
+                        {
+                            Console.WriteLine($"反序列化錯誤: {ex.Message} (檔案: {filePath})");
+                        }
+                    }
+
+                    Console.WriteLine($"已讀取檔案: {fileName}.txt, 當前資料筆數: {messages.Count}");
+                }
+                else
+                {
+                    Console.WriteLine($"找不到檔案: {fileName}.txt");
+                }
+
+                // 如果資料筆數已達到或超過 100，結束處理
+                if (messages.Count >= 100)
+                {
+                    break;
                 }
             }
 

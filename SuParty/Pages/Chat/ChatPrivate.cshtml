@@ -81,7 +81,6 @@
     document.getElementById("messageForm").addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const name = document.getElementById("Name").value;
         const content = document.getElementById("Content").value;
 
         // 其他附加資料
@@ -93,7 +92,6 @@
 
         // 傳送訊息到 Hub，將資料封裝成物件
         const message = {
-            name: name,
             content: content,
             ...additionalData
         };

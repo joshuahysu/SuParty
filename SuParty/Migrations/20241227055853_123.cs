@@ -13,7 +13,7 @@ namespace SuParty.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "AvatarUrl",
                 table: "UserDatas",
-                type: "nvarchar(max)",
+                type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "");
         }

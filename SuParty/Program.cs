@@ -32,12 +32,34 @@ namespace SuParty
             });
 
             // 設定資料庫連線字串
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(connectionString)); // 使用 SQL Server 作為資料庫
+
+            // 使用 SQLite 資料庫
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString)); // 使用 SQL Server 作為資料庫
+                options.UseSqlite("Data Source=application.db"));  // SQLite 的資料庫檔案名稱
+
 
             // 開發期間顯示資料庫相關錯誤訊息
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            // 設定認證
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+            //    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            //})
+            //.AddGoogle(options =>
+            //{
+            //    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            //    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            //})
+            //.AddFacebook(options =>
+            //{
+            //    options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+            //    options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            //});
 
             // 設定 Identity 認證，並啟用帳號確認
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

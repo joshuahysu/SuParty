@@ -13,35 +13,35 @@ namespace SuParty.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Bust",
                 table: "UserDatas",
-                type: "nvarchar(max)",
+                type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "Height",
                 table: "UserDatas",
-                type: "nvarchar(max)",
+                type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "Hips",
                 table: "UserDatas",
-                type: "nvarchar(max)",
+                type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "Waist",
                 table: "UserDatas",
-                type: "nvarchar(max)",
+                type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "Weight",
                 table: "UserDatas",
-                type: "nvarchar(max)",
+                type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "");
         }

@@ -1,3 +1,4 @@
+using MessagePack;
 using Microsoft.AspNetCore.SignalR;
 using SuParty.Pages.Chat;
 using System.Security.Claims;
@@ -60,9 +61,12 @@ namespace SuParty
         public async Task S(MessageModel message)
         {
             string username = Context.User.Identity.Name;
+
+            //暫時先存
+            message.Name=username;
             // 取得目前使用者的 ID
             message.UserId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            
+
             // 儲存到檔案系統
             ChatStorage.SaveMessage(message.ChatroomId, message);
 
@@ -70,12 +74,18 @@ namespace SuParty
             await Clients.Group(message.ChatroomId).SendAsync("RM", username, message.Content);
         }        
     }
+    [MessagePackObject]
     public class MessageModel
     {
+        [Key(0)]
         public string Name { get; set; } = "";
+        [Key(1)]
         public string Content { get; set; } = "";
+        [Key(2)]
         public DateTime CreatedAt { get; set; }
+        [Key(3)]
         public string ChatroomId { get; set; } = "";
+        [Key(4)]
         public string UserId { get; set; } = "";
     }
 }

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+// 定義一個消息類型
+message ChatMessage {
+    string sender = 1;   // 發送者
+    string content = 2;  // 內容
+    int64 timestamp = 3; // 時間戳
+}
+
+option csharp_namespace = "SuParty.Pages.Chat";
