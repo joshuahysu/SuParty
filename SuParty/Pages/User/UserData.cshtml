@@ -107,7 +107,7 @@
     const app = Vue.createApp({
         methods: {
             ToChatPage(id) {
-                // 這裡你可以使用 JavaScript 進行頁面跳轉?chatroomId=2
+                // 這裡你可以使用 JavaScript 進行頁面跳轉?chatroomId=
                 window.location.href = `/Pages/Chat/ChatPrivate?chatroomId=${id}`;
             }
         }
@@ -122,7 +122,7 @@
         const newStatus = !isTracked; // 切換狀態
 
         // 更新後端的追蹤狀態
-        fetch(_baseUrl+'User/UserData?handler=Tracking', {
+        fetch(_baseUrlAddAction('Tracking'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

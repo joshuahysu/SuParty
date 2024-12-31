@@ -33,6 +33,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Src\components\ChatRoom.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\img\image1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

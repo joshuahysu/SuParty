@@ -9,8 +9,17 @@
     <link rel="stylesheet" href="~/SuParty.styles.css" asp-append-version="true" />
     <script src="https://unpkg.com/vue@3"></script>
     <script>
-        var _baseUrl = "/Pages/";
+        function _baseUrlAddAction(action) {
+        // 解析當前頁面的 URL
+        let currentUrl = new URL(window.location.href);
 
+        // 移除現有的查詢字串
+            currentUrl.search = ''; // 清空現有的查詢字串
+
+        // 在清空的 URL 後面加上 ?handler=Tracking
+            currentUrl.searchParams.append('handler', action);
+            return currentUrl;
+        }
     </script>
 </head>
 <body>

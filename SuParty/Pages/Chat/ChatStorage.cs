@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SuParty.Pages.Chat
 {
@@ -25,13 +27,90 @@ namespace SuParty.Pages.Chat
             string fileName = $"{message.CreatedAt:yyyy-MM-dd}.txt";
             string filePath = Path.Combine(chatroomPath, fileName);
 
-            // 將訊息序列化為 JSON 格式
-            string serializedMessage = JsonSerializer.Serialize(message);
+            AppendMessageToFile(filePath, message);
+        }
+        // 使用 AggressiveInlining 提示編譯器內嵌此函式
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static void AppendMessageToFile(string filePath, MessageModel message)
+        {
+            // 將物件序列化為 UTF-8 位元組
+            byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(message);
 
-            // 寫入檔案
-            File.AppendAllText(filePath, serializedMessage + Environment.NewLine);
+            using (var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write))
+            using (var bufferedStream = new BufferedStream(stream))
+            {
+                bufferedStream.Write(jsonBytes, 0, jsonBytes.Length);
+                bufferedStream.WriteByte(0x0A);
+            }
+
         }
 
+        /// <summary>
+        /// 軟刪除
+        /// </summary>
+        /// <param name="chatroomId"></param>
+        public static void DeleteChatroom(string chatroomId)
+        {         // 聊天室目錄
+            string chatroomPath = Path.Combine(BasePath, chatroomId);
+            FolderRename(chatroomPath, chatroomPath+"_Bak");
+        }
+
+        /// <summary>
+        /// 資料夾改名及搬檔案
+        /// </summary>
+        /// <param name="oldFolderPath"></param>
+        /// <param name="newFolderPath"></param>
+        public static void FolderRename(string oldFolderPath, string newFolderPath) {
+            try
+            {
+                if (Directory.Exists(oldFolderPath))
+                {
+                    // 檢查新資料夾名稱是否已存在
+                    if (Directory.Exists(newFolderPath))
+                    {
+                        // 新資料夾已存在，將舊資料夾內的檔案搬到新資料夾
+                        Console.WriteLine($"資料夾 {newFolderPath} 已存在，開始搬移檔案。");
+
+                        foreach (string filePath in Directory.GetFiles(oldFolderPath))
+                        {
+                            string fileName = Path.GetFileName(filePath);
+                            string destinationFilePath = Path.Combine(newFolderPath, fileName);
+
+                            // 如果檔案名稱衝突，加上亂數
+                            if (File.Exists(destinationFilePath))
+                            {
+                                string fileExtension = Path.GetExtension(fileName);
+                                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                                string uniqueFileName = $"{fileNameWithoutExtension}_{Guid.NewGuid():N}{fileExtension}";
+                                destinationFilePath = Path.Combine(newFolderPath, uniqueFileName);
+                            }
+
+                            File.Move(filePath, destinationFilePath);
+                            Console.WriteLine($"檔案 {fileName} 已移動至 {destinationFilePath}");
+                        }
+
+                        // 搬移完成後刪除舊資料夾
+                        Directory.Delete(oldFolderPath);
+                        Console.WriteLine($"資料夾 {oldFolderPath} 已刪除。");
+                    }
+                    else
+                    {
+                        // 使用 Directory.Move 重新命名資料夾
+                        Directory.Move(oldFolderPath, newFolderPath);
+                        Console.WriteLine($"資料夾已重新命名為 {newFolderPath}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"資料夾 {oldFolderPath} 不存在。");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"重新命名資料夾時發生錯誤: {ex.Message}");
+            }
+
+        }
 
         /// <summary>
         /// 讀取指定聊天室和日期的訊息

@@ -9,16 +9,21 @@
     Layout = "_Layout";
 }
 
+
 <div class="container">
+    <div id="app">
+        <chat-room></chat-room>
+    </div>
+
+    <script type="module" src="/src/components/ChatRoom.js"></script> <!-- 引入你的 app.js 文件 -->
     <div class="row">
         <!-- 左邊聊天室列表 -->
         <div class="col-md-3">
             <h3>聊天室列表</h3>
             <ul id="chatroomList">
                 <!-- 假設有一些聊天室名稱 -->
-                <li><a href="?chatroomId=1">聊天室 1</a></li>
-                <li><a href="?chatroomId=2">聊天室 2</a></li>
-                <li><a href="?chatroomId=3">聊天室 3</a></li>
+                <li><a href="?chatroomId=1">1</a></li>
+                <li><a href="?chatroomId=2">2</a></li>
                 <!-- 動態生成聊天室 -->
                 @foreach (var chatroom in Model.Chatrooms)
                 {
@@ -29,18 +34,18 @@
 
         <!-- 右邊即時留言板 -->
         <div class="col-md-9">
-            <h1>即時留言板</h1>
+            <h1>聊天室</h1>
 
             <!-- 留言表單 -->
             <form id="messageForm">
                 <div>
-                    <label for="Content">留言內容：</label>
+                    <label for="Content">內容：</label>
                     <textarea id="Content" required></textarea>
                 </div>
-                <button type="submit">送出留言</button>
+                <button type="submit">送出</button>
             </form>
 
-            <h2>所有留言</h2>
+            <h2>訊息</h2>
             <ul id="messagesList">
                 @foreach (var message in Model.Messages)
                 {
@@ -83,25 +88,18 @@
 
         const content = document.getElementById("Content").value;
 
-        // 其他附加資料
-        const additionalData = {
-            createdAt: new Date().toISOString(),
-            chatroomId: chatroomId//, // 聊天室ID
-            //userId: "User123"
-        };
-
         // 傳送訊息到 Hub，將資料封裝成物件
         const message = {
             content: content,
-            ...additionalData
+            createdAt: new Date().toISOString(),
+            chatroomId: chatroomId//, // 聊天室ID
+            //userId: "User123"
         };
         //S=SendMessagePrivate
         await connection.invoke("S", message).catch(err => console.error("SendMessage failed: ", err));
 
         // 清空輸入框
-        document.getElementById("Name").value = "";
         document.getElementById("Content").value = "";
     });
-
 
 </script>
