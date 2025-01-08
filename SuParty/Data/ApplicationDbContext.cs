@@ -12,6 +12,6 @@ namespace SuParty.Data
         }
         public DbSet<UserData> UserDatas { get; set; }
         public DbSet<Tracking> Trackings { get; set; }
-        
+        public DbSet<ProductData> ProductDatas { get; set; }
     }    
 }

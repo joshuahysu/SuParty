@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SuParty.Data;
 using SuParty.Data.DataModel;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace SuParty.Pages.User
 {
@@ -52,6 +53,12 @@ namespace SuParty.Pages.User
                 string username = User.Identity.Name;
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var dbtracking = _dbContext.Trackings.Find(userId);
+                if (dbtracking == null)
+                    {
+                        dbtracking=new Tracking();
+                        dbtracking.Id = userId;
+                        _dbContext.Trackings.Add(dbtracking);
+                    }
                 if (tracking)
                 {
                     //不存在才新增
@@ -63,7 +70,8 @@ namespace SuParty.Pages.User
                 else
                     dbtracking.TrackingList.Remove(id);
                 _dbContext.SaveChanges();
-                return Page();
+                var successResponse = new { success = true, message = "追蹤狀態更新成功。" };
+                return Content(JsonSerializer.Serialize(successResponse), "application/json");
             }
             else
             {

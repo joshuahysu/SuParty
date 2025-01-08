@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 
 namespace SuParty.Service.Qrcode
 {
-    public class Qrcode1
+    public class Qrcode
     {
         public static string CreateQrcode(string url) {
             // 要生成的內容

@@ -16,9 +16,10 @@ namespace SuParty.Data.DataModel
         public decimal Price { get; set; } =0;
 
         /// <summary>
-        /// 大頭貼位置
+        /// 圖片
         /// </summary>
-        public string AvatarUrl { get; set; } = "";
+        public string Image { get; set; } = "";
 
+        public string ProductType { get; set; } = "";
     }
 }

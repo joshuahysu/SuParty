@@ -41,8 +41,6 @@
     </button>
 </div>
 
-
-
 <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 <button id="trackButton" class="heart-btn" data-tracked="false" data-id="@Model.UserData?.Id">
     ❤️
@@ -52,8 +50,6 @@
         <!-- 使用 router 跳轉 -->
     <button v-on:click="ToChatPage('@userId@Model.UserData?.Id')">聊天</button>
     </div>
-
-
 
 <div class="container mt-4">
     <h2 class="mb-4">@Localizer["User Information"]</h2>
@@ -94,14 +90,11 @@
     </div>
 </div>
 
-
 <i class="bi bi-gift"></i>  <!-- 使用禮物圖標 -->
 <video width="640" height="360" controls>
     <source src="path/to/video.mp4" type="video/mp4">
     您的瀏覽器不支援嵌入影片功能。
 </video>
-
-
 
 <script>
     const app = Vue.createApp({
@@ -125,7 +118,7 @@
         fetch(_baseUrlAddAction('Tracking'), {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
             },
             body: JSON.stringify({ id: itemId, tracked: newStatus }),
         })
@@ -143,6 +136,4 @@
                 console.error('Error:', error);
             });
     });
-
-
 </script>

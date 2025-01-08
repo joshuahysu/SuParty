@@ -9,7 +9,6 @@
     Layout = "_Layout";
 }
 
-
 <div class="container">
     <div id="app">
         <chat-room></chat-room>
@@ -52,10 +51,12 @@
                     <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li>
                 }
             </ul>
+
+            <button id="messageFormDelete">刪除</button>
+
         </div>
     </div>
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.15/signalr.min.js"></script>
 <script>
@@ -101,5 +102,28 @@
         // 清空輸入框
         document.getElementById("Content").value = "";
     });
+    //刪除
+    document.getElementById('messageFormDelete').addEventListener('click', function () {
+        const button = this;
 
+        // 更新後端的追蹤狀態
+        fetch(_baseUrlAddAction('DeleteChatRoom'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            body: JSON.stringify({ chatroomId: chatroomId }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+
+                } else {
+            
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
 </script>
