@@ -28,8 +28,13 @@ namespace SuParty.Pages.Chat
 
             AppendMessageToFile(filePath, message);
         }
-        // 使用 AggressiveInlining 提示編譯器內嵌此函式
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
+        /// <summary>
+        /// 儲存訊息(使用 AggressiveInlining 提示編譯器內嵌此函式)
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="message"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]        
         static void AppendMessageToFile(string filePath, MessageModel message)
         {
             // 將物件序列化為 UTF-8 位元組

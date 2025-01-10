@@ -54,11 +54,11 @@ namespace SuParty.Pages.User
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var dbtracking = _dbContext.Trackings.Find(userId);
                 if (dbtracking == null)
-                    {
-                        dbtracking=new Tracking();
-                        dbtracking.Id = userId;
-                        _dbContext.Trackings.Add(dbtracking);
-                    }
+                {
+                    dbtracking=new Tracking();
+                    dbtracking.Id = userId;
+                    _dbContext.Trackings.Add(dbtracking);
+                }
                 if (tracking)
                 {
                     //不存在才新增

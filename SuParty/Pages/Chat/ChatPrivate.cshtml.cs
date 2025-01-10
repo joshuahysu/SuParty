@@ -60,7 +60,8 @@ namespace SuParty.Pages
 
         }
 
-        public IActionResult OnPostDeleteChatRoom(string chatroomId) {
+        public IActionResult OnPostDeleteChatRoom(string chatroomId) 
+        {
             if (User.Identity.IsAuthenticated)
             {
                 // 取得登入者的帳號（用戶名或電子郵件）
@@ -76,11 +77,11 @@ namespace SuParty.Pages
                 }
                 else
                 {
-                    //儲存這User的資料代表他有在這聊天室裡
-                    if (!UserData.ChatRooms.Contains(chatroomId))
+                    //刪除
+                    if (UserData.ChatRooms.Remove(chatroomId))
                     {
-                        UserData.ChatRooms.Remove(chatroomId);
                         _dbContext.SaveChanges();
+                        ChatStorage.DeleteChatroom(chatroomId);
                     }
                 }
                 //擁有的聊天室

@@ -18,26 +18,37 @@ namespace SuParty.Pages.Product
             _dbContext = dbContext;
         }
 
-        public IActionResult OnGet(string ProductId)
+        public IActionResult OnGet(string Id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 // 取得登入者的帳號（用戶名或電子郵件）
                 string username = User.Identity.Name;
                 // 使用登入者帳號做其他處理  
-
-                return Page();
             }
             else
             {
-                ProductData = _dbContext.ProductDatas.Find(ProductId);
-
+                ProductData = _dbContext.ProductDatas.Find(Id);
             }
             return Page();
         }
-        public IActionResult OnPostBuy(string ProductId)
+        public IActionResult OnPostAddShoppingCart(string Id)
         {
-           return new JsonResult(new { success = false, message = "Buy success" });
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // 查詢使用者
+                var user = _dbContext.UserDatas.Find(userId);
+
+                // 新增一筆資料到 ShoppingCart
+                user.ShoppingCart.Add(Id);
+
+                // 保存變更到資料庫
+                _dbContext.SaveChanges();                
+
+            }
+            return new JsonResult(new { success = true, message = "Buy success" });
         }        
     }
 }

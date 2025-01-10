@@ -7,12 +7,6 @@ namespace SuParty
 {
     public class MessageHub : Hub
     {
-        //private readonly ApplicationDbContext _context;
-
-        //public MessageHub(ApplicationDbContext context)
-        //{
-        //    _context = context;
-        //}
 
         // 當用戶連接時，加入聊天室群組
         public override async Task OnConnectedAsync()

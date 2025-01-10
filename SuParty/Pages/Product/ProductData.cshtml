@@ -42,36 +42,47 @@
             @Model.ProductData.Name
             @Model.ProductData.Introduction
             @Model.ProductData.Price
-            
+
+            <button id="AddShoppingCart">加入購物車</button>
             <button id="Buy">直接購買</button>
         </div>
     </div>
 </div>
 
-<script>
-    //刪除
+<script>    
+    
     document.getElementById('Buy').addEventListener('click', function () {
-        const button = this;
+        AddShoppingCart(true);
+    });
 
-        // 更新後端的追蹤狀態
-        fetch(_baseUrlAddAction('Buy'), {
+    document.getElementById('AddShoppingCart').addEventListener('click', function () {
+        AddShoppingCart(false);
+    });
+
+    function AddShoppingCart(redirect) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const Id = urlParams.get('Id'); // 讀取 'Id' 的值
+        fetch(_baseUrlAddAction('AddShoppingCart'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json', 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
             },
-            body: JSON.stringify({ chatroomId: chatroomId }),
+            body: JSON.stringify({ Id: Id }),
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-
+                if (redirect) {
+                    // 跳轉到指定頁面
+                    window.location.href = "../ShoppingCart/ShoppingCart";
+                }
             } else {
-
+                alert(data.message); // 顯示錯誤信息
             }
         })
         .catch(error => {
             console.error('Error:', error);
         });
-    });
+    }
 
 </script>

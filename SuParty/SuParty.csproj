@@ -27,6 +27,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="TronNet" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>

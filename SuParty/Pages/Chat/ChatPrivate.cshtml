@@ -105,16 +105,8 @@
     //刪除
     document.getElementById('messageFormDelete').addEventListener('click', function () {
         const button = this;
-
-        // 更新後端的追蹤狀態
-        fetch(_baseUrlAddAction('DeleteChatRoom'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-            },
-            body: JSON.stringify({ chatroomId: chatroomId }),
-        })
-            .then(response => response.json())
+        // 發送請求並處理結果
+        sendRequest(_baseUrlAddAction('DeleteChatRoom'), { chatroomId:chatroomId })
             .then(data => {
                 if (data.success) {
 

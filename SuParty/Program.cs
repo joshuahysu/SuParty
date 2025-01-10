@@ -1,7 +1,9 @@
+using Google.Api;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SuParty.Data;
+using TronNet;
 
 namespace SuParty
 {
@@ -31,7 +33,7 @@ namespace SuParty
                        .AddSupportedUICultures(supportedCultures);
             });
 
-            // 設定資料庫連線字串
+            // 設定MSSQL資料庫連線字串
             //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             //builder.Services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(connectionString)); // 使用 SQL Server 作為資料庫
@@ -83,6 +85,15 @@ namespace SuParty
             builder.Services.AddControllersWithViews()
             .AddViewLocalization()
             .AddDataAnnotationsLocalization(); // 启用 DataAnnotations 本地化
+
+            //USDT
+            //builder.Services.AddTronNet(x =>
+            //{
+            //    x.Network = TronNetwork.MainNet;
+            //    x.Channel = new GrpcChannelOption { Host = "grpc.shasta.trongrid.io", Port = 50051 };
+            //    x.SolidityChannel = new GrpcChannelOption { Host = "grpc.shasta.trongrid.io", Port = 50052 };
+            //    x.ApiKey = "input your api key";
+            //});
 
             var app = builder.Build();
 

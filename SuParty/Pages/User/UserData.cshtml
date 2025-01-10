@@ -115,13 +115,7 @@
         const newStatus = !isTracked; // 切換狀態
 
         // 更新後端的追蹤狀態
-        fetch(_baseUrlAddAction('Tracking'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-            },
-            body: JSON.stringify({ id: itemId, tracked: newStatus }),
-        })
+        sendRequest(_baseUrlAddAction('Tracking'),{ id: itemId, tracked: newStatus })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
