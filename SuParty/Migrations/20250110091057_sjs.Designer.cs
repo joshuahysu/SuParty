@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuParty.Data;
 
@@ -10,9 +11,11 @@ using SuParty.Data;
 namespace SuParty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250110091057_sjs")]
+    partial class sjs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -241,66 +244,6 @@ namespace SuParty.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductDatas");
-                });
-
-            modelBuilder.Entity("SuParty.Data.DataModel.RealEstate.HouseData", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("City")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Floor")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Index")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Introduction")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<float>("PricePerPing")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("ProductType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("RoomCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SalesId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<float>("Space")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("VideoUrl")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HouseDatas");
                 });
 
             modelBuilder.Entity("SuParty.Data.DataModel.Tracking", b =>

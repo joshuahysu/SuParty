@@ -156,6 +156,8 @@ namespace SuParty.Pages.Chat
         public static List<MessageModel> ReadAndMergeFilesDefalut(string chatroomId)
         {
             string folderPath = Path.Combine("messages", chatroomId);// 資料夾路徑
+                                                                     // 聊天室目錄
+            Directory.CreateDirectory(folderPath);
 
             // 列出資料夾內所有符合 yyyy-MM-dd.txt 格式的檔案
             var validFiles = Directory.GetFiles(folderPath, "*.txt")

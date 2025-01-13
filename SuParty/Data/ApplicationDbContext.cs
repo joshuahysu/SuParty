@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SuParty.Data.DataModel;
+using SuParty.Data.DataModel.RealEstate;
 
 namespace SuParty.Data
 {
@@ -13,5 +14,7 @@ namespace SuParty.Data
         public DbSet<UserData> UserDatas { get; set; }
         public DbSet<Tracking> Trackings { get; set; }
         public DbSet<ProductData> ProductDatas { get; set; }
+        public DbSet<HouseData> HouseDatas { get; set; }
+        
     }    
 }

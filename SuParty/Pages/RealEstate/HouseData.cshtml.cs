@@ -1,26 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using SuParty.Data;
 using SuParty.Data.DataModel;
+using SuParty.Data.DataModel.RealEstate;
 using System.Security.Claims;
 
 namespace SuParty.Pages.Product
 {
-    public class ProductDataModel : PageModel
+    public class HouseDataModel : PageModel
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public ProductData? ProductData { get; set; } = new ProductData();
+        public HouseData? ProductData { get; set; } = new HouseData();
 
-        public ProductDataModel(ApplicationDbContext dbContext)
+        public HouseDataModel(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         public IActionResult OnGet(string id)
         {
-            ProductData = _dbContext.ProductDatas.Find(id);
+            HouseData houseData = _dbContext.HouseDatas.Find(id);
             if (User.Identity.IsAuthenticated)
             {
                 //有會員也許修改價格
@@ -33,17 +33,17 @@ namespace SuParty.Pages.Product
             
             return Page();
         }
-        public IActionResult OnPostAddShoppingCart(string id)
+        public IActionResult OnPostTraceRealEstates(string id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 // 查詢使用者
-                var user = _dbContext.UserDatas.Find(userId);
+                UserData? user = _dbContext.UserDatas.Find(userId);
 
-                // 新增一筆資料到 ShoppingCart
-                user.ShoppingCart.Add(id);
+                // 新增一筆資料到 追蹤列表
+                user.TraceRealEstates.Add(id);
 
                 // 保存變更到資料庫
                 _dbContext.SaveChanges();                

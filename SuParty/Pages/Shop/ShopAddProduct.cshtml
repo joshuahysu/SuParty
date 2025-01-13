@@ -1,0 +1,28 @@
+﻿@page
+@model SuParty.Pages.Shop.ShopAddProductModel
+@{
+}
+<button id="AddShop">加入商店</button>
+
+<script>
+    document.getElementById('AddShop').addEventListener('click', function () {
+        AddShop(false);
+    });
+    function AddShop() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id'); // 讀取 'Id' 的值
+        sendRequest(_baseUrlAddAction('AddProduct'), { id: id })
+            .then(data => {
+            .then(data => {
+                if (data.success) {                    
+                    // 跳轉到指定頁面
+                    window.location.href = "../Shop/ShoppingCart";                    
+                } else {
+                    alert(data.message); // 顯示錯誤信息
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>

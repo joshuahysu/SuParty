@@ -42,11 +42,14 @@ namespace SuParty.Pages
                     if (!UserData.ChatRooms.Contains(chatroomId))
                     {
                         UserData.ChatRooms.Add(chatroomId);
+                        Messages = new List<MessageModel>();
                         _dbContext.SaveChanges();
                     }
-                    // 根據 chatroomId 初始化留言列表
-                    Messages = ChatStorage.ReadAndMergeFilesDefalut(chatroomId);
-
+                    else
+                    {
+                        // 根據 chatroomId 初始化留言列表
+                        Messages = ChatStorage.ReadAndMergeFilesDefalut(chatroomId);
+                    }
                 }
                 //擁有的聊天室
                 Chatrooms = UserData.ChatRooms.ToList();

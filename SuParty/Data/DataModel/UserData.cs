@@ -34,8 +34,14 @@ namespace SuParty.Data.DataModel
         public List<string> ChatRooms { get; set; } = new();
         #region 產品資料
         public List<string> ShoppingCart { get; set; } = new();
+
+        public List<string> Store { get; set; } = new();
         #endregion
 
+        #region 房產資料
+        public List<string> TraceRealEstates { get; set; } = new();
+
+        #endregion
         #region 私人資料
         /// <summary>
         /// 儲存使用者的身高（以字串格式表示）。
