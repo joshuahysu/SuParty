@@ -1,36 +1,27 @@
 ﻿@page
-@model SuParty.Pages.Product.HouseDataModel
+@model SuParty.Pages.RealEstate.HouseDataModel
 @using Microsoft.Extensions.Localization
 @{
-
+    Layout = "_Layout";
 }
-@inject IStringLocalizer<SuParty.Pages.Product.HouseDataModel> Localizer
+@inject IStringLocalizer<SuParty.Pages.RealEstate.HouseDataModel> Localizer
 
 <div class="container mt-4">
 
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-        <ol class="carousel-indicators">
-            <li data-bs-target="#carouselExampleControls" data-bs-slide-to="0" class="active"></li>
-            <li data-bs-target="#carouselExampleControls" data-bs-slide-to="1"></li>
-            <li data-bs-target="#carouselExampleControls" data-bs-slide-to="2"></li>
-        </ol>
-
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="@Model.ProductData.Image" class="d-block w-100" alt="First slide">
-            </div>
-            <div class="carousel-item">
-                <img src="image2.jpg" class="d-block w-100" alt="Second slide">
-            </div>
-            <div class="carousel-item">
-                <img src="image3.jpg" class="d-block w-100" alt="Third slide">
-            </div>
+            @for (int i = 0; i < Model.HouseData.Images.Count; i++)
+            {
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <img src="@Model.HouseData.Images[i]" class="d-block w-100" alt="Slide @(i + 1)">
+                </div>
+            }
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
@@ -39,22 +30,38 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Nick Name"]:</strong>
-            @Model.ProductData.Name
-            @Model.ProductData.Introduction
-            @Model.ProductData.Price
+            <div class="house-detail">
+                <h1>@Model.HouseData.Name</h1> <!-- 顯示房屋名稱 -->
+                <p>@Model.HouseData.Introduction</p> <!-- 顯示房屋介紹 -->
+                <p>價格：$@Model.HouseData.Price</p> <!-- 顯示價格 -->
+            </div>
 
-            <button id="TraceRealEstates">加入購物車</button>
-            <button id="Buy">直接購買</button>
+            <div class="house-info">
+                <img src="@Model.HouseData.Images" alt="House Image" /> <!-- 顯示圖片 -->
+                <video controls>
+                    <source src="@Model.HouseData.VideoUrl" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video> <!-- 顯示影片 -->
+                <p>地址：@Model.HouseData.Address</p> <!-- 顯示地址 -->
+                <p>房型：@Model.HouseData.ProductType</p> <!-- 顯示房型 -->
+                <p>城市：@Model.HouseData.City</p> <!-- 顯示城市 -->
+                <p>空間：@Model.HouseData.Space 平方公尺</p> <!-- 顯示空間 -->
+                <p>每坪價格：@Model.HouseData.PricePerPing</p> <!-- 顯示每坪價格 -->
+                <p>房間數：@Model.HouseData.RoomCount</p> <!-- 顯示房間數 -->
+                <p>衛浴數：@Model.HouseData.RestroomCount</p> <!-- 顯示衛浴數 -->
+                <p>客廳數：@Model.HouseData.LivingRoomCount</p> <!-- 顯示客廳數 -->
+                <p>停車位數：@Model.HouseData.ParkingSpaceCount</p> <!-- 顯示停車位數 -->
+                <p>停車位：@Model.HouseData.ParkingSpace</p> <!-- 顯示停車位 -->
+                <p>樓層：@Model.HouseData.Floor</p> <!-- 顯示樓層 -->
+            </div>
+
+            <button id="TraceRealEstates">追蹤</button>
+
         </div>
     </div>
 </div>
 
 <script>    
-    
-    document.getElementById('Buy').addEventListener('click', function () {
-        AddShoppingCart(true);
-    });
-
     document.getElementById('TraceRealEstates').addEventListener('click', function () {
         AddShoppingCart(false);
     });

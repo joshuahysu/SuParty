@@ -22,7 +22,7 @@ namespace SuParty.Data.DataModel.RealEstate
         /// <summary>
         /// 圖片
         /// </summary>
-        public string Image { get; set; } = "";
+        public List<string> Images { get; set; } = new();
 
         public string VideoUrl { get; set; } = "";
         public string Address { get; set; } = "";

@@ -1,0 +1,93 @@
+﻿@page
+@model SuParty.Pages.RealEstate.HouseDataEditModel
+@using Microsoft.Extensions.Localization
+@using SuParty.Data.DataModel.RealEstate
+@{
+    Layout = "_Layout";
+}
+@inject IStringLocalizer<SuParty.Pages.RealEstate.HouseDataModel> Localizer
+
+<form method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label for="Image">圖片</label>
+        <input type="text" class="form-control" id="Image" name="Image" value="@Model.HouseData.Images" />
+    </div>
+
+    <div class="form-group">
+        <label for="Name">名稱</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.HouseData.Name" />
+    </div>
+
+    <div class="form-group">
+        <label for="Introduction">簡介</label>
+        <textarea class="form-control" id="Introduction" name="Introduction">@Model.HouseData.Introduction</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Price">價格</label>
+        <input type="number" class="form-control" id="Price" name="Price" value="@Model.HouseData.Price" />
+    </div>
+
+    <div class="form-group">
+        <label for="VideoUrl">影片 URL</label>
+        <input type="text" class="form-control" id="VideoUrl" name="VideoUrl" value="@Model.HouseData.VideoUrl" />
+    </div>
+
+    <div class="form-group">
+        <label for="Address">地址</label>
+        <input type="text" class="form-control" id="Address" name="Address" value="@Model.HouseData.Address" />
+    </div>
+
+    <div class="form-group">
+        <label for="City">城市</label>
+        <select id="City" name="City" class="form-control">
+            @foreach (var city in Enum.GetValues(typeof(City)))
+            {
+                <option value="@city" @((City)city == Model.HouseData.City ? "selected" : "")>@city</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Space">空間大小</label>
+        <input type="number" class="form-control" id="Space" name="Space" value="@Model.HouseData.Space" />
+    </div>
+
+    <div class="form-group">
+        <label for="PricePerPing">每坪價格</label>
+        <input type="number" class="form-control" id="PricePerPing" name="PricePerPing" value="@Model.HouseData.PricePerPing" />
+    </div>
+
+    <div class="form-group">
+        <label for="RoomCount">房間數</label>
+        <input type="number" class="form-control" id="RoomCount" name="RoomCount" value="@Model.HouseData.RoomCount" />
+    </div>
+
+    <div class="form-group">
+        <label for="RestroomCount">衛浴數</label>
+        <input type="number" class="form-control" id="RestroomCount" name="RestroomCount" value="@Model.HouseData.RestroomCount" />
+    </div>
+
+    <div class="form-group">
+        <label for="LivingRoomCount">客廳數</label>
+        <input type="number" class="form-control" id="LivingRoomCount" name="LivingRoomCount" value="@Model.HouseData.LivingRoomCount" />
+    </div>
+
+    <div class="form-group">
+        <label for="ParkingSpaceCount">車位數</label>
+        <input type="number" class="form-control" id="ParkingSpaceCount" name="ParkingSpaceCount" value="@Model.HouseData.ParkingSpaceCount" />
+    </div>
+
+    <div class="form-group">
+        <label for="ParkingSpace">車位大小</label>
+        <input type="number" class="form-control" id="ParkingSpace" name="ParkingSpace" value="@Model.HouseData.ParkingSpace" />
+    </div>
+
+    <div class="form-group">
+        <label for="Floor">樓層</label>
+        <input type="number" class="form-control" id="Floor" name="Floor" value="@Model.HouseData.Floor" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">儲存</button>
+</form>

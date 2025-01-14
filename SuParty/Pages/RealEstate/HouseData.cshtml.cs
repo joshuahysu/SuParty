@@ -5,13 +5,13 @@ using SuParty.Data.DataModel;
 using SuParty.Data.DataModel.RealEstate;
 using System.Security.Claims;
 
-namespace SuParty.Pages.Product
+namespace SuParty.Pages.RealEstate
 {
     public class HouseDataModel : PageModel
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public HouseData? ProductData { get; set; } = new HouseData();
+        public HouseData? HouseData { get; set; } = new HouseData();
 
         public HouseDataModel(ApplicationDbContext dbContext)
         {
@@ -20,7 +20,7 @@ namespace SuParty.Pages.Product
 
         public IActionResult OnGet(string id)
         {
-            HouseData houseData = _dbContext.HouseDatas.Find(id);
+            HouseData = _dbContext.HouseDatas.Find(id);
             if (User.Identity.IsAuthenticated)
             {
                 //有會員也許修改價格

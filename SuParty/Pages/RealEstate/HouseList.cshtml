@@ -1,0 +1,111 @@
+﻿@page
+@using SuParty.Data.DataModel.RealEstate
+@model SuParty.Pages.RealEstate.HouseListModel;
+@{
+  Layout = "_Layout";
+}
+<form method="get">
+    <div class="form-group">
+        <label for="City">選擇城市</label>
+        <select id="City" name="City" class="form-control">
+            @foreach (var city in Enum.GetValues(typeof(City)))
+            {
+                <option value="@city">@city</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">提交</button>
+</form>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <input type="text" id="MinPrice" name="MinPrice" placeholder="最低價格" />
+        <input type="text" id="MaxPrice" name="MaxPrice" placeholder="最高價格" />
+        <input type="text" id="MinPricePerPing" name="MinPricePerPing" placeholder="最低價格每坪" />
+        <input type="text" id="MaxPricePerPing" name="MaxPricePerPing" placeholder="最高價格每坪" />
+        <input type="text" id="MinSpace" name="MinSpace" placeholder="最低空間" />
+        <input type="text" id="MaxSpace" name="MaxSpace" placeholder="最高空間" />
+        <input type="text" id="MinRoomCount" name="MinRoomCount" placeholder="最少房間數" />
+        <input type="text" id="MaxRoomCount" name="MaxRoomCount" placeholder="最多房間數" />
+        <input type="text" id="MinRestroomCount" name="MinRestroomCount" placeholder="最少衛浴數" />
+        <input type="text" id="MaxRestroomCount" name="MaxRestroomCount" placeholder="最多衛浴數" />
+        <input type="text" id="MinLivingRoomCount" name="MinLivingRoomCount" placeholder="最少客廳數" />
+        <input type="text" id="MaxLivingRoomCount" name="MaxLivingRoomCount" placeholder="最多客廳數" />
+        <input type="text" id="MinParkingSpaceCount" name="MinParkingSpaceCount" placeholder="最少車位數" />
+        <input type="text" id="MaxParkingSpaceCount" name="MaxParkingSpaceCount" placeholder="最多車位數" />
+        <input type="text" id="MinFloor" name="MinFloor" placeholder="最低樓層" />
+        <input type="text" id="MaxFloor" name="MaxFloor" placeholder="最高樓層" />
+        <input type="text" id="City" name="City" placeholder="城市" />
+
+        <button id="Search">搜尋</button>
+    </div>
+</div>
+
+<table id="houseList" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>價格</th>
+            <th>坪</th>
+            <th>樓層</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    var request = {
+        'MinPrice': $('#MinPrice').val(),
+        'MaxPrice': $('#MaxPrice').val(),
+        'MinPricePerPing': $('#MinPricePerPing').val(),
+        'MaxPricePerPing': $('#MaxPricePerPing').val(),
+        'MinSpace': $('#MinSpace').val(),
+        'MaxSpace': $('#MaxSpace').val(),
+        'MinRoomCount': $('#MinRoomCount').val(),
+        'MaxRoomCount': $('#MaxRoomCount').val(),
+        'MinRestroomCount': $('#MinRestroomCount').val(),
+        'MaxRestroomCount': $('#MaxRestroomCount').val(),
+        'MinLivingRoomCount': $('#MinLivingRoomCount').val(),
+        'MaxLivingRoomCount': $('#MaxLivingRoomCount').val(),
+        'MinParkingSpaceCount': $('#MinParkingSpaceCount').val(),
+        'MaxParkingSpaceCount': $('#MaxParkingSpaceCount').val(),
+        'MinFloor': $('#MinFloor').val(),
+        'MaxFloor': $('#MaxFloor').val(),
+        'City': $('#City').val()
+    };
+
+    // 要傳遞的欄位
+    // 檢查 #MinPrice 是否有值
+
+    //aaa?handler=Search&keyword=test&page=1
+
+    $('#houseList').DataTable({
+        ajax: {
+            url: _baseUrlAddAction('Search'), // 替換為你的 API URL
+            type: 'GET',
+            data: request
+        },
+        columns: [
+            {
+                data: 'Image',
+                render: function (data, type, row) {
+                    // 假設 `data` 是圖片的 URL，`row.id` 是該行的唯一識別 ID
+                    if (data) {
+                        return `<a href="../HouseData/${row.id}">
+                                <img src="${data}" alt="Image" style="width: 100px; height: auto;" />
+                            </a>`;
+                    } else {
+                        return '無圖片'; // 當沒有圖片時顯示的文字
+                    }
+                }
+            },
+            { data: 'Price' },
+            { data: 'PricePerPing' },
+            { data: 'Floor' }
+        ]
+    });
+    // 按鈕點擊事件，重新刷新資料
+    $('#Search').on('click', function () {
+        table.ajax.reload(); // 重新加載資料
+    });
+
+</script>

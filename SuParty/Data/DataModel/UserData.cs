@@ -29,6 +29,7 @@ namespace SuParty.Data.DataModel
         /// </summary>
         public string Income { get; set; } = "";
         public string Budget { get; set; } = "";
+        public string Line_Url { get; set; } = "";
         public string IG_Url { get; set; } = "";
         public string ExtraUrl { get; set; } = "";
         public List<string> ChatRooms { get; set; } = new();
