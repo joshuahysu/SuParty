@@ -84,8 +84,11 @@ namespace SuParty
             // 註冊 MVC 控制器並啟用視圖本地化及資料註解本地化
             builder.Services.AddControllersWithViews()
             .AddViewLocalization()
-            .AddDataAnnotationsLocalization(); // 启用 DataAnnotations 本地化
-
+            .AddDataAnnotationsLocalization() // 启用 DataAnnotations 本地化
+            .AddMvcOptions(options =>
+            {
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(_ => "The field is required.");
+            });
             //USDT
             //builder.Services.AddTronNet(x =>
             //{

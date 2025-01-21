@@ -19,9 +19,15 @@ namespace SuParty.Pages.RealEstate
         [BindProperty]
         public HouseData HouseData { get; set; }
 
-        public void OnGet(int id)
+        public void OnGet(int? id)
         {
-            HouseData = _dbContext.HouseDatas.Find(id);
+            if (id != null)
+            {
+                HouseData = _dbContext.HouseDatas.Find(id);
+            }
+            else {
+                HouseData=new HouseData();
+                    }
         }
 
         public IActionResult OnPost()

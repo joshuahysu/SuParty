@@ -19,11 +19,12 @@ namespace SuParty.Data.DataModel.RealEstate
         [Required(ErrorMessage = "價格是必填欄位。")]
         public decimal Price { get; set; } = 999999999;
 
+        public DateTime Year { get; set; }= DateTime.Now;
         /// <summary>
         /// 圖片
         /// </summary>
         public List<string> Images { get; set; } = new();
-
+        [Required(AllowEmptyStrings = true)]
         public string VideoUrl { get; set; } = "";
         public string Address { get; set; } = "";
         public string ProductType { get; set; } = "";

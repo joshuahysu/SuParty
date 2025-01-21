@@ -258,7 +258,7 @@ namespace SuParty.Migrations
                     b.Property<int>("Floor")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("Images")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -308,6 +308,9 @@ namespace SuParty.Migrations
 
                     b.Property<string>("VideoUrl")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Year")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
