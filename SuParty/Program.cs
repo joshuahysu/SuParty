@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SuParty.Data;
+using SuParty.Middleware;
 using TronNet;
 
 namespace SuParty
@@ -135,6 +136,8 @@ namespace SuParty
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // 註冊 RequestControlMiddleware
+            app.UseMiddleware<RequestControlMiddleware>();
             // 設定預設路由
             app.MapControllerRoute(
                 name: "default",

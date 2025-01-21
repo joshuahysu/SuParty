@@ -33,6 +33,7 @@ namespace SuParty.Data.DataModel
         public string IG_Url { get; set; } = "";
         public string ExtraUrl { get; set; } = "";
         public List<string> ChatRooms { get; set; } = new();
+
         #region 產品資料
         public List<string> ShoppingCart { get; set; } = new();
 
