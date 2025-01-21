@@ -2,6 +2,7 @@
 @model SuParty.Pages.RealEstate.HouseDataEditModel
 @using Microsoft.Extensions.Localization
 @using SuParty.Data.DataModel.RealEstate
+@using SuParty.Data.DataModel.RealEstate.Enum
 @{
     Layout = "_Layout";
 }
@@ -42,9 +43,9 @@
     <div class="form-group">
         <label for="City">城市</label>
         <select id="City" name="City" class="form-control">
-            @foreach (var city in Enum.GetValues(typeof(City)))
+            @foreach (var city in Enum.GetValues(typeof(CityEnum)))
             {
-                <option value="@city" @((City)city == Model.HouseData.City ? "selected" : "")>@city</option>
+                <option value="@city" @((CityEnum)city == Model.HouseData.City ? "selected" : "")>@city</option>
             }
         </select>
     </div>

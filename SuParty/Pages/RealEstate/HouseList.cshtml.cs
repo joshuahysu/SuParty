@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SuParty.Data;
 using SuParty.Data.DataModel.RealEstate;
+using SuParty.Data.DataModel.RealEstate.Enum;
 
 namespace SuParty.Pages.RealEstate
 {
@@ -84,7 +85,7 @@ namespace SuParty.Pages.RealEstate
         public int MaxFloor { get; set; }
         public int MinFloor { get; set; }
 
-        public City City { get; set; }
+        public CityEnum City { get; set; }
         public int PageSize { get; internal set; }
         public int Page { get; internal set; }
     }

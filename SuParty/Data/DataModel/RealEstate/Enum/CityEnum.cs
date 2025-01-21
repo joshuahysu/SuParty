@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace SuParty.Data.DataModel.RealEstate
+namespace SuParty.Data.DataModel.RealEstate.Enum
 {
-    public enum City
+    public enum CityEnum
     {
         // 直轄市
         Taipei,        // 臺北市
@@ -31,5 +31,5 @@ namespace SuParty.Data.DataModel.RealEstate
         Penghu,        // 澎湖縣
         Kinmen,        // 金門縣
         Lienchiang     // 連江縣 (馬祖)
-    }    
+    }
 }

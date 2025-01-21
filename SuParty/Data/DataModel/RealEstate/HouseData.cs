@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using SuParty.Data.DataModel.RealEstate.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace SuParty.Data.DataModel.RealEstate
@@ -10,7 +9,7 @@ namespace SuParty.Data.DataModel.RealEstate
 
         [Required(ErrorMessage = "產品名稱是必填欄位。")]
         [StringLength(50, ErrorMessage = "產品名稱不能超過 50 個字元。")]
-        public string Name { get; set; } = "test";
+        public string Name { get; set; } = "house";
 
         /// <summary>
         /// 簡介
@@ -28,7 +27,8 @@ namespace SuParty.Data.DataModel.RealEstate
         public string Address { get; set; } = "";
         public string ProductType { get; set; } = "";
 
-        public City City { get; set; }
+        public CityEnum City { get; set; }
+        public HouseTypeEnum HouseType { get; set; }
 
         public float Space { get; set; } = 0;
         public float PricePerPing { get; set; } = 0;
@@ -36,16 +36,16 @@ namespace SuParty.Data.DataModel.RealEstate
         public int RoomCount { get; set; } = 0;
         public int RestroomCount { get; set; } = 0;
         public int LivingRoomCount { get; set; } = 0;
-                
+
         public int ParkingSpaceCount { get; set; } = 0;
         public int ParkingSpace { get; set; } = 0;
-
+        public ParkingSpaceTypeEnum ParkingSpaceType { get; set; } = 0;
         public int Floor { get; set; } = 1;
 
         public string SalesId { get; set; } = "";
 
         public int Index { get; set; } = 1;
 
-
+        public int MaintenanceFee{ get; set; } =0;
     }
 }

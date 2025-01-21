@@ -4,10 +4,10 @@ using System.Text.Json;
 
 namespace SuParty.Pages.Chat
 {
-
     public class ChatStorage
     {
         private const string BasePath = "messages";
+
         /// <summary>
         /// 儲存訊息
         /// </summary>
@@ -28,14 +28,14 @@ namespace SuParty.Pages.Chat
 
             AppendMessageToFile(filePath, message);
         }
-        
+
         /// <summary>
         /// 儲存訊息(使用 AggressiveInlining 提示編譯器內嵌此函式)
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="message"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]        
-        static void AppendMessageToFile(string filePath, MessageModel message)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void AppendMessageToFile(string filePath, MessageModel message)
         {
             // 將物件序列化為 UTF-8 位元組
             byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(message);
@@ -46,7 +46,6 @@ namespace SuParty.Pages.Chat
                 bufferedStream.Write(jsonBytes, 0, jsonBytes.Length);
                 bufferedStream.WriteByte(0x0A);
             }
-
         }
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace SuParty.Pages.Chat
         public static void DeleteChatroom(string chatroomId)
         {         // 聊天室目錄
             string chatroomPath = Path.Combine(BasePath, chatroomId);
-            FolderRename(chatroomPath, chatroomPath+"_Bak");
+            FolderRename(chatroomPath, chatroomPath + "_Bak");
         }
 
         /// <summary>
@@ -64,7 +63,8 @@ namespace SuParty.Pages.Chat
         /// </summary>
         /// <param name="oldFolderPath"></param>
         /// <param name="newFolderPath"></param>
-        public static void FolderRename(string oldFolderPath, string newFolderPath) {
+        public static void FolderRename(string oldFolderPath, string newFolderPath)
+        {
             try
             {
                 if (Directory.Exists(oldFolderPath))
@@ -113,7 +113,6 @@ namespace SuParty.Pages.Chat
             {
                 Console.WriteLine($"重新命名資料夾時發生錯誤: {ex.Message}");
             }
-
         }
 
         /// <summary>
@@ -122,10 +121,10 @@ namespace SuParty.Pages.Chat
         /// <param name="chatroomId"></param>
         /// <param name="date"></param>
         /// <returns></returns>
-        public static List<MessageModel> ReadMessages(string chatroomId, DateTime? date=null)
+        public static List<MessageModel> ReadMessages(string chatroomId, DateTime? date = null)
         {
-            if(date==null)
-                date=DateTime.Now;
+            if (date == null)
+                date = DateTime.Now;
             string chatroomPath = Path.Combine("messages", chatroomId);
             string fileName = $"{date:yyyy-MM-dd}.txt";
             string filePath = Path.Combine(chatroomPath, fileName);
@@ -148,6 +147,7 @@ namespace SuParty.Pages.Chat
 
             return messages;
         }
+
         /// <summary>
         /// 讀取指定聊天室的訊息
         /// </summary>
@@ -175,9 +175,9 @@ namespace SuParty.Pages.Chat
             var messages = ReadAndMergeFiles(folderPath, validFiles);
             return messages;
         }
-        public static List<MessageModel> ReadAndMergeFiles(string folderPath, List<string> validFiles=null)
-        {
 
+        public static List<MessageModel> ReadAndMergeFiles(string folderPath, List<string> validFiles = null)
+        {
             List<MessageModel> messages = new List<MessageModel>();
 
             foreach (var fileName in validFiles)
