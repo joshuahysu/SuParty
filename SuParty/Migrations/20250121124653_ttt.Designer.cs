@@ -11,8 +11,8 @@ using SuParty.Data;
 namespace SuParty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250113060057_sj454")]
-    partial class sj454
+    [Migration("20250121124653_ttt")]
+    partial class ttt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,7 +261,10 @@ namespace SuParty.Migrations
                     b.Property<int>("Floor")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Image")
+                    b.Property<int>("HouseType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Images")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -272,10 +275,25 @@ namespace SuParty.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("LivingRoomCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaintenanceFee")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ParkingSpace")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ParkingSpaceCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ParkingSpaceType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
@@ -286,6 +304,9 @@ namespace SuParty.Migrations
                     b.Property<string>("ProductType")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("RestroomCount")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("RoomCount")
                         .HasColumnType("INTEGER");
@@ -299,6 +320,9 @@ namespace SuParty.Migrations
 
                     b.Property<string>("VideoUrl")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Year")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -379,6 +403,10 @@ namespace SuParty.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Line_Url")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -399,6 +427,10 @@ namespace SuParty.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("TraceRealEstates")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Waist")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -410,6 +442,30 @@ namespace SuParty.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserDatas");
+                });
+
+            modelBuilder.Entity("SuParty.Data.DataModel.UserWallet", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Referrers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Wallet")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserWallets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

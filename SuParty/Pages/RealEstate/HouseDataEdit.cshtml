@@ -2,6 +2,7 @@
 @model SuParty.Pages.RealEstate.HouseDataEditModel
 @using Microsoft.Extensions.Localization
 @using SuParty.Data.DataModel.RealEstate
+@using SuParty.Data.DataModel.RealEstate.Enum
 @{
     Layout = "_Layout";
 }
@@ -10,10 +11,10 @@
 
 <form method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
-    <div class="form-group">
-        <label for="Image">圖片</label>
-        <input type="text" class="form-control" id="Image" name="Image" value="@Model.HouseData?.Images" />
-    </div>
+    @* <div class="form-group"> *@
+    @*     <label for="Image">圖片</label> *@
+    @*     <input type="text" class="form-control" id="Image" name="Image" value="@Model.HouseData?.Images" /> *@
+    @* </div> *@
 
     <div class="form-group">
         <label for="Name">名稱</label>
@@ -43,9 +44,9 @@
     <div class="form-group">
         <label for="City">城市</label>
         <select id="City" name="City" class="form-control">
-            @foreach (var city in Enum.GetValues(typeof(City)))
+            @foreach (var city in Enum.GetValues(typeof(CityEnum)))
             {
-                <option value="@city" @((City)city == Model.HouseData?.City ? "selected" : "")>@city</option>
+                <option value="@city" @((CityEnum)city == Model.HouseData.City ? "selected" : "")>@city</option>
             }
         </select>
     </div>

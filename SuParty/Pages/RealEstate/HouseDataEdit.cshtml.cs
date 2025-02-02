@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+ï»¿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SuParty.Data;
 using SuParty.Data.DataModel;
@@ -34,13 +34,32 @@ namespace SuParty.Pages.RealEstate
         {
             if (!ModelState.IsValid)
             {
-                return Page(); // ¦pªGªí³æ¤£¦Xªk¡A«O«ù¦b­¶­±¤WÅã¥Ü¿ù»~
+                return Page(); // å¦‚æœè¡¨å–®ä¸åˆæ³•ï¼Œä¿æŒåœ¨é é¢ä¸Šé¡¯ç¤ºéŒ¯èª¤
             }
 
-            _dbContext.HouseDatas.Update(HouseData);
-            _dbContext.SaveChanges();
-            // ­«©w¦V¨ì©Ğ«Î¸Ô±¡­¶
-            return RedirectToPage("../HouseData", new { id = HouseData.Id });
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                HouseData.SalesId = userId;
+                if (string.IsNullOrEmpty(HouseData.Id) || !_dbContext.HouseDatas.Any(h => h.Id == HouseData.Id))
+                {
+                    // æ²¡æœ‰ IDï¼Œæ’å…¥æ–°æ•°æ®
+                    HouseData.Id = Guid.NewGuid().ToString(); // ç”Ÿæˆæ–°çš„ GUID                   
+
+                    _dbContext.HouseDatas.Add(HouseData); // æ’å…¥
+                }
+                else
+                {
+                    _dbContext.HouseDatas.Update(HouseData);
+                }
+
+                _dbContext.SaveChanges();
+
+            }
+
+            // é‡å®šå‘åˆ°æˆ¿å±‹è©³æƒ…é 
+            return RedirectToPage("/RealEstate/HouseData", new { id = HouseData.Id });
+
         }
     }
 }

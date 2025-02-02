@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SuParty.Data;
@@ -19,7 +20,7 @@ namespace SuParty.Pages
         public List<MessageModel> Messages { get; private set; }
 
         public List<String> Chatrooms { get; private set; }=new List<String>();
-        public void OnGet(string? chatroomId = null)
+        public IActionResult OnGet(string? chatroomId = null)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -47,11 +48,12 @@ namespace SuParty.Pages
                 }
 
                 Chatrooms = UserData.ChatRooms.ToList();
+                return Page();
             }
             else
             {
                // Message = "您尚未登入，將重定向到登入頁面。";
-                //return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Account/Login");
             }
 
         }

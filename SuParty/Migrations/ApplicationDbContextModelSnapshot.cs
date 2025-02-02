@@ -258,6 +258,9 @@ namespace SuParty.Migrations
                     b.Property<int>("Floor")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("HouseType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Images")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -272,6 +275,9 @@ namespace SuParty.Migrations
                     b.Property<int>("LivingRoomCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("MaintenanceFee")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -281,6 +287,9 @@ namespace SuParty.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ParkingSpaceCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ParkingSpaceType")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Price")
@@ -430,6 +439,30 @@ namespace SuParty.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserDatas");
+                });
+
+            modelBuilder.Entity("SuParty.Data.DataModel.UserWallet", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Referrers")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Wallet")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserWallets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -18,10 +18,10 @@ namespace SuParty.Service.USDT
         }
 
         // 非同步方法：進行 TRC20 轉帳
-        public async Task TransferAsync()
+        public async Task TransferAsync(string privateKey, string to,int amount)
         {
             // 私鑰，代表發送者的身份，用來簽署交易
-            var privateKey = "8e812436a0e3323166e1f0e8ba79e19e217b2c4a53c970d4cca0cfb1078979df";
+            //var privateKey = "8e812436a0e3323166e1f0e8ba79e19e217b2c4a53c970d4cca0cfb1078979df";
 
             // 從私鑰生成帳戶，帳戶中包含了發送者的地址與其他資訊
             var account = _wallet.GetAccount(privateKey);
@@ -30,13 +30,13 @@ namespace SuParty.Service.USDT
             var contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; //USDT Contract Address
 
             // 目標地址，表示轉帳的收款人
-            var to = "TGehVcNhud84JDCGrNHKVz9jEAVKUpbuiv";
+            //var to = "TGehVcNhud84JDCGrNHKVz9jEAVKUpbuiv";
 
             // 轉帳的 USDT 數量，注意 TRC20 通常有 6 位小數
-            var amount = 10; //USDT Amount
+            //var amount = 10; //USDT Amount
 
-            // 轉帳所需的手續費，這裡的費用是 5 USDT，轉換為最低單位 (1 USDT = 1000000)
-            var feeAmount = 5 * 1000000L;
+            // 轉帳所需的手續費，這裡的費用是 0.5 USDT，轉換為最低單位 (1 USDT = 1000000)
+            long feeAmount = 5 * 100000L;
 
             // 使用合約客戶端工廠創建一個 TRC20 合約的客戶端
             var contractClient = _contractClientFactory.CreateClient(ContractProtocol.TRC20);

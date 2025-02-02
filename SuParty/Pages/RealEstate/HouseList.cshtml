@@ -1,5 +1,6 @@
 ﻿@page
-@using SuParty.Data.DataModel.RealEstate
+@using SuParty.Data.DataModel.RealEstate;
+@using SuParty.Data.DataModel.RealEstate.Enum
 @model SuParty.Pages.RealEstate.HouseListModel;
 @{
   Layout = "_Layout";
@@ -8,7 +9,7 @@
     <div class="form-group">
         <label for="City">選擇城市</label>
         <select id="City" name="City" class="form-control">
-            @foreach (var city in Enum.GetValues(typeof(City)))
+            @foreach (var city in Enum.GetValues(typeof(CityEnum)))
             {
                 <option value="@city">@city</option>
             }
