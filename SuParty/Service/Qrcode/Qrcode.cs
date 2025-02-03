@@ -8,10 +8,12 @@ namespace SuParty.Service.Qrcode
 {
     public class Qrcode
     {
+        /// <summary>
+        /// CreateQrcode
+        /// </summary>
+        /// <param name="url">要生成的內容</param>
+        /// <returns></returns>
         public static string CreateQrcode(string url) {
-            // 要生成的內容
-            //string url = "https://www.example.com";
-
             // 初始化 QR Code 生成器
 
             using QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
@@ -21,7 +23,7 @@ namespace SuParty.Service.Qrcode
                               darkColorRgba: new byte[] { 0, 90, 0 }, // RGB
                               lightColorRgba: new byte[] { 255, 255, 255 }); // RGB
             string base64Image = Convert.ToBase64String(image);
-            Console.WriteLine($"QR Code Base64: {base64Image}");
+            //Console.WriteLine($"QR Code Base64: {base64Image}");
             return base64Image;
             //            < !--將 Base64 編碼嵌入圖片 src 屬性中 -->
             //< img src = "data:image/png;base64,{{Base64QRCode}}" alt = "QR Code" />

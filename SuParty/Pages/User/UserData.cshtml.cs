@@ -19,7 +19,7 @@ namespace SuParty.Pages.User
         // 用於傳遞到前端的資料
         public string Message { get; set; }
         public UserData? UserData { get; set; }=new UserData();
-        public IActionResult OnGet(string userId)
+        public async Task<IActionResult> OnGet(string userId)
         {
 
             if (User.Identity.IsAuthenticated)
@@ -32,27 +32,26 @@ namespace SuParty.Pages.User
                 // 使用登入者帳號做其他處理
                 //Message =$"Logged in as: {username}";
                 //目前全公開
-                UserData = _dbContext.UserDatas.Find(userId);
+                UserData = await _dbContext.UserDatas.FindAsync(userId);
 
                 return Page();
             }
             else
             {
                 Message = "您尚未登入，將重定向到登入頁面。";
-                //return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Account/Login");
             }
-            return null;
 
         }
 
-        public IActionResult OnPostTracking(string id,bool tracking)
+        public async Task<IActionResult> OnPostTracking(string id,bool tracking)
         {
             if (User.Identity.IsAuthenticated)
             {
                 // 取得登入者的帳號（用戶名或電子郵件）
                 string username = User.Identity.Name;
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var dbtracking = _dbContext.Trackings.Find(userId);
+                var dbtracking = await _dbContext.Trackings.FindAsync(userId);
                 if (dbtracking == null)
                 {
                     dbtracking=new Tracking();
@@ -69,18 +68,15 @@ namespace SuParty.Pages.User
                 }
                 else
                     dbtracking.TrackingList.Remove(id);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
                 var successResponse = new { success = true, message = "追蹤狀態更新成功。" };
                 return Content(JsonSerializer.Serialize(successResponse), "application/json");
             }
             else
             {
                 Message = "您尚未登入，將重定向到登入頁面。";
-                //return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Account/Login");
             }
-
-            return Page();
-        }
-        
+        }        
     }
 }

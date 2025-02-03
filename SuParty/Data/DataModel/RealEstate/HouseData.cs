@@ -36,6 +36,9 @@ namespace SuParty.Data.DataModel.RealEstate
 
         public int RoomCount { get; set; } = 0;
         public int RestroomCount { get; set; } = 0;
+        /// <summary>
+        /// 客廳數
+        /// </summary>
         public int LivingRoomCount { get; set; } = 0;
 
         public int ParkingSpaceCount { get; set; } = 0;
@@ -47,6 +50,14 @@ namespace SuParty.Data.DataModel.RealEstate
 
         public int Index { get; set; } = 1;
 
+        /// <summary>
+        /// 管理費
+        /// </summary>
         public int MaintenanceFee{ get; set; } =0;
+
+        /// <summary>
+        /// 是否自售
+        /// </summary>
+        public string Seller { get; set; } = "";
     }
 }

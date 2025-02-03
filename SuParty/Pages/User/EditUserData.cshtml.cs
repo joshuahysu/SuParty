@@ -28,14 +28,20 @@ namespace SuParty.Pages.User
 
         public async Task<IActionResult> OnPostAsync()
         {
-
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                UserData.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //自動insert or update
-                _dbContext.UserDatas.Update(UserData);
-                await _dbContext.SaveChangesAsync();
-                return RedirectToPage("/Success");
+                if (ModelState.IsValid)
+                {
+                    UserData.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    //自動insert or update
+                    _dbContext.UserDatas.Update(UserData);
+                    await _dbContext.SaveChangesAsync();
+                    return RedirectToPage("/Success");
+                }
+            }
+            else
+            {
+                return RedirectToPage("/Account/Login");
             }
             return Page();
         }

@@ -7,7 +7,7 @@
 @inject IStringLocalizer<SuParty.Pages.RealEstate.HouseDataModel> Localizer
 
 <div class="container mt-4">
-
+    <img src = "data:image/png;base64,{{@Model.Base64QRCode}}" alt = "QR Code" />
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             @for (int i = 0; i < Model.HouseData.Images.Count; i++)

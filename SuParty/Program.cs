@@ -98,6 +98,7 @@ namespace SuParty
             //    x.SolidityChannel = new GrpcChannelOption { Host = "grpc.shasta.trongrid.io", Port = 50052 };
             //    x.ApiKey = "input your api key";
             //});
+            builder.Services.AddMemoryCache(); // 註冊 MemoryCache
 
             var app = builder.Build();
 

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,8 @@ namespace SuParty.Pages
         public List<MessageModel> Messages { get; private set; }
 
         public List<String> Chatrooms { get; private set; } = new List<String>();
-        public IActionResult OnGet(string? chatroomId = null)
+        
+        public async Task<IActionResult> OnGet(string? chatroomId = null)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToPage("/Account/Login");
@@ -29,7 +31,7 @@ namespace SuParty.Pages
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             // 使用登入者帳號做其他處理
 
-            var UserData = _dbContext.UserDatas.Find(userId);
+            var UserData = await _dbContext.UserDatas.FindAsync(userId);
 
             if (string.IsNullOrEmpty(chatroomId))
             {
@@ -56,8 +58,8 @@ namespace SuParty.Pages
             return Page();
 
         }
-
-        public IActionResult OnPostDeleteChatRoom(string chatroomId) 
+        
+        public async Task<IActionResult> OnPostDeleteChatRoom(string chatroomId) 
         {
             if (!User.Identity.IsAuthenticated)     
                 return RedirectToPage("/Account/Login");
@@ -67,7 +69,7 @@ namespace SuParty.Pages
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             // 使用登入者帳號做其他處理
 
-            var UserData = _dbContext.UserDatas.Find(userId);
+            var UserData = await _dbContext.UserDatas.FindAsync(userId);
 
             if (string.IsNullOrEmpty(chatroomId))
             {
@@ -78,7 +80,7 @@ namespace SuParty.Pages
                 //刪除
                 if (UserData.ChatRooms.Remove(chatroomId))
                 {
-                    _dbContext.SaveChanges();
+                    await _dbContext.SaveChangesAsync();
                     ChatStorage.DeleteChatroom(chatroomId);
                 }
             }

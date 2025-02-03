@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SuParty.Data;
 using SuParty.Data.DataModel.RealEstate;
 using SuParty.Data.DataModel.RealEstate.Enum;
@@ -11,12 +13,30 @@ namespace SuParty.Pages.RealEstate
         public List<HouseData> productList = new();
 
         private readonly ApplicationDbContext _dbContext;
+        private readonly IMemoryCache _cache;
 
-        public HouseListModel(ApplicationDbContext dbContext)
+        public HouseListModel(ApplicationDbContext dbContext, IMemoryCache cache)
         {
             _dbContext = dbContext;
+            _cache = cache;
         }
-        public IActionResult OnGetSearch(SearchRequest request)
+        public async Task<IActionResult> OnGet()
+        {
+            //要有快取避免天天搜尋
+            // 嘗試從快取中取得資料
+            if (!_cache.TryGetValue("HouseListModel", out string data))
+            {
+                // 如果快取不存在，則計算資料
+                data = "這是新的資料 " + DateTime.Now.ToString();
+
+                // 設置快取（持續 5 分鐘）
+                _cache.Set("HouseListModel", data, TimeSpan.FromMinutes(5));
+            }
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetSearch(SearchRequest request)
         {
             IQueryable<HouseData> query = _dbContext.HouseDatas;
 
@@ -46,10 +66,10 @@ namespace SuParty.Pages.RealEstate
             int page = request.Page > 0 ? request.Page - 1 : 0;
 
             // 直接在查詢中使用 Skip 和 Take 完成分頁
-            var pagedData = query
+            var pagedData = await query
                 .Skip(page * pageSize)
                 .Take(pageSize)
-                .ToList();           
+                .ToListAsync();           
 
             // 返回結果（包含分頁資訊）
             return new JsonResult(new
