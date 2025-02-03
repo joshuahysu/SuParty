@@ -8,7 +8,32 @@
     ViewData["Title"] = "即時留言板";
     Layout = "_Layout";
 }
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
+<script src="https://unpkg.com/vue-beautiful-chat"></script>
+<!-- Razor 頁面內的 Vue App -->
+<div id="app">
+    <beautiful-chat :participants="participants"
+                    :messages="messages"
+                    :title="'聊天室'"
+    @@onMessageWasSent="sendMessage"></beautiful-chat>
+</div>
 
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                participants: [{ id: 'user1', name: '使用者A' }],
+                messages: [{ type: 'text', author: 'user1', data: { text: '你好！' } }]
+            };
+        },
+        methods: {
+            sendMessage(message) {
+                this.messages.push(message);
+            }
+        }
+    });
+</script>
 <div class="container">
  @*    <div id="app">
         <chat-room></chat-room>
@@ -95,7 +120,6 @@
             content: content,
             createdAt: new Date().toISOString(),
             chatroomId: chatroomId//, // 聊天室ID
-            //userId: "User123"
         };
         //S=SendMessagePrivate
         await connection.invoke("S", message).catch(err => console.error("SendMessage failed: ", err));
@@ -110,7 +134,7 @@
         sendRequest(_baseUrlAddAction('DeleteChatRoom'), { chatroomId:chatroomId })
             .then(data => {
                 if (data.success) {
-
+                    window.location.href = "../";
                 } else {
             
                 }
