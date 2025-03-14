@@ -176,6 +176,5 @@ namespace SuParty.Service.Referrer
                 Console.WriteLine($"總獎金: ${PerformanceBonusCalculator.CalculateTotalBonus(ibo)}");
                 Console.WriteLine();
             }
-        }
-    
+        }   
 }
