@@ -25,17 +25,22 @@ namespace SuParty.Service.Referrer
             }
         }
 
-
-        public void t(string id)
-        {
-            //誰可以分
-        }
     }
     
         // 獨立事業經營者（IBO）
         public class IBO
         {
-            public string Name { get; set; }
+            public void AddDownlineAuto(IBO upline, IBO downline, bool isLeft)
+            {
+                //todo 左右要自己算
+                upline.AddDownline(downline, isLeft);
+            }
+
+            public void AddBV(IBO downline, decimal BV)
+            {
+                downline.PersonalBV += BV;
+            }
+        public string Name { get; set; }
             public decimal PersonalBV { get; set; } // 個人業務量
             public List<IBO> LeftLine { get; set; } // 左線下線
             public List<IBO> RightLine { get; set; } // 右線下線
