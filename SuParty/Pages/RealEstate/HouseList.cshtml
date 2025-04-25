@@ -79,7 +79,7 @@
 
     //aaa?handler=Search&keyword=test&page=1
 
-    $('#houseList').DataTable({
+    var table =$('#houseList').DataTable({
         ajax: {
             url: _baseUrlAddAction('Search'), // 替換為你的 API URL
             type: 'GET',

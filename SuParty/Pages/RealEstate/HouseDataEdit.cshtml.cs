@@ -32,6 +32,10 @@ namespace SuParty.Pages.RealEstate
             return Page();
         }
 
+        /// <summary>
+        /// 新增一筆
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)

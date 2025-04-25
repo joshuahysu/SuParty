@@ -20,15 +20,20 @@ namespace SuParty.Pages.RealEstate
             _dbContext = dbContext;
             _cache = cache;
         }
+
+        /// <summary>
+        /// 取得列表
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGet()
         {
             //要有快取避免天天搜尋
             // 嘗試從快取中取得資料
-            if (!_cache.TryGetValue("HouseListModel", out string data))
+            if (!_cache.TryGetValue("HouseListModel", out IQueryable<HouseData> data))
             {
-                // 如果快取不存在，則計算資料
-                data = "這是新的資料 " + DateTime.Now.ToString();
-
+                // 如果快取不存在，則取資料
+                data = _dbContext.HouseDatas;
+                productList = data.ToList();
                 // 設置快取（持續 5 分鐘）
                 _cache.Set("HouseListModel", data, TimeSpan.FromMinutes(5));
             }
@@ -36,27 +41,33 @@ namespace SuParty.Pages.RealEstate
             return Page();
         }
 
+        /// <summary>
+        /// 搜尋功能
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetSearch(SearchRequest request)
         {
             IQueryable<HouseData> query = _dbContext.HouseDatas;
-
             // 建立多欄位搜尋條件
             query = query.Where(p =>
-           (request.MinPrice.HasValue && p.Price >= request.MinPrice.Value) ||
-           (request.MaxPrice.HasValue && p.Price <= request.MaxPrice.Value) ||
-           (request.MinPricePerPing.HasValue && p.PricePerPing >= request.MinPricePerPing.Value) ||
-           (request.MaxPricePerPing.HasValue && p.PricePerPing <= request.MaxPricePerPing.Value) ||
-           (request.MinRoomCount > 0 && p.RoomCount >= request.MinRoomCount) || // 最小房間數條件
-           (request.MaxRoomCount > 0 && p.RoomCount <= request.MaxRoomCount) || // 最大房間數條件
-           (request.MinRestroomCount > 0 && p.RestroomCount >= request.MinRestroomCount) ||
-           (request.MaxRestroomCount > 0 && p.RestroomCount <= request.MaxRestroomCount) ||
-           (request.MinLivingRoomCount > 0 && p.LivingRoomCount >= request.MinLivingRoomCount) ||
-           (request.MaxLivingRoomCount > 0 && p.LivingRoomCount <= request.MaxLivingRoomCount) ||
-           (request.MinParkingSpaceCount > 0 && p.ParkingSpaceCount >= request.MinParkingSpaceCount) ||
-           (request.MaxParkingSpaceCount > 0 && p.ParkingSpaceCount <= request.MaxParkingSpaceCount) ||
-           (request.MinFloor > 0 && p.Floor >= request.MinFloor) ||
-           (request.MaxFloor > 0 && p.Floor <= request.MaxFloor) ||
-           (request.City>0) && p.City == request.City);
+         (!request.MinPrice.HasValue || p.Price >= request.MinPrice.Value) &&
+         (!request.MaxPrice.HasValue || p.Price <= request.MaxPrice.Value) &&
+         (!request.MinPricePerPing.HasValue || p.PricePerPing >= request.MinPricePerPing.Value) &&
+         (!request.MaxPricePerPing.HasValue || p.PricePerPing <= request.MaxPricePerPing.Value) &&
+         (request.MinRoomCount <= 0 || p.RoomCount >= request.MinRoomCount) &&
+         (request.MaxRoomCount <= 0 || p.RoomCount <= request.MaxRoomCount) &&
+         (request.MinRestroomCount <= 0 || p.RestroomCount >= request.MinRestroomCount) &&
+         (request.MaxRestroomCount <= 0 || p.RestroomCount <= request.MaxRestroomCount) &&
+         (request.MinLivingRoomCount <= 0 || p.LivingRoomCount >= request.MinLivingRoomCount) &&
+         (request.MaxLivingRoomCount <= 0 || p.LivingRoomCount <= request.MaxLivingRoomCount) &&
+         (request.MinParkingSpaceCount <= 0 || p.ParkingSpaceCount >= request.MinParkingSpaceCount) &&
+         (request.MaxParkingSpaceCount <= 0 || p.ParkingSpaceCount <= request.MaxParkingSpaceCount) &&
+         (request.MinFloor <= 0 || p.Floor >= request.MinFloor) &&
+         (request.MaxFloor <= 0 || p.Floor <= request.MaxFloor) &&
+         (request.City <= 0 || p.City == request.City)
+     );
+
 
             // 計算滿足條件的總數量
             int totalRecords = query.Count();
@@ -80,6 +91,7 @@ namespace SuParty.Pages.RealEstate
             });
         }
     }
+
     public class SearchRequest
     {
         public decimal? MinPrice { get; set; }   

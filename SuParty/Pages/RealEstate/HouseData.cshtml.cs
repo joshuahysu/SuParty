@@ -25,8 +25,8 @@ namespace SuParty.Pages.RealEstate
         public async Task<IActionResult> OnGet(string id)
         {
             HouseData = await _dbContext.HouseDatas.FindAsync(id);
-            var user=await _dbContext.UserDatas.FindAsync(HouseData.SalesId);
-            Base64QRCode = Qrcode.CreateQrcode(user.Line_Url);
+            UserData? user =await _dbContext.UserDatas.FindAsync(HouseData.SalesId);
+            Base64QRCode = Qrcode.CreateQrcode(user.Line_Url);//Line的Qrcode
             if (User.Identity.IsAuthenticated)
             {
                 //有會員也許修改價格
