@@ -8,33 +8,11 @@
     ViewData["Title"] = "即時留言板";
     Layout = "_Layout";
 }
-<script src="https://unpkg.com/vue@2.6.14/dist/vue.min.js"></script>
-<script src="https://unpkg.com/vue-beautiful-chat"></script>
-<!-- Razor 頁面內的 Vue App -->
-<div id="app">
-    <beautiful-chat :participants="participants"
-                    :messages="messages"
-                    :title="'聊天室'"
-    @@onMessageWasSent="sendMessage"></beautiful-chat>
-</div>
 
-<script>
-    new Vue({
-        el: '#app',
-        data() {
-            return {
-                participants: [{ id: 'user1', name: '使用者A' }],
-                messages: [{ type: 'text', author: 'user1', data: { text: '你好！' } }]
-            };
-        },
-        methods: {
-            sendMessage(message) {
-                this.messages.push(message);
-            }
-        }
-    });
-</script>
 <div class="container">
+    <!-- Razor 頁面內的 Vue App -->
+
+
  @*    <div id="app">
         <chat-room></chat-room>
     </div> 
@@ -83,7 +61,6 @@
         </div>
     </div>
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.15/signalr.min.js"></script>
 <script>
     // 從 URL 查詢參數中提取 chatroomId

@@ -41,22 +41,24 @@ namespace SuParty.Pages.RealEstate
             IQueryable<HouseData> query = _dbContext.HouseDatas;
 
             // 建立多欄位搜尋條件
-            query = query.Where(p =>
-           (request.MinPrice.HasValue && p.Price >= request.MinPrice.Value) ||
-           (request.MaxPrice.HasValue && p.Price <= request.MaxPrice.Value) ||
-           (request.MinPricePerPing.HasValue && p.PricePerPing >= request.MinPricePerPing.Value) ||
-           (request.MaxPricePerPing.HasValue && p.PricePerPing <= request.MaxPricePerPing.Value) ||
-           (request.MinRoomCount > 0 && p.RoomCount >= request.MinRoomCount) || // 最小房間數條件
-           (request.MaxRoomCount > 0 && p.RoomCount <= request.MaxRoomCount) || // 最大房間數條件
-           (request.MinRestroomCount > 0 && p.RestroomCount >= request.MinRestroomCount) ||
-           (request.MaxRestroomCount > 0 && p.RestroomCount <= request.MaxRestroomCount) ||
-           (request.MinLivingRoomCount > 0 && p.LivingRoomCount >= request.MinLivingRoomCount) ||
-           (request.MaxLivingRoomCount > 0 && p.LivingRoomCount <= request.MaxLivingRoomCount) ||
-           (request.MinParkingSpaceCount > 0 && p.ParkingSpaceCount >= request.MinParkingSpaceCount) ||
-           (request.MaxParkingSpaceCount > 0 && p.ParkingSpaceCount <= request.MaxParkingSpaceCount) ||
-           (request.MinFloor > 0 && p.Floor >= request.MinFloor) ||
-           (request.MaxFloor > 0 && p.Floor <= request.MaxFloor) ||
-           (request.City>0) && p.City == request.City);
+            query = query = query.Where(p =>
+            (request.MinPrice != null ? p.Price >= request.MinPrice.Value : true) &&
+            (request.MaxPrice != null ? p.Price <= request.MaxPrice.Value : true) &&
+            (request.MinPricePerPing != null ? p.PricePerPing >= request.MinPricePerPing.Value : true) &&
+            (request.MaxPricePerPing != null ? p.PricePerPing <= request.MaxPricePerPing.Value : true) &&
+            (request.MinRoomCount > 0 ? p.RoomCount >= request.MinRoomCount : true) && // 0 代表不篩選
+            (request.MaxRoomCount > 0 ? p.RoomCount <= request.MaxRoomCount : true) &&
+            (request.MinRestroomCount > 0 ? p.RestroomCount >= request.MinRestroomCount : true) &&
+            (request.MaxRestroomCount > 0 ? p.RestroomCount <= request.MaxRestroomCount : true) &&
+            (request.MinLivingRoomCount > 0 ? p.LivingRoomCount >= request.MinLivingRoomCount : true) &&
+            (request.MaxLivingRoomCount > 0 ? p.LivingRoomCount <= request.MaxLivingRoomCount : true) &&
+            (request.MinParkingSpaceCount > 0 ? p.ParkingSpaceCount >= request.MinParkingSpaceCount : true) &&
+            (request.MaxParkingSpaceCount > 0 ? p.ParkingSpaceCount <= request.MaxParkingSpaceCount : true) &&
+            (request.MinFloor > 0 ? p.Floor >= request.MinFloor : true) &&
+            (request.MaxFloor > 0 ? p.Floor <= request.MaxFloor : true) &&
+            (request.City+1 > 0 ? p.City == request.City : true) // 0 代表不篩選
+);
+
 
             // 計算滿足條件的總數量
             int totalRecords = query.Count();

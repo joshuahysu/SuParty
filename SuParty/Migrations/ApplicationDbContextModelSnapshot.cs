@@ -312,6 +312,10 @@ namespace SuParty.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Seller")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<float>("Space")
                         .HasColumnType("REAL");
 

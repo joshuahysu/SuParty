@@ -54,7 +54,55 @@
 </table>
 
 <script>
-    var request = {
+      var request = {
+        'MinPrice': $('#MinPrice').val(),
+        'MaxPrice': $('#MaxPrice').val(),
+        'MinPricePerPing': $('#MinPricePerPing').val(),
+        'MaxPricePerPing': $('#MaxPricePerPing').val(),
+        'MinSpace': $('#MinSpace').val(),
+        'MaxSpace': $('#MaxSpace').val(),
+        'MinRoomCount': $('#MinRoomCount').val(),
+        'MaxRoomCount': $('#MaxRoomCount').val(),
+        'MinRestroomCount': $('#MinRestroomCount').val(),
+        'MaxRestroomCount': $('#MaxRestroomCount').val(),
+        'MinLivingRoomCount': $('#MinLivingRoomCount').val(),
+        'MaxLivingRoomCount': $('#MaxLivingRoomCount').val(),
+        'MinParkingSpaceCount': $('#MinParkingSpaceCount').val(),
+        'MaxParkingSpaceCount': $('#MaxParkingSpaceCount').val(),
+        'MinFloor': $('#MinFloor').val(),
+        'MaxFloor': $('#MaxFloor').val(),
+        'City': $('#City').val()
+    };
+     var table=$('#houseList').DataTable({
+        ajax: {
+            url: _baseUrlAddAction('Search'), // 替換為你的 API URL
+            type: 'GET',
+              data: function (d) { // `d` 會傳遞給 AJAX
+            return $.extend({}, d, request); // 合併 DataTables 的內部參數與自訂搜尋條件
+        }
+        },
+        columns: [
+            {
+                data: 'image',
+                render: function (data, type, row) {
+                    // 假設 `data` 是圖片的 URL，`row.id` 是該行的唯一識別 ID
+                    if (row.id) {
+                        return `<a href="../RealEstate/HouseData?id=${row.id}">
+                                <img src="${data}" alt="Image" style="width: 100px; height: auto;" />
+                            </a>`;
+                    } else {
+                        return '無圖片'; // 當沒有圖片時顯示的文字
+                    }
+                }
+            },
+            { data: 'price' },
+            { data: 'pricePerPing' },
+            { data: 'floor' }
+        ]
+    });
+    // 按鈕點擊事件，重新刷新資料
+    $('#Search').on('click', function () {
+    request = {
         'MinPrice': $('#MinPrice').val(),
         'MaxPrice': $('#MaxPrice').val(),
         'MinPricePerPing': $('#MinPricePerPing').val(),
@@ -79,33 +127,8 @@
 
     //aaa?handler=Search&keyword=test&page=1
 
-    $('#houseList').DataTable({
-        ajax: {
-            url: _baseUrlAddAction('Search'), // 替換為你的 API URL
-            type: 'GET',
-            data: request
-        },
-        columns: [
-            {
-                data: 'Image',
-                render: function (data, type, row) {
-                    // 假設 `data` 是圖片的 URL，`row.id` 是該行的唯一識別 ID
-                    if (data) {
-                        return `<a href="../HouseData/${row.id}">
-                                <img src="${data}" alt="Image" style="width: 100px; height: auto;" />
-                            </a>`;
-                    } else {
-                        return '無圖片'; // 當沒有圖片時顯示的文字
-                    }
-                }
-            },
-            { data: 'Price' },
-            { data: 'PricePerPing' },
-            { data: 'Floor' }
-        ]
-    });
-    // 按鈕點擊事件，重新刷新資料
-    $('#Search').on('click', function () {
+   
+
         table.ajax.reload(); // 重新加載資料
     });
 
