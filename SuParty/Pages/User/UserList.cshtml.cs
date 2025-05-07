@@ -9,7 +9,7 @@ namespace SuParty.Pages.User
     [AllowAnonymous]
     public class UserListModel : PageModel
     {
-        public List<UserData> UserDataList { get; set; } = new ();
+        public List<RealEstateUserData> UserDataList { get; set; } = new ();
 
         private readonly ApplicationDbContext _dbContext;
 

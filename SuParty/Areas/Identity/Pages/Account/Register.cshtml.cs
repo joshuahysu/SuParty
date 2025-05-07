@@ -121,7 +121,7 @@ namespace SuParty.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     //客製化
-                    var userData = new UserData();
+                    var userData = new RealEstateUserData();
                     userData.Id = user.Id;
                     _dbContext.UserDatas.Add(userData);
                     _dbContext.SaveChanges();

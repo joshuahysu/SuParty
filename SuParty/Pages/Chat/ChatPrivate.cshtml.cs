@@ -54,6 +54,7 @@ namespace SuParty.Pages
                 }
             }
             //¾Ö¦³ªº²á¤Ñ«Ç
+            if(UserData!=null)
             Chatrooms = UserData.ChatRooms.ToList();
             return Page();
 

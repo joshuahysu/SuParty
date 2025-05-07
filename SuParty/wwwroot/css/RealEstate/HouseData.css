@@ -1,0 +1,37 @@
+﻿<style>
+  .house-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+    background-color: #f0f4f8;
+    border-radius: 12px;
+  }
+
+  .house-info p {
+    margin: 0;
+    padding: 1rem;
+    background: linear-gradient(135deg, #ffffff, #f9fafc);
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    font-size: 16px;
+    color: #333;
+    transition: transform 0.2s ease;
+  }
+
+  .house-info p:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  @media (max-width: 600px) {
+    .house-info {
+      padding: 1rem;
+    }
+
+    .house-info p {
+      font-size: 15px;
+    }
+  }
+</style>

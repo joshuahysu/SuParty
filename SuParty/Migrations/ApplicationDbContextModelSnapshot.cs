@@ -218,7 +218,7 @@ namespace SuParty.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("Images")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -238,6 +238,9 @@ namespace SuParty.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SalesId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("ProductDatas");
@@ -254,6 +257,13 @@ namespace SuParty.Migrations
 
                     b.Property<int>("City")
                         .HasColumnType("INTEGER");
+
+                    b.Property<float>("CommonArea")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("DevelopmentName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Floor")
                         .HasColumnType("INTEGER");
@@ -274,6 +284,9 @@ namespace SuParty.Migrations
 
                     b.Property<int>("LivingRoomCount")
                         .HasColumnType("INTEGER");
+
+                    b.Property<float>("LotSize")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("MaintenanceFee")
                         .HasColumnType("INTEGER");
@@ -301,6 +314,9 @@ namespace SuParty.Migrations
                     b.Property<string>("ProductType")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<float>("RealSpace")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("RestroomCount")
                         .HasColumnType("INTEGER");
@@ -373,6 +389,11 @@ namespace SuParty.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -392,6 +413,10 @@ namespace SuParty.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("HousePhone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("IG_Url")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -407,6 +432,12 @@ namespace SuParty.Migrations
                     b.Property<string>("Line_Url")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("MembershipExpirationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MembershipLevel")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -442,7 +473,11 @@ namespace SuParty.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserDatas");
+                    b.ToTable("UserData");
+
+                    b.HasDiscriminator().HasValue("UserData");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("SuParty.Data.DataModel.UserWallet", b =>
@@ -467,6 +502,71 @@ namespace SuParty.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserWallets");
+                });
+
+            modelBuilder.Entity("Utility.Service.Product.enums.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Utility.Service.Product.enums.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Method")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("PaidAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("SuParty.Data.DataModel.RealEstateUserData", b =>
+                {
+                    b.HasBaseType("SuParty.Data.DataModel.UserData");
+
+                    b.Property<string>("Brokerage")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasDiscriminator().HasValue("RealEstateUserData");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -518,6 +618,33 @@ namespace SuParty.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Utility.Service.Product.enums.Order", b =>
+                {
+                    b.HasOne("SuParty.Data.DataModel.UserData", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Utility.Service.Product.enums.Payment", b =>
+                {
+                    b.HasOne("Utility.Service.Product.enums.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Utility.Service.Product.enums.Order", b =>
+                {
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

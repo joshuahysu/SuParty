@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SuParty.Migrations
 {
     /// <inheritdoc />
-    public partial class ttt : Migration
+    public partial class ini : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,6 +56,7 @@ namespace SuParty.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    DevelopmentName = table.Column<string>(type: "TEXT", nullable: false),
                     Introduction = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     Year = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -66,6 +67,9 @@ namespace SuParty.Migrations
                     City = table.Column<int>(type: "INTEGER", nullable: false),
                     HouseType = table.Column<int>(type: "INTEGER", nullable: false),
                     Space = table.Column<float>(type: "REAL", nullable: false),
+                    RealSpace = table.Column<float>(type: "REAL", nullable: false),
+                    LotSize = table.Column<float>(type: "REAL", nullable: false),
+                    CommonArea = table.Column<float>(type: "REAL", nullable: false),
                     PricePerPing = table.Column<float>(type: "REAL", nullable: false),
                     RoomCount = table.Column<int>(type: "INTEGER", nullable: false),
                     RestroomCount = table.Column<int>(type: "INTEGER", nullable: false),
@@ -76,7 +80,8 @@ namespace SuParty.Migrations
                     Floor = table.Column<int>(type: "INTEGER", nullable: false),
                     SalesId = table.Column<string>(type: "TEXT", nullable: false),
                     Index = table.Column<int>(type: "INTEGER", nullable: false),
-                    MaintenanceFee = table.Column<int>(type: "INTEGER", nullable: false)
+                    MaintenanceFee = table.Column<int>(type: "INTEGER", nullable: false),
+                    Seller = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -112,7 +117,7 @@ namespace SuParty.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDatas",
+                name: "UserData",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -122,7 +127,10 @@ namespace SuParty.Migrations
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     NickName = table.Column<string>(type: "TEXT", nullable: false),
                     Gender = table.Column<string>(type: "TEXT", nullable: false),
+                    HousePhone = table.Column<string>(type: "TEXT", nullable: false),
                     Phone = table.Column<string>(type: "TEXT", nullable: false),
+                    MembershipLevel = table.Column<int>(type: "INTEGER", nullable: false),
+                    MembershipExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AvatarUrl = table.Column<string>(type: "TEXT", nullable: false),
                     Introduction = table.Column<string>(type: "TEXT", nullable: false),
                     Income = table.Column<string>(type: "TEXT", nullable: false),
@@ -138,11 +146,13 @@ namespace SuParty.Migrations
                     Weight = table.Column<string>(type: "TEXT", nullable: false),
                     Bust = table.Column<string>(type: "TEXT", nullable: false),
                     Waist = table.Column<string>(type: "TEXT", nullable: false),
-                    Hips = table.Column<string>(type: "TEXT", nullable: false)
+                    Hips = table.Column<string>(type: "TEXT", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 21, nullable: false),
+                    Brokerage = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDatas", x => x.Id);
+                    table.PrimaryKey("PK_UserData", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -266,6 +276,51 @@ namespace SuParty.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_UserData_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Method = table.Column<int>(type: "INTEGER", nullable: false),
+                    Amount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    PaidAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -302,6 +357,16 @@ namespace SuParty.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_OrderId",
+                table: "Payments",
+                column: "OrderId");
         }
 
         /// <inheritdoc />
@@ -326,13 +391,13 @@ namespace SuParty.Migrations
                 name: "HouseDatas");
 
             migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "ProductDatas");
 
             migrationBuilder.DropTable(
                 name: "Trackings");
-
-            migrationBuilder.DropTable(
-                name: "UserDatas");
 
             migrationBuilder.DropTable(
                 name: "UserWallets");
@@ -342,6 +407,12 @@ namespace SuParty.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "UserData");
         }
     }
 }

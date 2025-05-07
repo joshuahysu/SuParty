@@ -18,7 +18,7 @@ namespace SuParty.Pages.User
 
         // 用於傳遞到前端的資料
         public string Message { get; set; }
-        public UserData? UserData { get; set; }=new UserData();
+        public RealEstateUserData? UserData { get; set; }=new RealEstateUserData();
         public async Task<IActionResult> OnGet(string userId)
         {
 

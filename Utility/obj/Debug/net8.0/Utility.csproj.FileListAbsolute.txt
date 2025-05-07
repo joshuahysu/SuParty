@@ -1,0 +1,12 @@
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\bin\Debug\net8.0\Utility.deps.json
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\bin\Debug\net8.0\Utility.dll
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\bin\Debug\net8.0\Utility.pdb
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\Utility.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\Utility.AssemblyInfoInputs.cache
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\Utility.AssemblyInfo.cs
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\Utility.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\Utility.sourcelink.json
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\Utility.dll
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\refint\Utility.dll
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\Utility.pdb
+C:\Users\User\OneDrive\Documents\work\SuParty\Utility\obj\Debug\net8.0\ref\Utility.dll

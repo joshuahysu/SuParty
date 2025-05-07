@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SuParty.Data.DataModel;
 using SuParty.Data.DataModel.RealEstate;
+using Utility.Service.Product.enums;
 
 namespace SuParty.Data
 {
@@ -11,11 +12,12 @@ namespace SuParty.Data
             : base(options)
         {
         }
-        public DbSet<UserData> UserDatas { get; set; }
+        public DbSet<RealEstateUserData> UserDatas { get; set; }
         public DbSet<UserWallet> UserWallets { get; set; }
         public DbSet<Tracking> Trackings { get; set; }
         public DbSet<ProductData> ProductDatas { get; set; }
         public DbSet<HouseData> HouseDatas { get; set; }
-        
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }    
 }

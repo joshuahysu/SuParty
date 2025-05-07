@@ -1,4 +1,5 @@
-﻿using SuParty.Data.DataModel.RealEstate.Enum;
+﻿using Microsoft.AspNetCore.Mvc;
+using SuParty.Data.DataModel.RealEstate.Enum;
 using System.ComponentModel.DataAnnotations;
 using static TronNet.Protocol.TransactionInfo.Types;
 
@@ -19,7 +20,7 @@ namespace SuParty.Data.DataModel.RealEstate
         /// <summary>
         /// 簡介
         /// </summary>
-        public string Introduction { get; set; } = "";
+        public string Introduction { get; set; } = "是個好房子";
         [Required(ErrorMessage = "價格是必填欄位。")]
         public decimal Price { get; set; } = 999999999;
 
@@ -27,12 +28,18 @@ namespace SuParty.Data.DataModel.RealEstate
         /// 完工日期
         /// </summary>
         public DateTime Year { get; set; }= DateTime.Now;
+
+
         /// <summary>
         /// 圖片
         /// </summary>
         public List<string> Images { get; set; } = new();
         [Required(AllowEmptyStrings = true)]
         public string VideoUrl { get; set; } = "";
+        
+        /// <summary>
+        /// 地址
+        /// </summary>
         public string Address { get; set; } = "";
         public string ProductType { get; set; } = "";
 
@@ -56,10 +63,13 @@ namespace SuParty.Data.DataModel.RealEstate
         /// </summary>
         public float CommonArea { get; set; } = 0;
 
+        /// <summary>
+        /// 單價
+        /// </summary>
         public float PricePerPing { get; set; } = 0;
 
         /// <summary>
-        /// 
+        /// 房間數量
         /// </summary>
         public int RoomCount { get; set; } = 0;
         public int RestroomCount { get; set; } = 0;
@@ -71,8 +81,15 @@ namespace SuParty.Data.DataModel.RealEstate
         public int ParkingSpaceCount { get; set; } = 0;
         public int ParkingSpace { get; set; } = 0;
         public ParkingSpaceTypeEnum ParkingSpaceType { get; set; } = 0;
+        
+        /// <summary>
+        /// 樓層
+        /// </summary>
         public int Floor { get; set; } = 1;
 
+        /// <summary>
+        /// 賣家ID
+        /// </summary>
         public string SalesId { get; set; } = "";
 
         public int Index { get; set; } = 1;

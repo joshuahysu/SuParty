@@ -6,7 +6,7 @@
 @{
     Layout = "_Layout";
 }
-@inject IStringLocalizer<EditUserDataModel> Localizer
+@inject IStringLocalizer<UserDataModel> Localizer
 
 
 <!DOCTYPE html>
@@ -20,46 +20,52 @@
         @Html.AntiForgeryToken()
         <div>
             <label for="Name">@Localizer["Name"]</label>
-            <input type="text" id="Name" name="Name" value="@Model.UserData.Name" />
+            <input type="text" id="Name" name="Name" value="@Model.UserData?.Name" />
         </div>
 
         <div>
             <label for="Birthday">@Localizer["Birthday"]</label>
-            <input type="date" id="Birthday" name="Birthday" value="@Model.UserData.Birthday.ToString("yyyy-MM-dd")" />
+            <input type="date" id="Birthday" name="Birthday" value="@Model.UserData?.Birthday.ToString("yyyy-MM-dd")" />
         </div>
 
         <div>
             <label for="NickName">@Localizer["Nick Name"]</label>
-            <input type="text" id="NickName" name="NickName" value="@Model.UserData.NickName" />
+            <input type="text" id="NickName" name="NickName" value="@Model.UserData?.NickName" />
         </div>
 
         <div>
             <label for="Gender">@Localizer["Gender"]</label>
             <select id="Gender" name="Gender">
-                <option value="Male" @(Model.UserData.Gender == "Male" ? "selected" : "")>@Localizer["Male"]</option>
-                <option value="Female" @(Model.UserData.Gender == "Female" ? "selected" : "")>@Localizer["Female"]</option>
+                <option value="Male" @(Model.UserData?.Gender == "Male" ? "selected" : "")>@Localizer["Male"]</option>
+                <option value="Female" @(Model.UserData?.Gender == "Female" ? "selected" : "")>@Localizer["Female"]</option>
             </select>
         </div>
 
         <div>
             <label for="Introduction">@Localizer["Introduction"]</label>
-            <textarea id="Introduction" name="Introduction">@Model.UserData.Introduction</textarea>
+            <textarea id="Introduction" name="Introduction">@Model.UserData?.Introduction</textarea>
         </div>
-
+        <div>
+            <label for="Phone">@Localizer["Phone"]</label>
+            <input type="text" id="Phone" name="Phone" value="@Model.UserData?.Phone" />
+        </div>
         <div>
             <label for="Income">@Localizer["Income"]</label>
-            <input type="text" id="Income" name="Income" value="@Model.UserData.Income" />
+            <input type="text" id="Income" name="Income" value="@Model.UserData?.Income" />
         </div>
 
         <div>
             <label for="Budget">@Localizer["Budget"]</label>
-            <input type="text" id="Budget" name="Budget" value="@Model.UserData.Budget" />
+            <input type="text" id="Budget" name="Budget" value="@Model.UserData?.Budget" />
         </div>
         <div>
             <label for="IG_Url">@Localizer["IG_Url"]</label>
-            <input type="text" id="IG_Url" name="IG_Url" value="@Model.UserData.IG_Url" />
+            <input type="text" id="IG_Url" name="IG_Url" value="@Model.UserData?.IG_Url" />
         </div>
-
+        <div>
+            <label for="Line_Url">@Localizer["Line_Url"]</label>
+            <input type="text" id="Line_Url" name="Line_Url" value="@Model.UserData?.Line_Url" />
+        </div>
         <button type="submit">Submit</button>
     </form>
 </body>

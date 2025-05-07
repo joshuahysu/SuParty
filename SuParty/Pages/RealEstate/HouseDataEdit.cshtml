@@ -11,10 +11,11 @@
 
 <form method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
-    @* <div class="form-group"> *@
-    @*     <label for="Image">圖片</label> *@
-    @*     <input type="text" class="form-control" id="Image" name="Image" value="@Model.HouseData?.Images" /> *@
-    @* </div> *@
+
+    <div class="form-group">
+        <label for="ImagesUpload">上傳多個圖片</label>
+        <input type="file" class="form-control" id="ImagesUpload" name="ImagesUpload" multiple accept="image/*" />
+    </div>
 
     <div class="form-group">
         <label for="Name">名稱</label>

@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SuParty.Data;
 using SuParty.Middleware;
+using SuParty.Service;
+using SuParty.Service.Redis;
+using System.ComponentModel.Design;
 using TronNet;
 
 namespace SuParty
@@ -98,10 +101,18 @@ namespace SuParty
             //    x.SolidityChannel = new GrpcChannelOption { Host = "grpc.shasta.trongrid.io", Port = 50052 };
             //    x.ApiKey = "input your api key";
             //});
-            builder.Services.AddMemoryCache(); // 註冊 MemoryCache
+            //builder.Services.AddSingleton(new RedisService("localhost:6379"));
 
+            builder.Services.AddMemoryCache(); // 註冊 MemoryCache
+            builder.Services.AddDynamicServices(builder.Configuration);
+
+            // 註冊為 Singleton / Scoped / Transient
+            //builder.Services.AddSingleton<IMyService, MyService>();
+            //builder.Services.AddScoped<IOtherService, OtherService>();
+            //builder.Services.AddTransient<IHelperService, HelperService>();
             var app = builder.Build();
 
+            DI.ServiceProvider = app.Services;
             // 配置請求管線中的本地化選項
             var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
             app.UseRequestLocalization(localizationOptions);

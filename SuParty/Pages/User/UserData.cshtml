@@ -11,8 +11,8 @@
 }
 
 @inject IStringLocalizer<SuParty.Pages.User.UserDataModel> Localizer
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+@* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> *@
+@* <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> *@
 
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
     <ol class="carousel-indicators">
@@ -57,35 +57,39 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Name"]:</strong>
-            <span>@Model.UserData?.Name??Localizer["N/A"]</span>
+            <span>@Model.UserData?.Name</span>
         </div>
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Birthday"]:</strong>
-            <span>@Model.UserData?.Birthday.ToString("yyyy-MM-dd") ?? Localizer["N/A"]</span>
+            <span>@Model.UserData?.Birthday.ToString("yyyy-MM-dd")</span>
         </div>
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Nick Name"]:</strong>
-            <span>@Model.UserData?.NickName ?? Localizer["N/A"]</span>
+            <span>@Model.UserData?.NickName</span>
         </div>
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Gender"]:</strong>
-            <span>@Model.UserData?.Gender ?? Localizer["N/A"]</span>
+            <span>@Model.UserData?.Gender</span>
         </div>
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Introduction"]:</strong>
-            <span>@Model.UserData?.Introduction ?? Localizer["N/A"]</span>
+            <span>@Model.UserData?.Introduction</span>
         </div>
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Income"]:</strong>
-            <span>@Model.UserData?.Income ?? Localizer["N/A"]</span>
+            <span>@Model.UserData?.Income</span>
         </div>
         <div class="col-md-6 mb-3">
             <strong>@Localizer["Budget"]:</strong>
-            <span>@Model.UserData?.Budget ?? Localizer["N/A"]</span>
+            <span>@Model.UserData?.Budget</span>
         </div>
         <div class="col-md-6 mb-3">
             <strong>@Localizer["IG_Url"]:</strong>
-            <a href="@Model.UserData?.IG_Url" target="_blank">@Model.UserData?.IG_Url ?? Localizer["N/A"]</a>
+            <a href="@Model.UserData?.IG_Url" target="_blank">@Model.UserData?.IG_Url</a>
+        </div>
+        <div class="col-md-6 mb-3">
+            <strong>@Localizer["Line_Url"]:</strong>
+            <a href="@Model.UserData?.Line_Url" target="_blank">@Model.UserData?.Line_Url</a>
         </div>
     </div>
 </div>

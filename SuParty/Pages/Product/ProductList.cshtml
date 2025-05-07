@@ -1,4 +1,87 @@
 ﻿@page
 @model SuParty.Pages.Product.ProductListModel
 @{
+    Layout = "_Layout";
 }
+@{
+    // <form method="get">
+    //     <div class="form-group">
+    //         <label for="City">選擇類型</label>
+    //         <select id="City" name="City" class="form-control">
+    //             @foreach (var city in Enum.GetValues(typeof(CityEnum)))
+    //             {
+    //                 <option value="@city">@city</option>
+    //             }
+    //         </select>
+    //     </div>
+
+    //     <button type="submit" class="btn btn-primary">提交</button>
+    // </form>
+}
+    <table id="houseList" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>價格</th>
+                @* <th>坪</th> *@
+                @* <th>屋齡</th> *@
+                @* <th>樓層</th> *@
+            </tr>
+        </thead>
+    </table>
+
+
+    <script>
+          var request = {
+            // 'MinPrice': $('#MinPrice').val(),
+            // 'MaxPrice': $('#MaxPrice').val()
+        };
+
+        // 要傳遞的欄位
+        // 檢查 #MinPrice 是否有值
+
+        //aaa?handler=Search&keyword=test&page=1
+
+        var table =$('#houseList').DataTable({
+            ajax: {
+                url: _baseUrlAddAction('Search'), // 替換為你的 API URL
+                type: 'GET',
+                  data: function (d) { // `d` 會傳遞給 AJAX
+                return $.extend({}, d, request); // 合併 DataTables 的內部參數與自訂搜尋條件
+            }
+            },
+            columns: [
+                {
+                    data: 'image',
+                    render: function (data, type, row) {
+                        // 假設 `data` 是圖片的 URL，`row.id` 是該行的唯一識別 ID
+                        if (row.id) {
+                            return `<a href="./ProductData?id=${row.id}">
+                                    <img src="${row.images}" alt="Image" style="width: 100px; height: auto;" />
+                                詳情 ${row.address}</a>`;
+                        } else {
+                            return '無圖片'; // 當沒有圖片時顯示的文字
+                        }
+                    }
+                },
+                { data: 'price' }
+            ]
+        });
+        // 按鈕點擊事件，重新刷新資料
+        $('#Search').on('click', function () {
+        request = {
+            'MinPrice': $('#MinPrice').val(),
+            'MaxPrice': $('#MaxPrice').val()
+        };
+
+        // 要傳遞的欄位
+        // 檢查 #MinPrice 是否有值
+
+        //aaa?handler=Search&keyword=test&page=1
+
+
+
+            table.ajax.reload(); // 重新加載資料
+        });
+
+    </script>

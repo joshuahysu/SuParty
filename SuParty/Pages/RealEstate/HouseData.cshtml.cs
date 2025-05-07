@@ -14,23 +14,24 @@ namespace SuParty.Pages.RealEstate
 
         public HouseData? HouseData { get; set; } = new HouseData();
 
+        public RealEstateUserData? SaleUser { get; set; } = new ();
         public string Base64QRCode { get; set; } = "";
 
-
+        public string UserID { get; set; } = "";
         public HouseDataModel(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IActionResult> OnGet(string id)
+        public async Task<IActionResult> OnGet(string id,string promoter)
         {
             HouseData = await _dbContext.HouseDatas.FindAsync(id);
-            var user=await _dbContext.UserDatas.FindAsync(HouseData.SalesId);
-            Base64QRCode = Qrcode.CreateQrcode(user.Line_Url);
+            SaleUser =await _dbContext.UserDatas.FindAsync(HouseData.SalesId);
+            if(SaleUser!=null)
+            Base64QRCode = Qrcode.CreateQrcode(SaleUser.Line_Url);//Line的Qrcode
             if (User.Identity.IsAuthenticated)
             {
-                //有會員也許修改價格
-
+                UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
             else
             {
@@ -46,7 +47,7 @@ namespace SuParty.Pages.RealEstate
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 // 查詢使用者
-                UserData? user = await _dbContext.UserDatas.FindAsync(userId);
+                RealEstateUserData? user = await _dbContext.UserDatas.FindAsync(userId);
 
                 // 新增一筆資料到 追蹤列表
                 user.TraceRealEstates.Add(id);

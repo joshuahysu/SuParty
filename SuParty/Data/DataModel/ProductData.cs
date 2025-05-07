@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SuParty.Data.DataModel
 {
@@ -10,7 +8,7 @@ namespace SuParty.Data.DataModel
 
         [Required(ErrorMessage = "產品名稱是必填欄位。")]
         [StringLength(50, ErrorMessage = "產品名稱不能超過 50 個字元。")]
-        public string Name { get; set; } = "test";
+        public string Name { get; set; } = "";
 
         /// <summary>
         /// 簡介
@@ -22,8 +20,10 @@ namespace SuParty.Data.DataModel
         /// <summary>
         /// 圖片
         /// </summary>
-        public string Image { get; set; } = "";
+        public List<string> Images { get; set; } = new();
 
         public string ProductType { get; set; } = "";
+
+        public string? SalesId { get; internal set; }
     }
 }

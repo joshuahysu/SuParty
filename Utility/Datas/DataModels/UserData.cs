@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace SuParty.Data.DataModel
 {
     public class UserData
@@ -10,11 +8,36 @@ namespace SuParty.Data.DataModel
         public DateTime Birthday { get; set; }
         public string? Email { get; set; } = "";
 
+        /// <summary>
+        /// 地址
+        /// </summary>
         public string Address { get; set; } = "";
+
+        /// <summary>
+        /// 小名
+        /// </summary>
         public string NickName { get; set; } = "";
+        /// <summary>
+        /// 性別
+        /// </summary>
         public string Gender { get; set; } = "";
+
+        /// <summary>
+        /// 家用電話
+        /// </summary>
+        public string HousePhone { get; set; } = "";
+
         public string Phone { get; set; } = "";
 
+        /// <summary>
+        /// 會員等級
+        /// </summary>
+        public int MembershipLevel { get; set; }
+
+        /// <summary>
+        /// 會員到期日
+        /// </summary>
+        public DateTime MembershipExpirationDate { get; set; }= DateTime.Now.AddDays(-1);
         /// <summary>
         /// 大頭貼位置
         /// </summary>
@@ -28,10 +51,15 @@ namespace SuParty.Data.DataModel
         /// 收入
         /// </summary>
         public string Income { get; set; } = "";
+
+        /// <summary>
+        /// 預算
+        /// </summary>
         public string Budget { get; set; } = "";
         public string Line_Url { get; set; } = "";
         public string IG_Url { get; set; } = "";
         public string ExtraUrl { get; set; } = "";
+
         public List<string> ChatRooms { get; set; } = new();
 
         #region 產品資料
@@ -40,10 +68,6 @@ namespace SuParty.Data.DataModel
         public List<string> Store { get; set; } = new();
         #endregion
 
-        #region 房產資料
-        public List<string> TraceRealEstates { get; set; } = new();
-
-        #endregion
         #region 私人資料
         /// <summary>
         /// 儲存使用者的身高（以字串格式表示）。

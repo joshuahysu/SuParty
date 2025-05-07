@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Chat Example</title>
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <!-- vue-beautiful-chat -->
+    <script src="https://unpkg.com/vue-beautiful-chat"></script>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    participants: [{ id: 'user1', name: '使用者A' }],
+                    messages: [{ type: 'text', author: 'user1', data: { text: '你好！' } }],
+                    showChat: false
+                };
+            },
+            methods: {
+                sendMessage(message) {
+                    this.messages.push(message);
+                }
+            },
+            template: `
+                <div>
+                    <button @click="showChat = true">打開聊天</button>
+                    <beautiful-chat
+                        :participants="participants"
+                        :onMessageWasSent="sendMessage"
+                        :messageList="messages"
+                        :show="showChat"
+                        :alwaysScrollToBottom="true"
+                        :disableUserListToggle="true"
+                        :newMessagesCount="0"
+                        @close="showChat = false"
+                    />
+                </div>
+            `
+        }).mount('#app');
+    </script>
+</body>
+</html>

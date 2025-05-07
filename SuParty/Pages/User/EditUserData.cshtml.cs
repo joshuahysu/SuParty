@@ -9,7 +9,7 @@ namespace SuParty.Pages.User
     public class EditUserDataModel : PageModel
     {
         [BindProperty]
-        public UserData UserData { get; set; } // 綁定 UserData 模型
+        public RealEstateUserData UserData { get; set; } // 綁定 UserData 模型
 
         private readonly ApplicationDbContext _dbContext;
 
@@ -17,13 +17,15 @@ namespace SuParty.Pages.User
         {
             _dbContext = dbContext;
         }
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            UserData = _dbContext.UserDatas.Find(User.FindFirstValue(ClaimTypes.NameIdentifier));
             // 確保在首次加載頁面時 User 不是 null
             if (UserData == null)
             {
-                UserData = new UserData(); // 初始化 User 物件
+                UserData = new RealEstateUserData(); // 初始化 User 物件
             }
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +38,7 @@ namespace SuParty.Pages.User
                     //自動insert or update
                     _dbContext.UserDatas.Update(UserData);
                     await _dbContext.SaveChangesAsync();
-                    return RedirectToPage("/Success");
+                    return RedirectToPage("/User/UserData");
                 }
             }
             else

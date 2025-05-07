@@ -19,8 +19,9 @@ namespace SuParty.Pages.RealEstate
 
         [BindProperty]
         public HouseData HouseData { get; set; }
-
-        public async Task<IActionResult> OnGet(int? id)
+        [BindProperty]
+        public List<IFormFile> ImagesUpload { get; set; } = new();
+        public async Task<IActionResult> OnGet(string id)
         {
             if (id != null)
             {
@@ -32,6 +33,10 @@ namespace SuParty.Pages.RealEstate
             return Page();
         }
 
+        /// <summary>
+        /// 新增一筆
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
@@ -43,6 +48,27 @@ namespace SuParty.Pages.RealEstate
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 HouseData.SalesId = userId;
+
+                //上傳圖片
+                var uploadsFolder = Path.Combine("wwwroot/uploads");
+                Directory.CreateDirectory(uploadsFolder);
+
+                foreach (var formFile in ImagesUpload)
+                {
+                    if (formFile.Length > 0)
+                    {
+                        var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(formFile.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+
+                        HouseData.Images.Add("/uploads/" + uniqueFileName); // 儲存相對路徑
+                    }
+                }
+
                 if (!_dbContext.HouseDatas.Any(h => h.Id == HouseData.Id))
                 {
                     // 没有 ID，插入新数据

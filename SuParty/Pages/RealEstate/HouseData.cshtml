@@ -1,19 +1,20 @@
 ﻿@page
 @model SuParty.Pages.RealEstate.HouseDataModel
 @using Microsoft.Extensions.Localization
+@using System.Security.Claims
+
 @{
     Layout = "_Layout";
 }
 @inject IStringLocalizer<SuParty.Pages.RealEstate.HouseDataModel> Localizer
-
+<link rel="stylesheet" href="/css/RealEstate./HouseData.css" />
 <div class="container mt-4">
-    <img src = "data:image/png;base64,{{@Model.Base64QRCode}}" alt = "QR Code" />
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             @for (int i = 0; i < Model.HouseData.Images.Count; i++)
             {
                 <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <img src="@Model.HouseData.Images[i]" class="d-block w-100" alt="Slide @(i + 1)">
+                    <img src="@Model.HouseData.Images[i]" class="d-block w-100" alt="Slide @(i + 1)" style="max-height: 500px; object-fit: cover;">
                 </div>
             }
         </div>
@@ -27,9 +28,26 @@
         </button>
     </div>
 
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <p style="margin: 0;">賣方姓名：@Model.SaleUser?.Name</p>
+        <button onclick="copyModifiedUrl()">複製分享網址</button>
+       
+
+        <p>電話：@Model.SaleUser?.Phone</p>
+        <p>Line：</p> <a href="@Model.SaleUser?.Line_Url" target="_blank" rel="noopener noreferrer">
+            <img src="data:image/png;base64,@Model.Base64QRCode" alt="QR Code" style="width: 90px; height: auto;" />
+            連結
+        </a>
+
+    </div>
+ 
+    @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.SaleUser.Id)
+    {
+        <a href="./HouseDataEdit?id=@Model.HouseData.Id">編輯</a>
+    }  
+
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <strong>@Localizer["Nick Name"]:</strong>
+        <div class="col-md-6 mb-3">     
             <div class="house-detail">
                 <h1>@Model.HouseData.Name</h1> <!-- 顯示房屋名稱 -->
                 <p>@Model.HouseData.Introduction</p> <!-- 顯示房屋介紹 -->
@@ -37,22 +55,30 @@
             </div>
 
             <div class="house-info">
-                <img src="@Model.HouseData.Images" alt="House Image" /> <!-- 顯示圖片 -->
                 <video controls>
                     <source src="@Model.HouseData.VideoUrl" type="video/mp4">
                     Your browser does not support the video tag.
                 </video> <!-- 顯示影片 -->
-                <p>地址：@Model.HouseData.Address</p> <!-- 顯示地址 -->
-                <p>房型：@Model.HouseData.ProductType</p> <!-- 顯示房型 -->
-                <p>城市：@Model.HouseData.City</p> <!-- 顯示城市 -->
-                <p>空間：@Model.HouseData.Space 平方公尺</p> <!-- 顯示空間 -->
-                <p>每坪價格：@Model.HouseData.PricePerPing</p> <!-- 顯示每坪價格 -->
-                <p>房間數：@Model.HouseData.RoomCount</p> <!-- 顯示房間數 -->
-                <p>衛浴數：@Model.HouseData.RestroomCount</p> <!-- 顯示衛浴數 -->
-                <p>客廳數：@Model.HouseData.LivingRoomCount</p> <!-- 顯示客廳數 -->
-                <p>停車位數：@Model.HouseData.ParkingSpaceCount</p> <!-- 顯示停車位數 -->
-                <p>停車位：@Model.HouseData.ParkingSpace</p> <!-- 顯示停車位 -->
-                <p>樓層：@Model.HouseData.Floor</p> <!-- 顯示樓層 -->
+                <p>
+                <p>📍 地址：
+                    <a href="https://www.google.com/maps/search/@Model.HouseData.Address" target="_blank">
+                        @Model.HouseData.Address
+                    </a>
+                </p> <!-- 顯示地址 -->
+               </div>
+           
+
+            <div class="house-info">
+                <p>🏠 房型：@Model.HouseData.ProductType</p>
+                <p>🌆 城市：@Model.HouseData.City</p>
+                <p>📏 空間：@Model.HouseData.Space 坪</p>
+                <p>💰 每坪價格：@Model.HouseData.PricePerPing</p>
+                <p>🛏️ 房間數：@Model.HouseData.RoomCount</p>
+                <p>🛁 衛浴數：@Model.HouseData.RestroomCount</p>
+                <p>🛋️ 客廳數：@Model.HouseData.LivingRoomCount</p>
+                <p>🚗 停車位數：@Model.HouseData.ParkingSpaceCount</p>
+                <p>🅿️ 停車位：@Model.HouseData.ParkingSpace</p>
+                <p>🏢 樓層：@Model.HouseData.Floor</p>
             </div>
 
             <button id="TraceRealEstates">降價通知</button>
@@ -82,6 +108,17 @@
         })
         .catch(error => {
             console.error('Error:', error);
+        });
+    }
+
+    function copyModifiedUrl() {
+      const url = new URL(window.location.href);
+      url.searchParams.set("promoter", "@Model.UserID"); // 加上或更新參數
+      navigator.clipboard.writeText(url.toString())
+        .then(() => alert("已複製分享網址"))
+        .catch(err => {
+          console.error("複製失敗：", err);
+          alert("複製失敗，請查看 console");
         });
     }
 

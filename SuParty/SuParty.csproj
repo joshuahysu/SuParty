@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Plugin\**" />
+    <Compile Remove="Service\Friend\**" />
+    <Content Remove="Plugin\**" />
+    <Content Remove="Service\Friend\**" />
+    <EmbeddedResource Remove="Plugin\**" />
+    <EmbeddedResource Remove="Service\Friend\**" />
+    <None Remove="Plugin\**" />
+    <None Remove="Service\Friend\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.29.2" />
     <PackageReference Include="MessagePack" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.11" />
@@ -35,12 +46,17 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\js\RealEstate\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\Src\components\ChatRoom.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +67,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Home\Privacy.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\RealEstate\HouseData.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\img\image1.jpg">
