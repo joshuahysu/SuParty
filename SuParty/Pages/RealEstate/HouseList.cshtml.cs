@@ -66,7 +66,7 @@ namespace SuParty.Pages.RealEstate
          (request.MinFloor <= 0 || p.Floor >= request.MinFloor) &&
          (request.MaxFloor <= 0 || p.Floor <= request.MaxFloor) &&
          (request.City <= 0 || p.City == request.City)
-     );
+     ).OrderByDescending(c=>c.Index);
 
 
             // 計算滿足條件的總數量

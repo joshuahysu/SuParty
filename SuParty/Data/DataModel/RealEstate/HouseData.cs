@@ -9,6 +9,10 @@ namespace SuParty.Data.DataModel.RealEstate
     {
         public string Id { get; set; } = new Guid().ToString();
 
+        /// <summary>
+        /// 廣告排序
+        /// </summary>
+
         [Required(ErrorMessage = "產品名稱是必填欄位。")]
         [StringLength(50, ErrorMessage = "產品名稱不能超過 50 個字元。")]
         public string Name { get; set; } = "house";
@@ -69,6 +73,11 @@ namespace SuParty.Data.DataModel.RealEstate
         public float PricePerPing { get; set; } = 0;
 
         /// <summary>
+        /// 租金
+        /// </summary>
+        public float Rent { get; set; } = 0;
+
+        /// <summary>
         /// 房間數量
         /// </summary>
         public int RoomCount { get; set; } = 0;
@@ -92,6 +101,9 @@ namespace SuParty.Data.DataModel.RealEstate
         /// </summary>
         public string SalesId { get; set; } = "";
 
+        /// <summary>
+        /// 廣告排序
+        /// </summary>
         public int Index { get; set; } = 1;
 
         /// <summary>

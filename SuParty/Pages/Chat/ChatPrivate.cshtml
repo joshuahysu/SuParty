@@ -3,6 +3,43 @@
 @model SuParty.Pages.ChatPrivateModel
 
 @inject IStringLocalizer<SuParty.Pages.ChatPrivateModel> Localizer
+<style>
+    #messagesList {
+        list-style: none;
+        padding: 0;
+    }
+
+    .message {
+        max-width: 60%;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        clear: both;
+        position: relative;
+    }
+
+        .message.left {
+            background-color: #f1f1f1;
+            text-align: left;
+            float: left;
+        }
+
+        .message.right {
+            background-color: #cce5ff;
+            text-align: right;
+            float: right;
+        }
+
+    .timestamp {
+        font-size: 0.8em;
+        color: #888;
+    }
+
+    .content {
+        display: inline-block;
+        margin-left: 5px;
+    }
+</style>
 
 @{
     ViewData["Title"] = "即時留言板";
@@ -41,18 +78,30 @@
 
             <!-- 留言表單 -->
             <form id="messageForm">
-                <div>
-                    <label for="Content">內容：</label>
-                    <textarea id="Content" required></textarea>
-                </div>
-                <button type="submit">送出</button>
-            </form>
+                 <div> 
+                     <label for="Content">內容：</label> 
+                     <textarea id="Content" required></textarea> 
+                 </div> 
+                <button type="submit">送出</button> 
+             </form> 
 
             <h2>訊息</h2>
+            @* <ul id="messagesList"> *@
+            @*     @foreach (var message in Model.Messages) *@
+            @*     { *@
+            @*         <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li> *@
+            @*     } *@
+            @* </ul> *@
             <ul id="messagesList">
                 @foreach (var message in Model.Messages)
                 {
-                    <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li>
+                    var isCurrentUser = message.UserId == Model.UserId;
+                    var messageClass = isCurrentUser ? "message right" : "message left";
+                    <li class="@messageClass">
+                        <strong>@message.Name</strong>
+                        <span class="timestamp">(@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"))</span>:
+                        <span class="content">@message.Content</span>
+                    </li>
                 }
             </ul>
 

@@ -13,6 +13,8 @@ namespace SuParty.Pages
     {
         private readonly ApplicationDbContext _dbContext;
 
+        public string UserId = "";
+
         public ChatPrivateModel(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -28,10 +30,10 @@ namespace SuParty.Pages
                 return RedirectToPage("/Account/Login");
             // 取得登入者的帳號（用戶名或電子郵件）
             string username = User.Identity.Name;
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             // 使用登入者帳號做其他處理
 
-            var UserData = await _dbContext.UserDatas.FindAsync(userId);
+            var UserData = await _dbContext.UserDatas.FindAsync(UserId);
 
             if (string.IsNullOrEmpty(chatroomId))
             {
