@@ -25,5 +25,7 @@ namespace SuParty.Data.DataModel
         public string ProductType { get; set; } = "";
 
         public string? SalesId { get; internal set; }
+
+        public List<UserData> Users { get; set; } = new(); // 多對多反向關係
     }
 }
