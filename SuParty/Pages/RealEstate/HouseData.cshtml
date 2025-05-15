@@ -7,119 +7,137 @@
     Layout = "_Layout";
 }
 @inject IStringLocalizer<SuParty.Pages.RealEstate.HouseDataModel> Localizer
-<link rel="stylesheet" href="/css/RealEstate./HouseData.css" />
-<div class="container mt-4">
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+<link rel="stylesheet" href="/css/RealEstate/HouseData.css" />
+
+<div class="container my-5">
+    <!-- Carousel -->
+    <div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel">
         <div class="carousel-inner">
             @for (int i = 0; i < Model.HouseData.Images.Count; i++)
             {
                 <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <img src="@Model.HouseData.Images[i]" class="d-block w-100" alt="Slide @(i + 1)" style="max-height: 500px; object-fit: cover;">
+                    <img src="@Model.HouseData.Images[i]" class="d-block w-100 rounded" alt="Slide @(i + 1)" style="max-height: 500px; object-fit: cover;">
                 </div>
             }
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="carousel-control-prev-icon"></span>
             <span class="visually-hidden">Previous</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="carousel-control-next-icon"></span>
             <span class="visually-hidden">Next</span>
         </button>
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <p style="margin: 0;">賣方姓名：@Model.SaleUser?.Name</p>
-        <button onclick="copyModifiedUrl()">複製分享網址</button>
-       
-
-        <p>電話：@Model.SaleUser?.Phone</p>
-        <p>Line：</p> <a href="@Model.SaleUser?.Line_Url" target="_blank" rel="noopener noreferrer">
-            <img src="data:image/png;base64,@Model.Base64QRCode" alt="QR Code" style="width: 90px; height: auto;" />
-            連結
-        </a>
-
+    <!-- Seller Info -->
+    <div class="card mb-4 p-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <div>
+                <p class="mb-1"><strong>賣方姓名：</strong>@Model.SaleUser?.Name</p>
+                <p class="mb-1"><strong>電話：</strong>@Model.SaleUser?.Phone</p>
+                <p class="mb-1 d-flex align-items-center">
+                    <strong>Line：</strong>
+                    <a href="@Model.SaleUser?.Line_Url" target="_blank" class="ms-2 d-flex align-items-center text-decoration-none">
+                        <img src="data:image/png;base64,@Model.Base64QRCode" alt="QR Code" class="me-2" style="width: 90px; height: auto;" />
+                        連結
+                    </a>
+                </p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <button class="btn btn-outline-primary" onclick="copyModifiedUrl()">📋 複製分享網址</button>
+            </div>
+        </div>
     </div>
- 
+
+    <!-- Edit Button -->
     @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.SaleUser.Id)
     {
-        <a href="./HouseDataEdit?id=@Model.HouseData.Id">編輯</a>
-    }  
+        <div class="mb-3">
+            <a class="btn btn-warning" href="./HouseDataEdit?id=@Model.HouseData.Id">✏️ 編輯房屋資訊</a>
+        </div>
+    }
 
+    <!-- House Info -->
     <div class="row">
-        <div class="col-md-6 mb-3">     
-            <div class="house-detail">
-                <h1>@Model.HouseData.Name</h1> <!-- 顯示房屋名稱 -->
-                <p>@Model.HouseData.Introduction</p> <!-- 顯示房屋介紹 -->
-                <p>價格：$@Model.HouseData.Price</p> <!-- 顯示價格 -->
-            </div>
+        <div class="col-md-7">
+            <div class="card p-4 mb-4 shadow-sm">
+                <h2 class="mb-3">@Model.HouseData.Name</h2>
+                <p class="text-muted">@Model.HouseData.Introduction</p>
+                <h4 class="text-danger">價格：$@Model.HouseData.Price</h4>
 
-            <div class="house-info">
-                <video controls>
-                    <source src="@Model.HouseData.VideoUrl" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video> <!-- 顯示影片 -->
+                @if (!string.IsNullOrEmpty(Model.HouseData.VideoUrl))
+                {
+                    <div class="ratio ratio-16x9 my-3">
+                        <video controls class="w-100">
+                            <source src="@Model.HouseData.VideoUrl" type="video/mp4" />
+                            您的瀏覽器不支援 video 標籤。
+                        </video>
+                    </div>
+                }
+
                 <p>
-                <p>📍 地址：
+                    📍 地址：
                     <a href="https://www.google.com/maps/search/@Model.HouseData.Address" target="_blank">
                         @Model.HouseData.Address
                     </a>
-                </p> <!-- 顯示地址 -->
-               </div>
-           
-
-            <div class="house-info">
-                <p>🏠 房型：@Model.HouseData.ProductType</p>
-                <p>🌆 城市：@Model.HouseData.City</p>
-                <p>📏 空間：@Model.HouseData.Space 坪</p>
-                <p>💰 每坪價格：@Model.HouseData.PricePerPing</p>
-                <p>🛏️ 房間數：@Model.HouseData.RoomCount</p>
-                <p>🛁 衛浴數：@Model.HouseData.RestroomCount</p>
-                <p>🛋️ 客廳數：@Model.HouseData.LivingRoomCount</p>
-                <p>🚗 停車位數：@Model.HouseData.ParkingSpaceCount</p>
-                <p>🅿️ 停車位：@Model.HouseData.ParkingSpace</p>
-                <p>🏢 樓層：@Model.HouseData.Floor</p>
+                </p>
             </div>
 
-            <button id="TraceRealEstates">降價通知</button>
+            <div class="card p-4 mb-4 shadow-sm">
+                <h5 class="mb-4 fs-3">📋 房屋資訊</h5>
+                <ul class="list-unstyled fs-5" style="line-height: 2;">
+                    <li>🏠 房型：@Model.HouseData.ProductType</li>
+                    <li>🌆 城市：@Model.HouseData.City</li>
+                    <li>📏 空間：@Model.HouseData.Space 坪</li>
+                    <li>💰 每坪價格：@Model.HouseData.PricePerPing</li>
+                    <li>🛏️ 房間數：@Model.HouseData.RoomCount</li>
+                    <li>🛋️ 客廳數：@Model.HouseData.LivingRoomCount</li>
+                    <li>🛁 衛浴數：@Model.HouseData.RestroomCount</li>
+                    <li>🚗 停車位數：@Model.HouseData.ParkingSpaceCount</li>
+                    <li>🅿️ 停車位：@Model.HouseData.ParkingSpace</li>
+                    <li>🏢 樓層：@Model.HouseData.Floor</li>
+                </ul>
+            </div>
 
+
+            <button id="TraceRealEstates" class="btn btn-outline-danger w-100">🔔 訂閱降價通知</button>
         </div>
     </div>
 </div>
 
-<script>    
+<!-- Scripts -->
+<script>
     document.getElementById('TraceRealEstates').addEventListener('click', function () {
         AddShoppingCart(false);
     });
 
     function AddShoppingCart(redirect) {
         const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id'); // 讀取 'Id' 的值
+        const id = urlParams.get('id');
         sendRequest(_baseUrlAddAction('TraceRealEstates'), { id: id })
             .then(data => {
-            if (data.success) {
-                if (redirect) {
-                    // 跳轉到指定頁面
-                       // window.location.href = "../Shop/ShoppingCart";
+                if (data.success) {
+                    if (redirect) {
+                        // window.location.href = "../Shop/ShoppingCart";
+                    }
+                } else {
+                    alert(data.message);
                 }
-            } else {
-                alert(data.message); // 顯示錯誤信息
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     function copyModifiedUrl() {
-      const url = new URL(window.location.href);
-      url.searchParams.set("promoter", "@Model.UserID"); // 加上或更新參數
-      navigator.clipboard.writeText(url.toString())
-        .then(() => alert("已複製分享網址"))
-        .catch(err => {
-          console.error("複製失敗：", err);
-          alert("複製失敗，請查看 console");
-        });
+        const url = new URL(window.location.href);
+        url.searchParams.set("promoter", "@Model.UserID");
+        navigator.clipboard.writeText(url.toString())
+            .then(() => alert("✅ 已複製分享網址"))
+            .catch(err => {
+                console.error("複製失敗：", err);
+                alert("❌ 複製失敗，請查看 console");
+            });
     }
-
 </script>
