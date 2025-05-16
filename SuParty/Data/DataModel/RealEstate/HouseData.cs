@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using SuParty.Data.DataModel.RealEstate.Enum;
+﻿using SuParty.Data.DataModel.RealEstate.Enum;
 using System.ComponentModel.DataAnnotations;
 using static TronNet.Protocol.TransactionInfo.Types;
 
