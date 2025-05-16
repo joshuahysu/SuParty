@@ -3,53 +3,124 @@
 @using SuParty.Data.DataModel.RealEstate.Enum
 @model SuParty.Pages.RealEstate.HouseListModel;
 @{
-  Layout = "_Layout";
+    Layout = "_Layout";
 }
-<form method="get">
-    <div class="form-group">
-        <label for="City">選擇城市</label>
-        <select id="City" name="City" class="form-control">
-            @foreach (var city in Enum.GetValues(typeof(CityEnum)))
-            {
-                <option value="@city">@city</option>
-            }
-        </select>
-    </div>
-</form>
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <input type="text" id="MinPrice" name="MinPrice" placeholder="最低價格" />
-        <input type="text" id="MaxPrice" name="MaxPrice" placeholder="最高價格" />
-        <input type="text" id="MinPricePerPing" name="MinPricePerPing" placeholder="最低每坪價格" />
-        <input type="text" id="MaxPricePerPing" name="MaxPricePerPing" placeholder="最高每坪價格" />
-        <input type="text" id="MinSpace" name="MinSpace" placeholder="最小坪數" />
-        <input type="text" id="MaxSpace" name="MaxSpace" placeholder="最大坪數" />
-        <input type="text" id="MinRoomCount" name="MinRoomCount" placeholder="最少房間數" />
-        <input type="text" id="MaxRoomCount" name="MaxRoomCount" placeholder="最多房間數" />
-        <input type="text" id="MinRestroomCount" name="MinRestroomCount" placeholder="最少衛浴數" />
-        <input type="text" id="MaxRestroomCount" name="MaxRestroomCount" placeholder="最多衛浴數" />
-        <input type="text" id="MinLivingRoomCount" name="MinLivingRoomCount" placeholder="最少客廳數" />
-        <input type="text" id="MaxLivingRoomCount" name="MaxLivingRoomCount" placeholder="最多客廳數" />
-        <input type="text" id="MinParkingSpaceCount" name="MinParkingSpaceCount" placeholder="最少幾個車位數" />
-        <input type="text" id="MaxParkingSpaceCount" name="MaxParkingSpaceCount" placeholder="最多幾個車位數" />
-        <input type="text" id="MinFloor" name="MinFloor" placeholder="最低樓層" />
-        <input type="text" id="MaxFloor" name="MaxFloor" placeholder="最高樓層" />
 
-        <button class="btn btn-primary" id="Search">搜尋</button>
+<div class="container mt-4">
+    <form method="get" class="card p-4 shadow-sm mb-4">
+        <h5 class="mb-4">🔍 條件搜尋</h5>
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <label for="City" class="form-label">🏙️ 選擇城市</label>
+                <select id="City" name="City" class="form-select">
+                    @foreach (var city in Enum.GetValues(typeof(CityEnum)))
+                    {
+                        <option value="@city">@city</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="MinPrice" class="form-label">💰 最低價格</label>
+                <input type="number" class="form-control" id="MinPrice" name="MinPrice" placeholder="最低價格" />
+            </div>
+            <div class="col-md-4">
+                <label for="MaxPrice" class="form-label">💰 最高價格</label>
+                <input type="number" class="form-control" id="MaxPrice" name="MaxPrice" placeholder="最高價格" />
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <label for="MinPricePerPing" class="form-label">📏 最低每坪價格</label>
+                <input type="number" class="form-control" id="MinPricePerPing" name="MinPricePerPing" />
+            </div>
+            <div class="col-md-4">
+                <label for="MaxPricePerPing" class="form-label">📏 最高每坪價格</label>
+                <input type="number" class="form-control" id="MaxPricePerPing" name="MaxPricePerPing" />
+            </div>
+            <div class="col-md-4">
+                <label for="MinSpace" class="form-label">📐 最小坪數</label>
+                <input type="number" class="form-control" id="MinSpace" name="MinSpace" />
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <label for="MaxSpace" class="form-label">📐 最大坪數</label>
+                <input type="number" class="form-control" id="MaxSpace" name="MaxSpace" />
+            </div>
+            <div class="col-md-4">
+                <label for="MinRoomCount" class="form-label">🛏️ 最少房間數</label>
+                <input type="number" class="form-control" id="MinRoomCount" name="MinRoomCount" />
+            </div>
+            <div class="col-md-4">
+                <label for="MaxRoomCount" class="form-label">🛏️ 最多房間數</label>
+                <input type="number" class="form-control" id="MaxRoomCount" name="MaxRoomCount" />
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <label for="MinRestroomCount" class="form-label">🛁 最少衛浴數</label>
+                <input type="number" class="form-control" id="MinRestroomCount" name="MinRestroomCount" />
+            </div>
+            <div class="col-md-4">
+                <label for="MaxRestroomCount" class="form-label">🛁 最多衛浴數</label>
+                <input type="number" class="form-control" id="MaxRestroomCount" name="MaxRestroomCount" />
+            </div>
+            <div class="col-md-4">
+                <label for="MinLivingRoomCount" class="form-label">🛋️ 最少客廳數</label>
+                <input type="number" class="form-control" id="MinLivingRoomCount" name="MinLivingRoomCount" />
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label for="MaxLivingRoomCount" class="form-label">🛋️ 最多客廳數</label>
+                <input type="number" class="form-control" id="MaxLivingRoomCount" name="MaxLivingRoomCount" />
+            </div>
+            <div class="col-md-4">
+                <label for="MinParkingSpaceCount" class="form-label">🚗 最少車位數</label>
+                <input type="number" class="form-control" id="MinParkingSpaceCount" name="MinParkingSpaceCount" />
+            </div>
+            <div class="col-md-4">
+                <label for="MaxParkingSpaceCount" class="form-label">🚗 最多車位數</label>
+                <input type="number" class="form-control" id="MaxParkingSpaceCount" name="MaxParkingSpaceCount" />
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="MinFloor" class="form-label">🏢 最低樓層</label>
+                <input type="number" class="form-control" id="MinFloor" name="MinFloor" />
+            </div>
+            <div class="col-md-4">
+                <label for="MaxFloor" class="form-label">🏢 最高樓層</label>
+                <input type="number" class="form-control" id="MaxFloor" name="MaxFloor" />
+            </div>
+        </div>
+
+        <div class="text-end mt-4">
+            <button class="btn btn-primary px-4" type="submit">🔍 搜尋</button>
+        </div>
+    </form>
+
+    <div class="card p-3 shadow-sm">
+        <h5 class="mb-3">📋 房屋列表</h5>
+        <table id="houseList" class="table table-striped table-hover w-100">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>價格</th>
+                    <th>坪</th>
+                    <th>屋齡</th>
+                    <th>樓層</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
 
-<table id="houseList" class="display" style="width:100%">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>價格</th>
-            <th>坪</th>
-            <th>屋齡</th>
-            <th>樓層</th>
-        </tr>
-    </thead>
-</table>
 
 <script>
       var request = {

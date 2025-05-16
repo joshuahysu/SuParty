@@ -52,6 +52,20 @@ namespace SuParty.Pages.RealEstate
                 // 新增一筆資料到 追蹤列表
                 user.TraceRealEstates.Add(id);
 
+            //
+            //EmailHelper.SendEmail(
+            //            smtpHost: "smtp.gmail.com",
+            //    smtpPort: 587,
+            //    smtpUser: "your_email@gmail.com",
+            //    smtpPassword: "your_app_password", // Gmail 建議使用 App 密碼
+            //    fromEmail: "your_email@gmail.com",
+            //    toEmail: "recipient@example.com",
+            //    subject: "Hello!",
+            //    body: "This is a test email from a reusable function.",
+            //    enableSsl: true
+            //);
+
+
                 // 保存變更到資料庫
                 await _dbContext.SaveChangesAsync();                
 

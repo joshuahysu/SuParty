@@ -10,7 +10,7 @@ namespace Utility.Service.Product.enums
 {
     public class Order
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
         public OrderStatus Status { get; set; }
@@ -18,10 +18,17 @@ namespace Utility.Service.Product.enums
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public UserData User { get; set; } = null!;
-
+        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
         public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+        public DateTime CreatedAt { get; set; }
     }
-
+    public class OrderItem
+    {
+        public string Id { get; set; }
+        public string ProductId { get; set; }  // 產品ID
+        public int Quantity { get; set; }   // 數量
+        public decimal Price { get; set; }      // 單價
+    }
 
 
 }
