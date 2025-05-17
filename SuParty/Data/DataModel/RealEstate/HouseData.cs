@@ -97,6 +97,11 @@ namespace SuParty.Data.DataModel.RealEstate
         public int Floor { get; set; } = 1;
 
         /// <summary>
+        /// 總樓層
+        /// </summary>
+        public int TotalFloor { get; set; } = 1;
+
+        /// <summary>
         /// 賣家ID
         /// </summary>
         public string SalesId { get; set; } = "";
