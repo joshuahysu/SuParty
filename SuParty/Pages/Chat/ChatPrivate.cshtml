@@ -72,46 +72,47 @@
             </ul>
         </div>
 
-        <!-- 右邊即時留言板 -->
-        <div class="col-md-9">
+        <div class="col-md-9 d-flex flex-column chat-container">
             <h1>聊天室</h1>
 
-            <!-- 留言表單 -->
-            <form id="messageForm">
-                 <div> 
-                     <label for="Content">內容：</label> 
-                     <textarea id="Content" required></textarea> 
-                 </div> 
-                <button type="submit">送出</button> 
-             </form> 
+            <!-- 訊息區塊 -->
+            <div id="messagesWrapper" class="flex-grow-1 overflow-auto mb-2">
+                <ul id="messagesList" class="list-unstyled">
+                    @foreach (var message in Model.Messages)
+                    {
+                        var isCurrentUser = message.UserId == Model.UserId;
+                        var messageClass = isCurrentUser ? "message right" : "message left";
+                        <li class="@messageClass mb-2">
+                            <strong>@message.Name</strong>
+                            <span class="timestamp">(@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"))</span>:
+                            <span class="content">@message.Content</span>
+                        </li>
+                    }
+                </ul>
+            </div>
 
-            <h2>訊息</h2>
-            @* <ul id="messagesList"> *@
-            @*     @foreach (var message in Model.Messages) *@
-            @*     { *@
-            @*         <li><strong>@message.Name</strong> (@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")): @message.Content</li> *@
-            @*     } *@
-            @* </ul> *@
-            <ul id="messagesList">
-                @foreach (var message in Model.Messages)
-                {
-                    var isCurrentUser = message.UserId == Model.UserId;
-                    var messageClass = isCurrentUser ? "message right" : "message left";
-                    <li class="@messageClass">
-                        <strong>@message.Name</strong>
-                        <span class="timestamp">(@message.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"))</span>:
-                        <span class="content">@message.Content</span>
-                    </li>
-                }
-            </ul>
+            <!-- 輸入表單固定底部 -->
+            <form id="messageForm" class="input-group">
+                <!-- 擴大高度：rows=3 + 自訂 style -->
+                <textarea id="Content"
+                          class="form-control"
+                          rows="3"
+                          style="min-height: 3.5rem; resize: none;"
+                          required
+                          placeholder="輸入訊息… (Enter 送出，Shift+Enter 換行)">
+                </textarea>
+                <button id="sendBtn" class="btn btn-primary" type="submit">送出</button>
+            </form>
 
-            <button id="messageFormDelete">刪除</button>
-
+            <button id="messageFormDelete" class="btn btn-outline-danger mt-2">刪除全部</button>
         </div>
+
     </div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.15/signalr.min.js"></script>
 <script>
+    const currentUserId = "@Model.UserId";
     // 從 URL 查詢參數中提取 chatroomId
     const urlParams = new URLSearchParams(window.location.search);
     const chatroomId = urlParams.get('chatroomId'); // 讀取 'chatroomId' 的值
@@ -126,32 +127,56 @@
     });
 
     // 設定接收訊息的處理ReceiveMessage
-    connection.on("RM", (name, content) => {
+     connection.on("RM", (name, content, userId, timestamp) => {
+        const isCurrentUser = userId === currentUserId; // 你需要在前端定義 currentUserId
+        const side = isCurrentUser ? "right" : "left";
         const li = document.createElement("li");
-        li.innerHTML = `<strong>${name}</strong>: ${content}`;
+        li.className = `message ${side}`;
+
+        li.innerHTML = `
+            <strong>${name}</strong>
+            <span class="timestamp">(${timestamp})</span>:
+            <span class="content">${content}</span>
+        `;
         document.getElementById("messagesList").appendChild(li);
     });
+
 
     // 啟動連線
     connection.start().catch(err => console.error("Connection failed: ", err));
 
-    // 提交留言表單
-    document.getElementById("messageForm").addEventListener("submit", async (e) => {
+     const textarea = document.getElementById("Content");
+    const form = document.getElementById("messageForm");
+
+    // 按 Enter（不含 Shift）就送出表單
+    textarea.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault(); // 防止換行
+            form.requestSubmit(); // 觸發表單送出
+        }
+    });
+
+    // 原本的提交事件
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const content = document.getElementById("Content").value;
+        const content = textarea.value.trim();
+        if (content === "") return;
 
-        // 傳送訊息到 Hub，將資料封裝成物件
         const message = {
             content: content,
             createdAt: new Date().toISOString(),
-            chatroomId: chatroomId//, // 聊天室ID
+            chatroomId: chatroomId // 假設你有 chatroomId 全域變數
         };
-        //S=SendMessagePrivate
-        await connection.invoke("S", message).catch(err => console.error("SendMessage failed: ", err));
 
-        // 清空輸入框
-        document.getElementById("Content").value = "";
+        try {
+            await connection.invoke("S", message);
+        } catch (err) {
+            console.error("SendMessage failed: ", err);
+        }
+
+        textarea.value = "";
+        textarea.focus(); // 重新聚焦
     });
     //刪除
     document.getElementById('messageFormDelete').addEventListener('click', function () {

@@ -5,6 +5,16 @@
 @{
     Layout = "_Layout";
 }
+<!-- Google AdSense 廣告範例 -->
+<!-- 測試用 Google AdSense 廣告 -->
+
+<!-- 測試用廣告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3940256099942544"
+     data-ad-slot="1234567890"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
 
 <div class="container mt-4">
     <form method="get" class="card p-4 shadow-sm mb-4">
@@ -111,6 +121,7 @@
             <thead class="table-light">
                 <tr>
                     <th>ID</th>
+                    <th>格局</th>
                     <th>價格</th>
                     <th>坪</th>
                     <th>屋齡</th>
@@ -121,6 +132,10 @@
     </div>
 </div>
 
+
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 <script>
       var request = {
@@ -170,9 +185,29 @@
                     }
                 }
             },
+            {
+                data: 'roomCount',
+                render: function (data, type, row) {
+                    // 假設 `data` 是圖片的 URL，`row.id` 是該行的唯一識別 ID
+                    if (row.id) {
+                        return `<a href="../RealEstate/HouseData?id=${row.id}">
+                                ${row.roomCount}房${row.livingRoomCount}廳${row.restroomCount}衛</a>`;
+                    } else {
+                        return '無圖片'; // 當沒有圖片時顯示的文字
+                    }
+                }
+            },
             { data: 'price' },
             { data: 'pricePerPing' },
-            { data: 'year' },
+            {
+                data: 'year',
+                render: function (data, type, row) {
+                    const date = new Date(row.year);
+                    const yearsAgo = new Date().getFullYear() -date.getFullYear();
+                    return `${yearsAgo}`;
+                    
+                }
+            },
             { data: 'floor' }
         ]
     });

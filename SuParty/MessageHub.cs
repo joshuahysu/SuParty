@@ -65,7 +65,7 @@ namespace SuParty
             ChatStorage.SaveMessage(message.ChatroomId, message);
 
             // 發送訊息到指定的聊天室群組ReceiveMessage=RM
-            await Clients.Group(message.ChatroomId).SendAsync("RM", username, message.Content);
+            await Clients.Group(message.ChatroomId).SendAsync("RM", username, message.Content, message.UserId, message.CreatedAt);
         }        
     }
     [MessagePackObject]

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SuParty.Data.DataModel.RealEstate.Enum;
+﻿using SuParty.Data.DataModel.RealEstate.Enum;
 using System.ComponentModel.DataAnnotations;
 using static TronNet.Protocol.TransactionInfo.Types;
 
@@ -120,5 +119,12 @@ namespace SuParty.Data.DataModel.RealEstate
         /// 是否自售
         /// </summary>
         public string Seller { get; set; } = "";
+
+
+        /// <summary>
+        /// 分潤比例
+        /// </summary>
+        public decimal ProfitSharing { get; set; } = 0;
+        
     }
 }

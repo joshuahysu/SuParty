@@ -60,58 +60,63 @@
 
 </div>
 
-    <!-- Edit Button -->
-    @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.SaleUser.Id)
-    {
-        <div class="mb-3">
-            <a class="btn btn-warning" href="./HouseDataEdit?id=@Model.HouseData.Id">✏️ 編輯房屋資訊</a>
-        </div>
-    }
+
 
     <!-- House Info -->
-    <div class="row">
-        <div class="col-md-7">
-            <div class="card p-4 mb-4 shadow-sm">
-                <h2 class="mb-3">@Model.HouseData.Name</h2>
-                <p class="text-muted">@Model.HouseData.Introduction</p>
-                <h4 class="text-danger">價格：$@Model.HouseData.Price</h4>
+<div class="row gx-4">
+    <div class="col-md-6">
+        <div class="card p-4 mb-4 shadow-sm h-100">
+            <h2 class="mb-3">@Model.HouseData.Name</h2>
+            <p class="text-muted">@Model.HouseData.Introduction</p>
+            <h4 class="text-danger">價格：$@Model.HouseData.Price</h4>
 
-                @if (!string.IsNullOrEmpty(Model.HouseData.VideoUrl))
+            @if (!string.IsNullOrEmpty(Model.HouseData.VideoUrl))
+            {
+                <div class="ratio ratio-16x9 my-3">
+                    <video controls class="w-100">
+                        <source src="@Model.HouseData.VideoUrl" type="video/mp4" />
+                        您的瀏覽器不支援 video 標籤。
+                    </video>
+                </div>
+            }
+
+
+
+            <button id="TraceRealEstates" class="btn btn-outline-danger w-100 mt-3">🔔 訂閱降價通知</button>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-4 mb-4 shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fs-3 mb-0">📋 房屋資訊</h5>
+
+                @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.SaleUser.Id)
                 {
-                    <div class="ratio ratio-16x9 my-3">
-                        <video controls class="w-100">
-                            <source src="@Model.HouseData.VideoUrl" type="video/mp4" />
-                            您的瀏覽器不支援 video 標籤。
-                        </video>
-                    </div>
+                    <a class="btn btn-warning" href="./HouseDataEdit?id=@Model.HouseData.Id">✏️ 編輯房屋資訊</a>
                 }
+            </div>
 
-                <p>
+            <ul class="list-unstyled fs-5" style="line-height: 2;">
+                <li>
                     📍 地址：
                     <a href="https://www.google.com/maps/search/@Model.HouseData.Address" target="_blank">
                         @Model.HouseData.Address
                     </a>
-                </p>
-            </div>
-
-            <div class="card p-4 mb-4 shadow-sm">
-                <h5 class="mb-4 fs-3">📋 房屋資訊</h5>
-                <ul class="list-unstyled fs-5" style="line-height: 2;">
-                    <li>🏠 房型：@Model.HouseData.ProductType</li>
-                    <li>🌆 城市：@Model.HouseData.City</li>
-                    <li>📏 空間：@Model.HouseData.Space 坪</li>
-                    <li>💰 每坪價格：@Model.HouseData.PricePerPing</li>     
-                    <li>🛋️ 格局：@Model.HouseData.RoomCount 房 @Model.HouseData.LivingRoomCount 廳 @Model.HouseData.RestroomCount 衛</li>
-                    <li>🚗 停車位數：@Model.HouseData.ParkingSpaceCount</li>
-                    <li>🅿️ 停車位坪：@Model.HouseData.ParkingSpace</li>
-                    <li>🏢 樓層：@Model.HouseData.Floor /@Model.HouseData.TotalFloor</li>
-                </ul>
-            </div>
-
-
-            <button id="TraceRealEstates" class="btn btn-outline-danger w-100">🔔 訂閱降價通知</button>
+                </li>
+                <li>🏠 房型：@Model.HouseData.ProductType</li>
+                @* <li>🌆 城市：@Model.HouseData.City</li> *@
+                <li>📏 空間：@Model.HouseData.Space 坪</li>
+                <li>💰 每坪價格：@Model.HouseData.PricePerPing</li>
+                <li>🛋️ 格局：@Model.HouseData.RoomCount 房 @Model.HouseData.LivingRoomCount 廳 @Model.HouseData.RestroomCount 衛</li>
+                <li>🚗 停車位數：@Model.HouseData.ParkingSpaceCount</li>
+                <li>🅿️ 停車位坪：@Model.HouseData.ParkingSpace</li>
+                <li>🏢 樓層：@Model.HouseData.Floor /@Model.HouseData.TotalFloor</li>
+            </ul>
         </div>
     </div>
+</div>
+
 </div>
 
 <!-- Scripts -->

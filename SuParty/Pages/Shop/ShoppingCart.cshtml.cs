@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SuParty.Data;
+using SuParty.Data.DataModel;
 using System.Security.Claims;
 
 namespace SuParty.Pages.Shop
@@ -8,7 +9,7 @@ namespace SuParty.Pages.Shop
     public class ShoppingCartModel : PageModel
     {
         private readonly ApplicationDbContext _dbContext;
-        public List<string> ShoppingCart;
+        public List<ProductData> ShoppingCart;
 
         public ShoppingCartModel(ApplicationDbContext dbContext)
         {

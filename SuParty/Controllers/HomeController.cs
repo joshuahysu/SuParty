@@ -15,7 +15,7 @@ namespace SuParty.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return Redirect("/pages/");
         }
 
         public IActionResult Privacy()

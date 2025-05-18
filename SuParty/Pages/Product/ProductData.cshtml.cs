@@ -42,7 +42,7 @@ namespace SuParty.Pages.Product
                 var user = _dbContext.UserDatas.Find(userId);
 
                 // 新增一筆資料到 ShoppingCart
-                user.ShoppingCart.Add(id);
+                user.ShoppingCart.Add(new ProductData { Id = id });
 
                 // 保存變更到資料庫
                 _dbContext.SaveChanges();                

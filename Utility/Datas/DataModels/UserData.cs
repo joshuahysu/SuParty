@@ -1,5 +1,4 @@
-﻿
-namespace SuParty.Data.DataModel
+﻿namespace SuParty.Data.DataModel
 {
     public class UserData
     {
@@ -63,7 +62,7 @@ namespace SuParty.Data.DataModel
         public List<string> ChatRooms { get; set; } = new();
 
         #region 產品資料
-        public List<string> ShoppingCart { get; set; } = new();
+        public List<ProductData> ShoppingCart { get; set; } = new();
 
         public List<string> Store { get; set; } = new();
         #endregion

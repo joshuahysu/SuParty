@@ -47,6 +47,16 @@ namespace SuParty.Pages.RealEstate
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (_dbContext.HouseDatas.Any(h => h.Id == HouseData.Id))
+                {
+                    //驗證
+                    if (userId != HouseData.SalesId)
+                    {
+                        return Page(); // 如果表單不合法，保持在頁面上顯示錯誤
+                    }
+                }
+
                 HouseData.SalesId = userId;
 
                 //上傳圖片

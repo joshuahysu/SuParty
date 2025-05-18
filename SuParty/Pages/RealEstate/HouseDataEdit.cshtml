@@ -57,11 +57,6 @@
         <input type="number" class="form-control" id="Space" name="Space" value="@Model.HouseData?.Space" />
     </div>
 
-@*     <div class="form-group">
-        <label for="PricePerPing">每坪價格</label>
-        <input type="number" class="form-control" id="PricePerPing" name="PricePerPing" value="@Model.HouseData?.PricePerPing" />
-    </div> *@
-
     <div class="form-group">
         <label for="RoomCount">房間數</label>
         <input type="number" class="form-control" id="RoomCount" name="RoomCount" value="@Model.HouseData?.RoomCount" />
@@ -91,6 +86,11 @@
         <label for="Floor">樓層</label>
         <input type="number" class="form-control" id="Floor" name="Floor" value="@Model.HouseData?.Floor" />
     </div>
+    <div class="form-group">
+        <label for="Floor">分潤比例</label>
+        <input type="number" class="form-control" id="Floor" name="Floor" value="@Model.HouseData?.ProfitSharing" />
+    </div>
+
     <div class="form-group">
         <label for="Floor">總樓層</label>
         <input type="number" class="form-control" id="TotalFloor" name="TotalFloor" value="@Model.HouseData?.TotalFloor" />

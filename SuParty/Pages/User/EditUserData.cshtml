@@ -15,58 +15,69 @@
     <meta charset="utf-8" />
     <title>Razor Page Example</title>
 </head>
-<body>
-    <form method="post">
+<body class="container py-5">
+    <form method="post" class="card shadow p-4">
         @Html.AntiForgeryToken()
-        <div>
-            <label for="Name">@Localizer["Name"]</label>
-            <input type="text" id="Name" name="Name" value="@Model.UserData?.Name" />
+
+        <h2 class="mb-4">@Localizer["Edit Profile"]</h2>
+
+        <div class="mb-3">
+            <label for="Name" class="form-label">@Localizer["Name"]</label>
+            <input type="text" id="Name" name="Name" value="@Model.UserData?.Name" class="form-control" />
         </div>
 
-        <div>
-            <label for="Birthday">@Localizer["Birthday"]</label>
-            <input type="date" id="Birthday" name="Birthday" value="@Model.UserData?.Birthday.ToString("yyyy-MM-dd")" />
+        <div class="mb-3">
+            <label for="Birthday" class="form-label">@Localizer["Birthday"]</label>
+            <input type="date" id="Birthday" name="Birthday"
+                   value="@(Model.UserData?.Birthday.ToString("yyyy-MM-dd") !="0001-01-01"  ? Model.UserData.Birthday.ToString("yyyy-MM-dd") : "1980-01-01")"
+                   class="form-control" />
         </div>
 
-        <div>
-            <label for="NickName">@Localizer["Nick Name"]</label>
-            <input type="text" id="NickName" name="NickName" value="@Model.UserData?.NickName" />
+
+        <div class="mb-3">
+            <label for="NickName" class="form-label">@Localizer["Nick Name"]</label>
+            <input type="text" id="NickName" name="NickName" value="@Model.UserData?.NickName" class="form-control" />
         </div>
 
-        <div>
-            <label for="Gender">@Localizer["Gender"]</label>
-            <select id="Gender" name="Gender">
+        <div class="mb-3">
+            <label for="Gender" class="form-label">@Localizer["Gender"]</label>
+            <select id="Gender" name="Gender" class="form-select">
                 <option value="Male" @(Model.UserData?.Gender == "Male" ? "selected" : "")>@Localizer["Male"]</option>
                 <option value="Female" @(Model.UserData?.Gender == "Female" ? "selected" : "")>@Localizer["Female"]</option>
             </select>
         </div>
 
-        <div>
-            <label for="Introduction">@Localizer["Introduction"]</label>
-            <textarea id="Introduction" name="Introduction">@Model.UserData?.Introduction</textarea>
-        </div>
-        <div>
-            <label for="Phone">@Localizer["Phone"]</label>
-            <input type="text" id="Phone" name="Phone" value="@Model.UserData?.Phone" />
-        </div>
-        <div>
-            <label for="Income">@Localizer["Income"]</label>
-            <input type="text" id="Income" name="Income" value="@Model.UserData?.Income" />
+        <div class="mb-3">
+            <label for="Introduction" class="form-label">@Localizer["Introduction"]</label>
+            <textarea id="Introduction" name="Introduction" class="form-control" rows="3">@Model.UserData?.Introduction</textarea>
         </div>
 
-        <div>
-            <label for="Budget">@Localizer["Budget"]</label>
-            <input type="text" id="Budget" name="Budget" value="@Model.UserData?.Budget" />
+        <div class="mb-3">
+            <label for="Phone" class="form-label">@Localizer["Phone"]</label>
+            <input type="text" id="Phone" name="Phone" value="@Model.UserData?.Phone" class="form-control" />
         </div>
-        <div>
-            <label for="IG_Url">@Localizer["IG_Url"]</label>
-            <input type="text" id="IG_Url" name="IG_Url" value="@Model.UserData?.IG_Url" />
+
+        <div class="mb-3">
+            <label for="Income" class="form-label">@Localizer["Income"]</label>
+            <input type="text" id="Income" name="Income" value="@Model.UserData?.Income" class="form-control" />
         </div>
-        <div>
-            <label for="Line_Url">@Localizer["Line_Url"]</label>
-            <input type="text" id="Line_Url" name="Line_Url" value="@Model.UserData?.Line_Url" />
+
+        <div class="mb-3">
+            <label for="Budget" class="form-label">@Localizer["Budget"]</label>
+            <input type="text" id="Budget" name="Budget" value="@Model.UserData?.Budget" class="form-control" />
         </div>
-        <button type="submit">Submit</button>
+
+        <div class="mb-3">
+            <label for="IG_Url" class="form-label">@Localizer["IG_Url"]</label>
+            <input type="text" id="IG_Url" name="IG_Url" value="@Model.UserData?.IG_Url" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="Line_Url" class="form-label">@Localizer["Line_Url"]</label>
+            <input type="text" id="Line_Url" name="Line_Url" value="@Model.UserData?.Line_Url" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">@Localizer["Submit"]</button>
     </form>
 </body>
 </html>

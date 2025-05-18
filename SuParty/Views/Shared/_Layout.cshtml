@@ -12,6 +12,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
+    @* google廣告 *@
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
     <script>
         function _baseUrlAddAction(action) {
         // 解析當前頁面的 URL
@@ -98,6 +101,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/pages/RealEstate/HouseDataEdit">HouseDataEdit</a>
                         </li>
+                        <!-- 右側導覽 -->
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="btn btn-primary px-4" href="/pages/Assetscoin/Invest">
+                                投資礦機
+                            </a>
+                            </li>
+                        </ul>
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
