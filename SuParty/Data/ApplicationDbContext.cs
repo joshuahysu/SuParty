@@ -13,6 +13,27 @@ namespace SuParty.Data
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ReferrerMember>()
+                .HasOne(r => r.Left)
+                .WithMany()
+                .HasForeignKey(r => r.LeftId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ReferrerMember>()
+                .HasOne(r => r.Right)
+                .WithMany()
+                .HasForeignKey(r => r.RightId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ReferrerMember>()
+                .HasOne(r => r.Sponsor)
+                .WithMany()
+                .HasForeignKey(r => r.SponsorId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
         public DbSet<RealEstateUserData> UserDatas { get; set; }
         public DbSet<UserWallet> UserWallets { get; set; }
         public DbSet<Tracking> Trackings { get; set; }

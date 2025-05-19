@@ -39,7 +39,7 @@ namespace SuParty.Pages.User
             else
             {
                 Message = "您尚未登入，將重定向到登入頁面。";
-                return RedirectToPage("/Account/Login");
+                return Redirect("/Identity/Account/Login");
             }
 
         }
@@ -75,7 +75,7 @@ namespace SuParty.Pages.User
             else
             {
                 Message = "您尚未登入，將重定向到登入頁面。";
-                return RedirectToPage("/Account/Login");
+                return Redirect("/Identity/Account/Login");
             }
         }        
     }

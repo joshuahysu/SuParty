@@ -1,4 +1,6 @@
-﻿namespace SuParty.Service.Referrer
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SuParty.Service.Referrer
 {
     class Mservice
     {
@@ -38,10 +40,19 @@
 
     public class ReferrerMember
     {
+        [Key]
         public string Id { get; set; }
+
         public string Name { get; set; }
+
+        // 外鍵屬性 + 導覽屬性
+        public string? LeftId { get; set; }
         public ReferrerMember? Left { get; set; }
+
+        public string? RightId { get; set; }
         public ReferrerMember? Right { get; set; }
+
+        public string? SponsorId { get; set; }
         public ReferrerMember? Sponsor { get; set; }
 
         public int LeftPoints { get; set; }
@@ -55,6 +66,9 @@
             Id = id;
             Name = name;
         }
+
+        // 無參數建構子（EF Core 需要）
+        public ReferrerMember() { }
 
         public void AddChild(ReferrerMember child, bool isLeft)
         {

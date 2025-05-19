@@ -6,7 +6,7 @@ namespace SuParty.Data.DataModel.RealEstate
 {
     public class HouseData
     {
-        public string Id { get; set; } = new Guid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>
         /// 廣告排序

@@ -17,6 +17,8 @@
         <input type="file" class="form-control" id="ImagesUpload" name="ImagesUpload" multiple accept="image/*" />
     </div>
 
+    <input type="hidden" id="HouseData.Id" name="HouseData.Id" value="@Model.HouseData.Id" />
+
     <div class="form-group">
         <label for="Name">名稱</label>
         <input type="text" class="form-control" id="Name" name="Name" value="@Model.HouseData?.Name" />
@@ -36,12 +38,6 @@
         <label for="VideoUrl">影片 URL</label>
         <input type="text" class="form-control" id="VideoUrl" name="VideoUrl" value="@Model.HouseData?.VideoUrl" />
     </div>
-
-    <div class="form-group">
-        <label for="Address">地址</label>
-        <input type="text" class="form-control" id="Address" name="Address" value="@Model.HouseData?.Address" />
-    </div>
-
     <div class="form-group">
         <label for="City">城市</label>
         <select id="City" name="City" class="form-control">
@@ -50,6 +46,11 @@
                 <option value="@city" @((CityEnum)city == Model.HouseData.City ? "selected" : "")>@city</option>
             }
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Address">地址</label>
+        <input type="text" class="form-control" id="Address" name="Address" value="@Model.HouseData?.Address" />
     </div>
 
     <div class="form-group">
@@ -87,14 +88,14 @@
         <input type="number" class="form-control" id="Floor" name="Floor" value="@Model.HouseData?.Floor" />
     </div>
     <div class="form-group">
+        <label for="Floor">總樓層</label>
+        <input type="number" class="form-control" id="TotalFloor" name="TotalFloor" value="@Model.HouseData?.TotalFloor" />
+    </div>
+    <div class="form-group">
         <label for="Floor">分潤比例</label>
         <input type="number" class="form-control" id="Floor" name="Floor" value="@Model.HouseData?.ProfitSharing" />
     </div>
 
-    <div class="form-group">
-        <label for="Floor">總樓層</label>
-        <input type="number" class="form-control" id="TotalFloor" name="TotalFloor" value="@Model.HouseData?.TotalFloor" />
-    </div>
     <button type="submit" class="btn btn-primary">儲存</button>
     <button id="Delete">刪除</button>
 </form>

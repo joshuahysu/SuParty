@@ -27,7 +27,7 @@ namespace SuParty.Pages
         public async Task<IActionResult> OnGet(string? chatroomId = null)
         {
             if (!User.Identity.IsAuthenticated)
-                return RedirectToPage("/Account/Login");
+                return Redirect("/Identity/Account/Login");
             // 取得登入者的帳號（用戶名或電子郵件）
             string username = User.Identity.Name;
             UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
