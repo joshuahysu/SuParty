@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SuParty.Data.DataModel;
 using SuParty.Data.DataModel.RealEstate;
+using SuParty.Service.Referrer;
 using Utility.Service.Product.enums;
 
 namespace SuParty.Data
@@ -19,5 +20,7 @@ namespace SuParty.Data
         public DbSet<HouseData> HouseDatas { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<ReferrerMember> ReferrerMembers { get; set; }
+        
     }    
 }

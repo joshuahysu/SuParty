@@ -1,5 +1,4 @@
-﻿using Microsoft.Identity.Client;
-
+﻿
 namespace SuParty.Unit
 {
     public class WebUnit
