@@ -8,7 +8,17 @@
 }
 @inject IStringLocalizer<SuParty.Pages.RealEstate.HouseDataModel> Localizer
 <link rel="stylesheet" href="/css/RealEstate/HouseData.css" />
+<style>
+    .star {
+        font-size: 2rem;
+        cursor: pointer;
+        color: lightgray;
+    }
 
+        .star.selected {
+            color: gold;
+        }
+</style>
 <div class="container my-5">
 
     <!-- Carousel -->
@@ -79,10 +89,6 @@
                     </video>
                 </div>
             }
-
-
-
-            <button id="TraceRealEstates" class="btn btn-outline-danger w-100 mt-3">🔔 訂閱降價通知</button>
         </div>
     </div>
 
@@ -117,18 +123,72 @@
     </div>
 </div>
 
+<div class="mb-3">
+    <label class="form-label">請選擇你的期待分數：</label>
+    <div id="scoreSelector">
+        <span class="star" data-score="1">★</span>
+        <span class="star" data-score="2">★</span>
+        <span class="star" data-score="3">★</span>
+        <span class="star" data-score="4">★</span>
+        <span class="star" data-score="5">★</span>
+    </div>
 </div>
+
+<button id="TraceRealEstates" class="btn btn-outline-secondary w-100 mt-3">🔔訂閱降價通知</button>
+
 
 <!-- Scripts -->
 <script>
+    let selectedScore = 0; // 儲存選擇的分數
+    const stars = document.querySelectorAll(".star");
+    const button = document.getElementById("TraceRealEstates");
+
+     const levelStyles = {
+      1: "btn-outline-secondary",
+      2: "btn-outline-primary",
+      3: "btn-outline-success",
+      4: "btn-outline-warning",
+      5: "btn-outline-danger"
+    };
+
+    const levelLabels = {
+      1: "🟤 觀望中",
+      2: "🔵 小幅關注",
+      3: "🟢 普通追蹤",
+      4: "🟡 積極追蹤",
+      5: "🔴 高度追蹤"
+    };
+
+    function updateButton(score) {
+      // 移除所有按鈕顏色
+      Object.values(levelStyles).forEach(cls => button.classList.remove(cls));
+      button.classList.add(levelStyles[score]);
+      button.innerText = `${levelLabels[score]} 訂閱降價通知`;
+    }
+
+    stars.forEach(star => {
+        star.addEventListener("click", () => {
+        selectedScore = parseInt(star.dataset.score); // ← 取得分數
+        console.log("使用者選擇分數：", selectedScore); // 可以看到選幾分
+        updateButton(selectedScore);
+              // 移除全部星星的亮色
+        stars.forEach(s => s.classList.remove('selected'));
+
+        // 亮起對應數量的星星
+        for (let i = 0; i < selectedScore; i++) {
+          stars[i].classList.add('selected');
+        }
+        });
+    });
     document.getElementById('TraceRealEstates').addEventListener('click', function () {
-        AddShoppingCart(false);
+
+
     });
 
     function AddShoppingCart(redirect) {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get('id');
-        sendRequest(_baseUrlAddAction('TraceRealEstates'), { id: id })
+        sendRequest(_baseUrlAddAction('TraceRealEstates'), { id: id,selectedScore:selectedScore })
             .then(data => {
                 if (data.success) {
                     if (redirect) {
