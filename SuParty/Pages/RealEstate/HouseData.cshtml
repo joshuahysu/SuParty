@@ -133,7 +133,7 @@
         <span class="star" data-score="5">★</span>
     </div>
 </div>
-
+@Html.AntiForgeryToken();
 <button id="TraceRealEstates" class="btn btn-outline-secondary w-100 mt-3">🔔訂閱降價通知</button>
 
 
@@ -181,7 +181,7 @@
         });
     });
     document.getElementById('TraceRealEstates').addEventListener('click', function () {
-
+        AddShoppingCart(false)
 
     });
 

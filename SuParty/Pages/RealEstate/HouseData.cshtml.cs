@@ -71,6 +71,10 @@ namespace SuParty.Pages.RealEstate
                 await _dbContext.SaveChangesAsync();                
 
             }
+            else
+            {
+                return Redirect("/Identity/Account/Login");
+            }
             return new JsonResult(new { success = true, message = "Add success" });
         }
 

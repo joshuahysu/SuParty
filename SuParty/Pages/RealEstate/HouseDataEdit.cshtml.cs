@@ -21,7 +21,7 @@ namespace SuParty.Pages.RealEstate
         public HouseData HouseData { get; set; }
         [BindProperty]
         public List<IFormFile> ImagesUpload { get; set; } = new();
-        public async Task<IActionResult> OnGet(string id)
+        public async Task<IActionResult> OnGet(string id = null)
         {
             if (id != null)
             {
