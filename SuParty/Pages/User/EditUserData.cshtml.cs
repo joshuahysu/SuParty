@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SuParty.Data;
 using SuParty.Data.DataModel;
+using SuParty.Service.Referrer;
 using System.Security.Claims;
 
 namespace SuParty.Pages.User
@@ -28,6 +29,10 @@ namespace SuParty.Pages.User
             return Page();
         }
 
+        /// <summary>
+        /// 更新個人資料
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (User.Identity.IsAuthenticated)
@@ -37,13 +42,26 @@ namespace SuParty.Pages.User
                     UserData.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     //自動insert or update
                     _dbContext.UserDatas.Update(UserData);
+
+                    //需要更新直銷部分
+                    ReferrerMember referrerMember = _dbContext.ReferrerMembers.Find(UserData.Id);
+
+                    if (referrerMember == null)
+                    {
+                        referrerMember = new ReferrerMember() {
+                            Id=UserData.Id,
+                        }; // 初始化 referrerMember 物件
+                    }
+                    referrerMember.Name = UserData.Name;
+                    _dbContext.ReferrerMembers.Update(referrerMember);
+
                     await _dbContext.SaveChangesAsync();
                     return RedirectToPage("/User/UserData");
                 }
             }
             else
             {
-                return RedirectToPage("/Account/Login");
+                return Redirect("/Identity/Account/Login");
             }
             return Page();
         }

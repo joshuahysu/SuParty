@@ -21,7 +21,6 @@ namespace SuParty.Pages.User
         public RealEstateUserData? UserData { get; set; }=new RealEstateUserData();
         public async Task<IActionResult> OnGet(string userId)
         {
-
             if (User.Identity.IsAuthenticated)
             {
                 // 取得登入者的帳號（用戶名或電子郵件）
@@ -44,30 +43,35 @@ namespace SuParty.Pages.User
 
         }
 
-        public async Task<IActionResult> OnPostTracking(string id,bool tracking)
+        public async Task<IActionResult> OnPostTracking(string id,bool tracking,int loveScore)
         {
             if (User.Identity.IsAuthenticated)
             {
                 // 取得登入者的帳號（用戶名或電子郵件）
                 string username = User.Identity.Name;
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var dbtracking = await _dbContext.Trackings.FindAsync(userId);
+                var dbtracking = await _dbContext.TrackingUsers.FindAsync(userId);
                 if (dbtracking == null)
                 {
                     dbtracking=new Tracking();
                     dbtracking.Id = userId;
-                    _dbContext.Trackings.Add(dbtracking);
+                    dbtracking.TrackingList.Add(new TrackingObject()
+                    {
+                        LoveScore = loveScore,
+                        Id = id
+                    });
+                    _dbContext.TrackingUsers.Add(dbtracking);
                 }
                 if (tracking)
                 {
                     //不存在才新增
-                    if (!dbtracking.TrackingList.Any(t => t == id))
+                    if (!dbtracking.TrackingList.Any(t => t.Id == id))
                     {
-                        dbtracking.TrackingList.Add(id);
+                        dbtracking.TrackingList.Add(new TrackingObject() { LoveScore = loveScore, Id = id });
                     }
                 }
                 else
-                    dbtracking.TrackingList.Remove(id);
+                    dbtracking.TrackingList.Remove(new TrackingObject() { LoveScore = loveScore, Id = id });
                 await _dbContext.SaveChangesAsync();
                 var successResponse = new { success = true, message = "追蹤狀態更新成功。" };
                 return Content(JsonSerializer.Serialize(successResponse), "application/json");

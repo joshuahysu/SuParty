@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using System.ComponentModel.DataAnnotations;
 
 namespace SuParty.Service.Referrer
 {
@@ -53,11 +54,17 @@ namespace SuParty.Service.Referrer
         public ReferrerMember? Right { get; set; }
 
         public string? SponsorId { get; set; }
+
+        /// <summary>
+        /// 推薦者
+        /// </summary>
         public ReferrerMember? Sponsor { get; set; }
 
         public int LeftPoints { get; set; }
         public int RightPoints { get; set; }
         public int TotalEarnings { get; set; }
+
+        public decimal MonthSpend { get; set; } = 0;
 
         public List<string> BonusLogs { get; set; } = new();
 
@@ -136,6 +143,90 @@ namespace SuParty.Service.Referrer
         }
 
     }
+
+    public static class ReferrerMemberExtensions
+    {
+        /// <summary>
+        /// 刪除且遞補
+        /// </summary>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        public static bool RemoveAndPromoteChild(this ReferrerMember child)
+        {
+            ReferrerMember parent = child.Sponsor;
+            if (parent.Left != null && parent.Left.Id == child.Id)
+            {
+                parent.Left = PromoteSubtree(parent.Left);
+                if (parent.Left != null) parent.Left.Sponsor = parent;
+                return true;
+            }
+
+            if (parent.Right != null && parent.Right.Id == child.Id)
+            {
+                parent.Right = PromoteSubtree(parent.Right);
+                if (parent.Right != null) parent.Right.Sponsor = parent;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 刪除全部
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="childId"></param>
+        /// <returns></returns>
+        public static bool SearchAndRemoveChild(this ReferrerMember root, string childId)
+        {
+            // 嘗試在左子樹遞迴刪除
+            if (root.Left != null)
+            {
+                if (root.Left.Id == childId)
+                {
+                    root.Left = PromoteSubtree(root.Left);
+                    if (root.Left != null) root.Left.Sponsor = root;
+                    return true;
+                }
+
+                if (root.Left.SearchAndRemoveChild(childId)) return true;
+            }
+
+            // 嘗試在右子樹遞迴刪除
+            if (root.Right != null)
+            {
+                if (root.Right.Id == childId)
+                {
+                    root.Right = PromoteSubtree(root.Right);
+                    if (root.Right != null) root.Right.Sponsor = root;
+                    return true;
+                }
+
+                if (root.Right.SearchAndRemoveChild(childId)) return true;
+            }
+
+            return false;
+        }
+
+        private static ReferrerMember? PromoteSubtree(ReferrerMember node)
+        {
+            if (node.Left == null && node.Right == null)
+                return null;
+
+            if (node.Left != null && node.Right == null)
+                return node.Left;
+
+            if (node.Left == null && node.Right != null)
+                return node.Right;
+
+            var promoted = node.Left;
+            var toAttach = node.Right;
+
+            promoted.AddChildAuto(toAttach, preferLeft: true);
+            return promoted;
+        }
+    }
+
     public static class BonusCalculator
     {
         const int RequiredLeftPoints = 1200;
@@ -157,9 +248,7 @@ namespace SuParty.Service.Referrer
                 source = current;
                 current = current.Sponsor;
             }
-        }
-
-        
+        }        
 
         // 新增層級獎金設定
         static readonly List<(int Level, double Percent)> ManagementLevels = new()
@@ -230,7 +319,5 @@ namespace SuParty.Service.Referrer
                 }
             }
         }
-
     }
-
 }

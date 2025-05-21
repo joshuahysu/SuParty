@@ -37,6 +37,8 @@ namespace SuParty.Data
         public DbSet<RealEstateUserData> UserDatas { get; set; }
         public DbSet<UserWallet> UserWallets { get; set; }
         public DbSet<Tracking> Trackings { get; set; }
+
+        public DbSet<Tracking> TrackingUsers { get; set; }
         public DbSet<ProductData> ProductDatas { get; set; }
         public DbSet<HouseData> HouseDatas { get; set; }
         public DbSet<Order> Orders { get; set; }

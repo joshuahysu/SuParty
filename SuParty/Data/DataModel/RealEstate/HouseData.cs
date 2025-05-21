@@ -1,6 +1,5 @@
 ﻿using SuParty.Data.DataModel.RealEstate.Enum;
 using System.ComponentModel.DataAnnotations;
-using static TronNet.Protocol.TransactionInfo.Types;
 
 namespace SuParty.Data.DataModel.RealEstate
 {
@@ -89,7 +88,12 @@ namespace SuParty.Data.DataModel.RealEstate
         public int ParkingSpaceCount { get; set; } = 0;
         public int ParkingSpace { get; set; } = 0;
         public ParkingSpaceTypeEnum ParkingSpaceType { get; set; } = 0;
-        
+
+        /// <summary>
+        /// 是否公開
+        /// </summary>
+        public int IsPublic { get; set; } = 1;
+
         /// <summary>
         /// 樓層
         /// </summary>
@@ -125,6 +129,8 @@ namespace SuParty.Data.DataModel.RealEstate
         /// 分潤比例
         /// </summary>
         public decimal ProfitSharing { get; set; } = 0;
+
+        public DateTime DueDate { get; set; }
         
     }
 }

@@ -1,6 +1,4 @@
-﻿using TronNet;
-using TronNet.Contracts;
-
+﻿
 namespace SuParty.Service.SendEmail
 {
     using System;
@@ -9,6 +7,26 @@ namespace SuParty.Service.SendEmail
 
     public class EmailHelper
     {
+
+        public static void SendEmailC(
+            string smtpUser,
+            string smtpPassword,
+            string toEmail,
+            string subject,
+            string body)
+        {
+            EmailHelper.SendEmail(
+                 smtpHost: "smtp.gmail.com",
+                 smtpPort: 587,
+                 smtpUser: "your_email@gmail.com",
+                 smtpPassword: "your_app_password", // Gmail 建議使用 App 密碼
+                 fromEmail: "your_email@gmail.com",
+                 toEmail: toEmail,
+                 subject: subject,
+                 body: body,
+                 enableSsl: true
+             );
+        }
         public static void SendEmail(
             string smtpHost,
             int smtpPort,
@@ -53,5 +71,4 @@ namespace SuParty.Service.SendEmail
             }
         }
     }
-
 }

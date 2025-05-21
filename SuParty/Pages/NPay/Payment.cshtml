@@ -1,0 +1,23 @@
+﻿@page
+@model SuParty.Pages.NPay.PaymentModel
+<form method="post">
+    <button type="submit">建立付款表單</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.TradeInfo))
+{
+    <form id="payForm" method="post" action="https://ccore.newebpay.com/MPG/mpg_gateway">
+        <input type="hidden" name="MerchantID" value="@Model.MerchantID" />
+        <input type="hidden" name="TradeInfo" value="@Model.TradeInfo" />
+        <input type="hidden" name="TradeSha" value="@Model.TradeSha" />
+        <input type="hidden" name="Version" value="1.5" />
+        <button type="submit">前往付款</button>
+    </form>
+}
+<form method="post" action="https://ccore.newebpay.com/MPG/period">
+    <input type="hidden" name="MerchantID" value="@ViewData["MerchantID"]" />
+    <input type="hidden" name="TradeInfo" value="@ViewData["TradeInfo"]" />
+    <input type="hidden" name="TradeSha" value="@ViewData["TradeSha"]" />
+    <input type="hidden" name="Version" value="@ViewData["Version"]" />
+    <button type="submit">建立定期定額</button>
+</form>
