@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SuParty.Data;
-using SuParty.Data.DataModel;
 using SuParty.Data.DataModel.RealEstate;
 using System.Security.Claims;
 
