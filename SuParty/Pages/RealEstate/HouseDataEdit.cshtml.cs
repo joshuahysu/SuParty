@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SuParty.Data;
-using SuParty.Data.DataModel;
 using SuParty.Data.DataModel.RealEstate;
 using System.Security.Claims;
 
@@ -21,7 +20,7 @@ namespace SuParty.Pages.RealEstate
         public HouseData HouseData { get; set; }
         [BindProperty]
         public List<IFormFile> ImagesUpload { get; set; } = new();
-        public async Task<IActionResult> OnGet(string id)
+        public async Task<IActionResult> OnGet(string id = null)
         {
             if (id != null)
             {
@@ -47,22 +46,20 @@ namespace SuParty.Pages.RealEstate
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                if (_dbContext.HouseDatas.Any(h => h.Id == HouseData.Id))
+                var houseData = _dbContext.HouseDatas.AsNoTracking().First(h => h.Id == HouseData.Id);
+                if (houseData!=null)
                 {
                     //驗證
-                    if (userId != HouseData.SalesId)
+                    if (userId != houseData.SalesId)
                     {
                         return Page(); // 如果表單不合法，保持在頁面上顯示錯誤
                     }
                 }
-
                 HouseData.SalesId = userId;
-
                 //上傳圖片
                 var uploadsFolder = Path.Combine("wwwroot/uploads");
                 Directory.CreateDirectory(uploadsFolder);
-
+                //TODO ImagesUpload不要變不見
                 foreach (var formFile in ImagesUpload)
                 {
                     if (formFile.Length > 0)
@@ -85,6 +82,8 @@ namespace SuParty.Pages.RealEstate
                     HouseData.Id = Guid.NewGuid().ToString(); // 生成新的 GUID                   
 
                     _dbContext.HouseDatas.Add(HouseData); // 插入
+
+                    _dbContext.SaveChanges();
                 }
                 else
                 {
@@ -92,7 +91,7 @@ namespace SuParty.Pages.RealEstate
                 }
 
                 _dbContext.SaveChanges();
-
+   
             }
             else {
                 return RedirectToPage("/Account/Login");

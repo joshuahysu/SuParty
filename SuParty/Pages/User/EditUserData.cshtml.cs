@@ -20,11 +20,18 @@ namespace SuParty.Pages.User
         }
         public async Task<IActionResult> OnGet()
         {
-            UserData = _dbContext.UserDatas.Find(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            // 確保在首次加載頁面時 User 不是 null
-            if (UserData == null)
+            if (User.Identity.IsAuthenticated)
             {
+                UserData = _dbContext.UserDatas.Find(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                // 確保在首次加載頁面時 User 不是 null
+                if (UserData == null)
+                {
                 UserData = new RealEstateUserData(); // 初始化 User 物件
+                }
+            }
+            else
+            {
+                return Redirect("/Identity/Account/Login");
             }
             return Page();
         }
