@@ -1,5 +1,4 @@
-﻿using Org.BouncyCastle.Asn1.Ocsp;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SuParty.Service.Referrer
 {
@@ -54,11 +53,16 @@ namespace SuParty.Service.Referrer
         public ReferrerMember? Right { get; set; }
 
         public string? SponsorId { get; set; }
-
         /// <summary>
         /// 推薦者
         /// </summary>
         public ReferrerMember? Sponsor { get; set; }
+
+        public string? UpLineId { get; set; }
+        /// <summary>
+        /// 上線
+        /// </summary>
+        public ReferrerMember? UpLine { get; set; }
 
         public int LeftPoints { get; set; }
         public int RightPoints { get; set; }
@@ -90,7 +94,7 @@ namespace SuParty.Service.Referrer
                 Right = child;
             }
 
-            child.Sponsor = this;
+            child.UpLine = this;
         }
         public void AddChildAuto(ReferrerMember child, bool preferLeft=true)
         {
@@ -106,7 +110,7 @@ namespace SuParty.Service.Referrer
                     if (current.Left == null)
                     {
                         current.Left = child;
-                        child.Sponsor = current;
+                        child.UpLine = current;
                         return;
                     }
                     else queue.Enqueue(current.Left);
@@ -114,7 +118,7 @@ namespace SuParty.Service.Referrer
                     if (current.Right == null)
                     {
                         current.Right = child;
-                        child.Sponsor = current;
+                        child.UpLine = current;
                         return;
                     }
                     else queue.Enqueue(current.Right);
@@ -124,7 +128,7 @@ namespace SuParty.Service.Referrer
                     if (current.Right == null)
                     {
                         current.Right = child;
-                        child.Sponsor = current;
+                        child.UpLine = current;
                         return;
                     }
                     else queue.Enqueue(current.Right);
@@ -132,7 +136,7 @@ namespace SuParty.Service.Referrer
                     if (current.Left == null)
                     {
                         current.Left = child;
-                        child.Sponsor = current;
+                        child.UpLine = current;
                         return;
                     }
                     else queue.Enqueue(current.Left);
@@ -153,18 +157,18 @@ namespace SuParty.Service.Referrer
         /// <returns></returns>
         public static bool RemoveAndPromoteChild(this ReferrerMember child)
         {
-            ReferrerMember parent = child.Sponsor;
+            ReferrerMember parent = child.UpLine;
             if (parent.Left != null && parent.Left.Id == child.Id)
             {
                 parent.Left = PromoteSubtree(parent.Left);
-                if (parent.Left != null) parent.Left.Sponsor = parent;
+                if (parent.Left != null) parent.Left.UpLine = parent;
                 return true;
             }
 
             if (parent.Right != null && parent.Right.Id == child.Id)
             {
                 parent.Right = PromoteSubtree(parent.Right);
-                if (parent.Right != null) parent.Right.Sponsor = parent;
+                if (parent.Right != null) parent.Right.UpLine = parent;
                 return true;
             }
 
@@ -185,7 +189,7 @@ namespace SuParty.Service.Referrer
                 if (root.Left.Id == childId)
                 {
                     root.Left = PromoteSubtree(root.Left);
-                    if (root.Left != null) root.Left.Sponsor = root;
+                    if (root.Left != null) root.Left.UpLine = root;
                     return true;
                 }
 
@@ -198,7 +202,7 @@ namespace SuParty.Service.Referrer
                 if (root.Right.Id == childId)
                 {
                     root.Right = PromoteSubtree(root.Right);
-                    if (root.Right != null) root.Right.Sponsor = root;
+                    if (root.Right != null) root.Right.UpLine = root;
                     return true;
                 }
 
@@ -237,7 +241,7 @@ namespace SuParty.Service.Referrer
         // 點數向上累加
         public static void AddBV(ReferrerMember source, int points)
         {
-            ReferrerMember? current = source.Sponsor;
+            ReferrerMember? current = source.UpLine;
             while (current != null)
             {
                 if (current.Left == source)
@@ -246,7 +250,7 @@ namespace SuParty.Service.Referrer
                     current.RightPoints += points;
 
                 source = current;
-                current = current.Sponsor;
+                current = current.UpLine;
             }
         }        
 
@@ -270,10 +274,10 @@ namespace SuParty.Service.Referrer
                     m.RightPoints -= RequiredRightPoints;
 
                     // 推薦獎
-                    if (m.Sponsor != null)
+                    if (m.UpLine != null)
                     {
-                        m.Sponsor.TotalEarnings += ReferralBonus;
-                        m.Sponsor.BonusLogs.Add($"推薦獎金：${ReferralBonus}（來自 {m.Name}）");
+                        m.UpLine.TotalEarnings += ReferralBonus;
+                        m.UpLine.BonusLogs.Add($"推薦獎金：${ReferralBonus}（來自 {m.Name}）");
                     }
 
                     // 管理獎
@@ -285,7 +289,7 @@ namespace SuParty.Service.Referrer
         // 往上層層給管理獎
         private static void ApplyManagementBonus(ReferrerMember earner, int earnedBonus)
         {
-            ReferrerMember? current = earner.Sponsor;
+            ReferrerMember? current = earner.UpLine;
             int level = 1;
 
             while (current != null && level <= ManagementLevels.Count)
@@ -295,7 +299,7 @@ namespace SuParty.Service.Referrer
                 current.TotalEarnings += mgmtBonus;
                 current.BonusLogs.Add($"管理獎：${mgmtBonus}（來自第 {level} 層 {earner.Name}）");
 
-                current = current.Sponsor;
+                current = current.UpLine;
                 level++;
             }
         }

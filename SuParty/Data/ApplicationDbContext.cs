@@ -29,6 +29,12 @@ namespace SuParty.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ReferrerMember>()
+                .HasOne(r => r.UpLine)
+                .WithMany()
+                .HasForeignKey(r => r.UpLineId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ReferrerMember>()
                 .HasOne(r => r.Sponsor)
                 .WithMany()
                 .HasForeignKey(r => r.SponsorId)
