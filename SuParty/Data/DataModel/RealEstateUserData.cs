@@ -5,7 +5,7 @@ namespace SuParty.Data.DataModel
     {   
 
         /// <summary>
-        /// 經紀業
+        /// 經紀業證號
         /// </summary>
         public string Brokerage { get; set; } = "";
 

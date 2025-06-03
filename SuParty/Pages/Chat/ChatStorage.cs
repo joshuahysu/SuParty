@@ -14,7 +14,8 @@ namespace SuParty.Pages.Chat
         /// <param name="chatroomId"></param>
         /// <param name="message"></param>
         public static void SaveMessage(string chatroomId, MessageModel message)
-        {
+        {   
+            //todo:雲端的話要修改
             // 確保基礎目錄存在
             Directory.CreateDirectory(BasePath);
 
