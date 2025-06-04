@@ -68,7 +68,6 @@ namespace SuParty.Pages.RealEstate
          (request.City <= 0 || p.City == request.City)
      ).OrderByDescending(c=>c.Index);
 
-
             // 計算滿足條件的總數量
             int totalRecords = query.Count();
 
