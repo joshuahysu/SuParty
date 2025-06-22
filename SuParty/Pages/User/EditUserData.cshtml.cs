@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SuParty.Data;
 using SuParty.Data.DataModel;
 using SuParty.Service.Referrer;
@@ -46,21 +47,37 @@ namespace SuParty.Pages.User
             {
                 if (ModelState.IsValid)
                 {
-                    UserData.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    //自動insert or update
-                    _dbContext.UserDatas.Update(UserData);
+                    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    UserData.Id = userId;
+
+                    // 先查詢資料庫中是否已存在該使用者資料
+                    var existingUserData = _dbContext.UserDatas.AsNoTracking().FirstOrDefault(h => h.Id == userId);
+
+                    if (existingUserData == null)
+                    {
+                        _dbContext.UserDatas.Add(UserData); // 新增
+                    }
+                    else
+                    {
+                        _dbContext.UserDatas.Update(UserData);
+                        // 可以選擇手動更新欄位，避免 RowVersion 衝突
+                    }
 
                     //需要更新直銷部分
-                    ReferrerMember referrerMember = _dbContext.ReferrerMembers.Find(UserData.Id);
-
+                    var referrerMember = await _dbContext.ReferrerMembers.FindAsync(userId);
                     if (referrerMember == null)
                     {
-                        referrerMember = new ReferrerMember() {
-                            Id=UserData.Id,
-                        }; // 初始化 referrerMember 物件
+                        referrerMember = new ReferrerMember
+                        {
+                            Id = userId,
+                            Name = UserData.Name
+                        };
+                        _dbContext.ReferrerMembers.Add(referrerMember);
                     }
-                    referrerMember.Name = UserData.Name;
-                    _dbContext.ReferrerMembers.Update(referrerMember);
+                    else
+                    {
+                        referrerMember.Name = UserData.Name;
+                    }
 
                     await _dbContext.SaveChangesAsync();
                     return RedirectToPage("/User/UserData");

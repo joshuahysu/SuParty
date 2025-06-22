@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using SuParty.Data;
 using SuParty.Middleware;
 using SuParty.Service;
+using System;
 
 namespace SuParty
 {
@@ -11,7 +12,9 @@ namespace SuParty
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            try
+            {
+                var builder = WebApplication.CreateBuilder(args);
 
             // 設定本地化資源的路徑
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -34,13 +37,13 @@ namespace SuParty
             });
 
             // 設定MSSQL資料庫連線字串
-            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(connectionString)); // 使用 SQL Server 作為資料庫
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionString)); // 使用 SQL Server 作為資料庫
 
             // 使用 SQLite 資料庫
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite("Data Source=application.db"));  // SQLite 的資料庫檔案名稱
+            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlite("Data Source=application.db"));  // SQLite 的資料庫檔案名稱
 
 
             // 開發期間顯示資料庫相關錯誤訊息
@@ -101,6 +104,7 @@ namespace SuParty
 
             builder.Services.AddMemoryCache(); // 註冊 MemoryCache
             builder.Services.AddDynamicServices(builder.Configuration);
+            builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
             // 註冊為 Singleton / Scoped / Transient
             //builder.Services.AddSingleton<IMyService, MyService>();
@@ -156,7 +160,28 @@ namespace SuParty
             app.MapRazorPages(); // 設定 Razor Pages 路由
             app.MapHub<MessageHub>("/messageHub"); // 設定 SignalR Hub 路由
 
+            // ❗ 在應用啟動時自動建立資料庫
+            try
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    db.Database.Migrate();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log and continue - 或考慮回傳健康狀態 warning
+                Console.WriteLine($"Migration failed: {ex.Message}");
+            }
+
             app.Run(); // 啟動應用程式
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("❌ Migration failed: " + ex.Message);
+                Console.WriteLine(ex.ToString()); // 詳細 trace
+            }
         }
     }
 }

@@ -65,7 +65,8 @@ namespace SuParty.Pages.RealEstate
          (request.MaxParkingSpaceCount <= 0 || p.ParkingSpaceCount <= request.MaxParkingSpaceCount) &&
          (request.MinFloor <= 0 || p.Floor >= request.MinFloor) &&
          (request.MaxFloor <= 0 || p.Floor <= request.MaxFloor) &&
-         (request.City <= 0 || p.City == request.City)
+         (request.City <= 0 || p.City == request.City) &&
+         (DateTime.Now<p.DueDate)
      ).OrderByDescending(c=>c.Index);
 
 

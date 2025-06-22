@@ -36,7 +36,8 @@ namespace SuParty.Data.DataModel.RealEstate
         /// 圖片
         /// </summary>
         public List<string> Images { get; set; } = new();
-        [Required(AllowEmptyStrings = true)]
+
+        //[Required(AllowEmptyStrings = true)]
         public string VideoUrl { get; set; } = "";
         
         /// <summary>
@@ -51,7 +52,7 @@ namespace SuParty.Data.DataModel.RealEstate
         /// <summary>
         /// 權狀
         /// </summary>
-        public float Space { get; set; } = 0;
+        public float Space { get; set; } = 1;
         /// <summary>
         /// 主建
         /// </summary>
@@ -124,13 +125,15 @@ namespace SuParty.Data.DataModel.RealEstate
         /// </summary>
         public string Seller { get; set; } = "";
 
-
         /// <summary>
         /// 分潤比例
         /// </summary>
         public decimal ProfitSharing { get; set; } = 0;
 
-        public DateTime DueDate { get; set; }
+        /// <summary>
+        /// 到期日
+        /// </summary>
+        public DateTime DueDate { get; set; } = DateTime.Now.AddDays(90);
         
     }
 }

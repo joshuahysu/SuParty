@@ -5,16 +5,6 @@
 @{
     Layout = "_Layout";
 }
-<!-- Google AdSense 廣告範例 -->
-<!-- 測試用 Google AdSense 廣告 -->
-
-<!-- 測試用廣告 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-3940256099942544"
-     data-ad-slot="1234567890"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
 
 <div class="container mt-4">
     <form method="get" class="card p-4 shadow-sm mb-4">
@@ -132,12 +122,8 @@
     </div>
 </div>
 
-
 <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
-<script>
       var request = {
         'MinPrice': $('#MinPrice').val(),
         'MaxPrice': $('#MaxPrice').val(),
@@ -167,9 +153,11 @@
         ajax: {
             url: _baseUrlAddAction('Search'), // 替換為你的 API URL
             type: 'GET',
-              data: function (d) { // `d` 會傳遞給 AJAX
-            return $.extend({}, d, request); // 合併 DataTables 的內部參數與自訂搜尋條件
-        }
+    data: function (d) {
+        var result = $.extend({}, d, request);
+        console.log("傳送的資料：", result);  // ✅ 看這裡的輸出
+        return result;
+    }
         },
         columns: [
             {
@@ -236,9 +224,7 @@
     // 要傳遞的欄位
     // 檢查 #MinPrice 是否有值
 
-    //aaa?handler=Search&keyword=test&page=1
-
-   
+    //aaa?handler=Search&keyword=test&page=1   
 
         table.ajax.reload(); // 重新加載資料
     });

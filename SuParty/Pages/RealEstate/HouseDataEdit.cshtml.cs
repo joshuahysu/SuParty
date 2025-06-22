@@ -46,7 +46,7 @@ namespace SuParty.Pages.RealEstate
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var houseData = _dbContext.HouseDatas.AsNoTracking().First(h => h.Id == HouseData.Id);
+                var houseData = _dbContext.HouseDatas.AsNoTracking().FirstOrDefault(h => h.Id == HouseData.Id);
                 if (houseData!=null)
                 {
                     //驗證
@@ -54,14 +54,19 @@ namespace SuParty.Pages.RealEstate
                     {
                         return Page(); // 如果表單不合法，保持在頁面上顯示錯誤
                     }
+                    HouseData.Images= houseData.Images;
                 }
                 HouseData.SalesId = userId;
+                HouseData.PricePerPing = (float)Math.Round((decimal)HouseData.Price / (decimal)HouseData.Space, 2);
+
                 //上傳圖片
                 var uploadsFolder = Path.Combine("wwwroot/uploads");
                 Directory.CreateDirectory(uploadsFolder);
                 //TODO ImagesUpload不要變不見
                 foreach (var formFile in ImagesUpload)
                 {
+                    //如果有代表需要更新圖片
+                    HouseData.Images.Clear();
                     if (formFile.Length > 0)
                     {
                         var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(formFile.FileName);
@@ -107,10 +112,19 @@ namespace SuParty.Pages.RealEstate
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var houseData = _dbContext.HouseDatas.FirstOrDefault(h => h.Id == HouseData.Id);
+                if (houseData.SalesId == userId)
+                {
+                    _dbContext.HouseDatas.Remove(houseData);
+                    await _dbContext.SaveChangesAsync();
 
-                _dbContext.HouseDatas.Remove(new HouseData { Id = id });
-                await _dbContext.SaveChangesAsync();
-                return new JsonResult(new { success = true, message = "Delete success" });
+                    return new JsonResult(new { success = true, message = "Delete success" });
+                }
+                else
+                {
+                    return new JsonResult(new { success = false, message = "Delete fail" });
+
+                }
             }
             else
             {

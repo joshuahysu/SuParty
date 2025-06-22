@@ -12,16 +12,16 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
-    @* google廣告 *@
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1824167065792295"
+            crossorigin="anonymous"></script>
 
     <script>
         function _baseUrlAddAction(action) {
         // 解析當前頁面的 URL
         let currentUrl = new URL(window.location.href);
 
-        // 移除現有的查詢字串
-            currentUrl.search = ''; // 清空現有的查詢字串
+        // 移除現有的查詢字串 (這有bug)
+           // currentUrl.search = ''; // 清空現有的查詢字串
 
         // 在清空的 URL 後面加上 ?handler=Tracking
             currentUrl.searchParams.append('handler', action);
@@ -68,18 +68,18 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">首頁</a>
                         </li>
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        </li> *@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/pages/Chat/ChatPrivate">Chat</a>
+                            <a class="nav-link text-dark" href="/pages/Chat/ChatPrivate">聊天室</a>
                         </li>
                         <li class="nav-item dropdown">
                             <!-- 主要按鈕 -->
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                UserData
+                                個人資料
                             </a>
 
                             <!-- 下拉選單內容 -->
@@ -92,7 +92,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
+                        @* <li class="nav-item dropdown">
                             <!-- 主要按鈕 -->
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="ProductDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 ProductData
@@ -107,13 +107,13 @@
                                     <a class="dropdown-item" href="/pages/Product/ProductDataEdit">編輯</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> *@
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/pages/RealEstate/HouseList">HouseList</a>
+                            <a class="nav-link text-dark" href="/pages/RealEstate/HouseList">房屋列表</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/pages/RealEstate/HouseDataEdit">HouseDataEdit</a>
+                            <a class="nav-link text-dark" href="/pages/RealEstate/HouseDataEdit">上架房產</a>
                         </li>
                         <!-- 右側導覽 -->
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
