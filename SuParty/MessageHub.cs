@@ -39,8 +39,8 @@ namespace SuParty
         public async Task SM(MessageModel message)
         {
             //string username = Context.User.Identity.Name;
-            // 儲存到檔案系統
-            ChatStorage.SaveMessage(message.ChatroomId, message);
+            // 含儲存到檔案系統
+            ChatService.Start(message.ChatroomId, message);
 
             // 發送訊息到指定的聊天室群組ReceiveMessage=RM
             await Clients.Group(message.ChatroomId).SendAsync("RM", message.Name, message.Content);

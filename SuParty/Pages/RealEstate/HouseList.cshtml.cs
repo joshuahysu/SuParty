@@ -69,7 +69,6 @@ namespace SuParty.Pages.RealEstate
          (DateTime.Now<p.DueDate)
      ).OrderByDescending(c=>c.Index);
 
-
             // 計算滿足條件的總數量
             int totalRecords = query.Count();
 

@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using SuParty.Data;
 using SuParty.Pages.Chat;
 using System.Security.Claims;
-using static SuParty.MessageHub;
 
 namespace SuParty.Pages
 {
@@ -51,7 +48,7 @@ namespace SuParty.Pages
                 }
                 else
                 {
-                    // 根據 chatroomId 初始化留言列表
+                    // 讀取指定聊天室的訊息
                     Messages = ChatStorage.ReadAndMergeFilesDefalut(chatroomId);
                 }
             }
